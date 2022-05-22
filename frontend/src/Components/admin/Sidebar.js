@@ -20,7 +20,7 @@ const Sidebar = () => {
 
           </Row>
           <Row className='mt-4'>
-          <LinkContainer to="">
+          <LinkContainer to="/admin/allquestions">
                 <Nav.Link>Questions</Nav.Link>
               </LinkContainer>
 

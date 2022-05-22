@@ -36,6 +36,7 @@ const protect = asyncHandler(async (req, res, next) => {
 })
 
 const protectAdmin=asyncHandler(async(req,res,next)=>{
+  
 console.log("admin auth middleware");
 console.log( req.headers.authorization );
   let token;

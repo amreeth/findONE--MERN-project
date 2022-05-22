@@ -99,6 +99,7 @@ export const registers =
           type: USER_LOGIN_SUCCESS,
           payload: data
       })
+      
       localStorage.setItem("userInfo", JSON.stringify(data));
       
     } catch (error) {
@@ -121,6 +122,7 @@ export const listUsers = () => async (dispatch, getState) => {
     });
 
     let adminInfo = await localStorage.getItem("adminInfo");
+    
     adminInfo = JSON.parse(adminInfo);
 
     console.log(adminInfo.token);
@@ -194,7 +196,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
 export const updateUserProfile = (user) => async (dispatch, getState) => {
   
-  console.log('hiiiiiii');
+  // console.log('hiiiiiii');
 
   try {
     dispatch({

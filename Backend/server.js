@@ -5,12 +5,15 @@ import userRoutes from './routes/userRouter.js'
 import adminRoutes from './routes/adminRoutes.js'
 import matchRoutes from './routes/matchRouter.js'
 import {notFound,errorHandler} from './middleware/errorMiddleware.js'
+import cors from 'cors'
 
 const app=express()
 
+app.use(cors())
+
 //body parser
 app.use(express.json())
-//==============//
+//==============//  
 
 dotenv.config()
 connectDB()

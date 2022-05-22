@@ -18,6 +18,8 @@ const UserManagement = () => {
   const { loading, error, users } = userList;
   const navigate = useNavigate();
 
+  console.log(users);
+
   useEffect(() => {
     const adminInfo = localStorage.getItem("adminInfo");
 

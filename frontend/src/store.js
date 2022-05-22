@@ -6,8 +6,11 @@ import {
   userRegisterReducer,
   userListReducer,
   userDetailsReducer,
-  userUpdateProfileReducer
+  userUpdateProfileReducer,
 } from "./reducers/userReducers";
+
+import { adminAddQuestionReducer,adminAllQuestionReducer, adminQuestionDeleteReducer
+ } from "./reducers/adminReducers";
 
 import {matchesReducer,matchesDetailsReducer } from "./reducers/matchReducer";
 
@@ -18,7 +21,12 @@ const reducer = combineReducers({
   userDetails:userDetailsReducer,
   userUpdateProfile:userUpdateProfileReducer,
   matches:matchesReducer,
-  matchDetails:matchesDetailsReducer
+  matchDetails:matchesDetailsReducer,
+ adminAddQuestion:adminAddQuestionReducer,
+ adminAllQuestions:adminAllQuestionReducer,
+
+ 
+
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

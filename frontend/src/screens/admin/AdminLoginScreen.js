@@ -37,6 +37,7 @@ const AdminLogin = () => {
                 email,
                 password,
             }, config)
+            
             console.log(data);
             localStorage.setItem("adminInfo", JSON.stringify(data))
             if (localStorage.adminInfo) {

@@ -24,17 +24,20 @@ const userDetailsSchema=mongoose.Schema({
      },
      images:[{
          type:String,
-         required:true
+       
      }],
-     Answers:[{
-         Question:{
+     answers:[{
+         question:{
              type:mongoose.Schema.Types.ObjectId,
              required:true
          },
-         Answers:{
-             type:ObjectId,
+         answer:{
+             type:mongoose.Schema.Types.ObjectId,
              required:true
          }
+     }],
+     friends:[{
+         type:mongoose.Schema.Types.ObjectId,
      }]
      
 

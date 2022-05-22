@@ -9,6 +9,8 @@ import AdminHomeScreen from "./screens/admin/AdminHomeScreen";
 import UserManagement from "./screens/admin/UserManagement";
 import ProfileScreen from './screens/user/ProfileScreen';
 import Log from './screens/user/Log';
+import AddQuestionScreen from './screens/admin/AddQuestionScreen';
+import AllQuestionsScreen from './screens/admin/AllQuestionsScreen';
 
 import './App.css'
 
@@ -37,6 +39,8 @@ function App() {
       <Route path='/admin/login' element={<AdminLogin/>}/>
       <Route path='/admin/' element={<AdminHomeScreen/>}/>
       <Route path='/admin/usermanagement' element={<UserManagement/>}/>
+      <Route path='/admin/addquestion' element={<AddQuestionScreen/>}/>
+      <Route path='/admin/allquestions' element={<AllQuestionsScreen/>}/>
 
 
       </Routes>

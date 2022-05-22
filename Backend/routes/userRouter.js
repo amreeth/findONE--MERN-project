@@ -9,9 +9,16 @@ import {
   emailVerify
 } from "../controllers/userController.js";
 
+import { registerUserDetails } from "../controllers/userDetailsController.js";
+
 import { protect } from "../middleware/authMiddleware.js";
 
+
+
+
 router.route("/register").post(registerUser);
+
+router.route('/userpersonaldetails').post(registerUserDetails)
 
 router.route("/login").post(authUser);
 
@@ -22,6 +29,7 @@ router.route("/profile/:id")
   .put(protect, updateUserProfile);
 
 router.route('/verify/:id/:token').get(emailVerify)
+
 
 
 export default router;

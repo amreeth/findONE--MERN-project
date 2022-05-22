@@ -25,12 +25,10 @@ const LoginScreen = () => {
         }
     }, [navigate, userInfo])
 
-
     const submitHandler = (e) => {
         e.preventDefault()
         //Dispatch login
         dispatch(login(email, password))
-
     }
 
     return (

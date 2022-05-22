@@ -14,7 +14,6 @@ import { registers } from "../../actions/userActions";
 import Loader from "../../Components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { InputLabel, MenuItem, Select } from "@mui/material";
-import { register } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -24,6 +23,7 @@ const theme = createTheme();
 export default function Log() {
 
   const navigate = useNavigate();
+  
   const userRegister = useSelector((state) => state.userRegister);
   const { loading, error, userInfo,success } = userRegister;
 
@@ -53,9 +53,6 @@ export default function Log() {
     if(success){
       navigate('/')
     }
-
-    
-    
 
   };
 
