@@ -95,6 +95,7 @@ export const registers =
         type: USER_REGISTER_SUCCESS,
         payload: data,
       });
+      
       dispatch({
           type: USER_LOGIN_SUCCESS,
           payload: data

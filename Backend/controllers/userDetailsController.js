@@ -1,5 +1,8 @@
 import asyncHandler from "express-async-handler";
 import UserDetails from "../models/userDetailsModel.js";
+import User from "../models/userModel.js";
+import { uploadFile } from "../utils/s3bucket.js";
+
 
 
 
@@ -15,7 +18,6 @@ const registerUserDetails=asyncHandler(async(req,res)=>{
         job,
         location,
         answers,
-        friends
     })
 
     if(userdetail){
@@ -28,5 +30,33 @@ const registerUserDetails=asyncHandler(async(req,res)=>{
 })
 
 
+//=======user add photos====//
 
-export {registerUserDetails}
+
+const imagesUpload=asyncHandler(async(req,res)=>{
+
+   const file=req.file;
+
+   console.log(file,'fiiilllleeeeee');
+
+   const description=req.description;
+
+   const result=await uploadFile(file)
+
+   console.log(result,'resultttttttt');
+
+   if(result){
+       res.status(200).json({success:"success"})
+   }else{
+       res.status(400)
+       throw new Error('error')
+   }
+    
+})
+
+
+
+
+
+
+export {registerUserDetails,imagesUpload}

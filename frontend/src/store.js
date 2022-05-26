@@ -9,24 +9,35 @@ import {
   userUpdateProfileReducer,
 } from "./reducers/userReducers";
 
-import { adminAddQuestionReducer,adminAllQuestionReducer, adminQuestionDeleteReducer
- } from "./reducers/adminReducers";
+import {
+  adminAddQuestionReducer,
+  adminAllQuestionReducer,
+  adminQuestionDeleteReducer,
+} from "./reducers/adminReducers";
 
-import {matchesReducer,matchesDetailsReducer } from "./reducers/matchReducer";
+import {
+  matchesReducer,
+  matchesDetailsReducer,
+  addRemoveFavReducer,
+  matchSentRequestReducer,
+  allSentRequestsReducer,
+  allReceivedRequestReducer
+} from "./reducers/matchReducer";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userList: userListReducer,
-  userDetails:userDetailsReducer,
-  userUpdateProfile:userUpdateProfileReducer,
-  matches:matchesReducer,
-  matchDetails:matchesDetailsReducer,
- adminAddQuestion:adminAddQuestionReducer,
- adminAllQuestions:adminAllQuestionReducer,
-
- 
-
+  userDetails: userDetailsReducer,
+  userUpdateProfile: userUpdateProfileReducer,
+  matches: matchesReducer,
+  matchDetails: matchesDetailsReducer,
+  adminAddQuestion: adminAddQuestionReducer,
+  adminAllQuestions: adminAllQuestionReducer,
+  addRemoveFav: addRemoveFavReducer,
+  sentRemoveRequest: matchSentRequestReducer,
+  allsentrequests:allSentRequestsReducer,
+  allreceivedrequests:allReceivedRequestReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -37,15 +48,10 @@ const adminInfoFromStorage = localStorage.getItem("adminInfo")
   ? JSON.parse(localStorage.getItem("adminInfo"))
   : null;
 
-
-
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
   adminLogin: { adminInfo: adminInfoFromStorage },
 };
-
-
-
 
 const middleware = [thunk];
 const store = createStore(

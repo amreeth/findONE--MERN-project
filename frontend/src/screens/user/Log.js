@@ -37,24 +37,24 @@ export default function Log() {
   } = useForm();
 
 
-  // const [error, setError] = React.useState({});
-
   const submitForm = (data) => {
 
     console.log(data);
+
     const {name,email,phonenumber,dob,gender,oppGender,password,cpassword}=data
-
-
 
     dispatch(
       registers({ name,email,phonenumber,dob,gender,oppGender,password,cpassword})
     );
-
-    if(success){
-      navigate('/')
-    }
-
   };
+
+
+  React.useEffect(() => {
+    if(success){
+      navigate('/before')
+    }
+  }, [success])
+  
 
   return (
     <React.Fragment>

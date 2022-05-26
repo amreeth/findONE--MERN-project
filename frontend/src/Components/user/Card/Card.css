@@ -1,57 +1,7 @@
-
-.background {
-    position: absolute;
-    
-    background-size: cover;
-    background-position: center;
-
-    background-repeat: no-repeat;
-  
-}
-
-.card {
-  
-    border-radius: 10px;
-    height: 400px;
-    width: 310px;
-    margin: auto;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* box-shadow: 1px 1px 20px -8px rgb(47, 0, 255); */
-    overflow: hidden;
-    box-shadow: rgba(0, 4, 255, 0.281) 5.95px 5.95px 10.6px;
-    background: -o-linear-gradient();
-}
-
-.card-blur {
-    position: absolute;
-    height: 100%;
-    width: calc(100% + 1px);
-    background-color: #000000a3;
-    opacity: 0;
-    transition: opacity 0.15s ease-in;
-}
-
-.card:hover .card-blur {
-    opacity: 0.6;
-}
-
-
-/* footer */
-
-    /* z-index: 1; */
-    /* position: absolute; */
-    /* height: 80px;
-    width: 100%;
-    bottom: 0; */
-
-
+/* 
 svg#curve {
     position: absolute;
     fill: white;
-    /* left: 0;
-    bottom: 0; */
     width: 400px;
     height: 450px;
 }
@@ -78,25 +28,8 @@ svg#curve {
     transition: transform 1s cubic-bezier(.46, 1.48, .18, .81);
 }
 
-.card:hover .connection {
-    transform: translateY(0px);
-}
-
-.info {
-	font-family: Inconsolata;
-    padding-left: 20px;
-    transform: translateY(250px);
-    
-    transition: transform 1s cubic-bezier(.31,1.21,.64,1.02);
-}
-
 .card:hover .info {
     transform: translateY(0px);
-}
-
-.name {
-    font-weight: bolder;
-    padding-top: 5px;
 }
 
 .job {
@@ -144,4 +77,56 @@ svg#curve {
     margin-left: 4px;
     background-position: center;
     background-size: cover;
+} */
+
+/* .background {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+
+.card {
+    border-radius: 10px;
+    height: 400px;
+    width: 310px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    box-shadow: rgba(0, 4, 255, 0.281) 5.95px 5.95px 10.6px;
+    background: -o-linear-gradient();
+    
+}
+.card:hover{
+    transform: translateY(-15px);
+    transition: 0.4s;
+}
+
+.card-blur {
+    position: absolute;
+    height: 100%;
+    width: calc(100% + 1px);
+    background-color: #000000a3;
+    opacity: 0;
+    transition: opacity 0.15s ease-in;
+}
+
+.info {
+	font-family: Inconsolata;
+    padding-left: 20px;
+
+}
+.name {
+    font-weight: bolder;
+    padding-top: 5px;
+    display: flex;
+    align-items:center;
+    text-decoration: none;
+}
+.Cardfooter>button{
+    color: rgba(0, 0, 0, 0.281);
+    margin: 0 1vmax;
+    border-radius: 100%;
+    transition: all 0.3s;
 }

@@ -7,10 +7,6 @@ import Questions from "../models/questionsModel.js";
 
 const addQuestion=asyncHandler(async(req,res)=>{
 
-    // console.log('here');
-
-    // console.log(req.body);
-
     const {question,option1,option2,option3,option4}=req.body;
 
     const questions=await Questions.create({
@@ -44,7 +40,7 @@ const allQuestions=asyncHandler(async(req,res)=>{
 
 const deleteQuestion=asyncHandler(async(req,res)=>{
     const question=await Questions.findById(req.params.id)
-    
+
     if(question){
        await question.remove()
         res.status(201).json({

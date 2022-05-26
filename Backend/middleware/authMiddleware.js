@@ -4,13 +4,17 @@ import asyncHandler from "express-async-handler";
 import Admin from "../models/adminModel.js";
 
 const protect = asyncHandler(async (req, res, next) => {
-  
+
+  // console.log('hi from auth ');
+    
   let token;
+  // console.log(req.headers.authorization,'header');
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     // console.log("token found");
+
     try {
         token=req.headers.authorization.split(' ')[1]
         const decoded=jwt.verify(token,process.env.JWT_SECRET)
@@ -18,8 +22,8 @@ const protect = asyncHandler(async (req, res, next) => {
 
         req.user=await User.findById(decoded.id).select('-password')
 
-
         next()
+
     } catch (error) {
         console.error(error)
         res.status(401)
@@ -37,7 +41,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
 const protectAdmin=asyncHandler(async(req,res,next)=>{
   
-console.log("admin auth middleware");
+// console.log("admin auth middleware");
 console.log( req.headers.authorization );
   let token;
   if (
@@ -52,7 +56,7 @@ console.log( req.headers.authorization );
 
         req.admin=await Admin.findById(decoded.id).select('-password')
 
-        console.log("admin auth PASSED");
+        // console.log("admin auth PASSED");
 
         next()
     } catch (error) {

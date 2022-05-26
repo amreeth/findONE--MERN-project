@@ -11,6 +11,9 @@ import ProfileScreen from './screens/user/ProfileScreen';
 import Log from './screens/user/Log';
 import AddQuestionScreen from './screens/admin/AddQuestionScreen';
 import AllQuestionsScreen from './screens/admin/AllQuestionsScreen';
+import BeforeVerification from './screens/user/BeforeVerification'
+import UserDetailsScreen from './screens/user/UserDetailsScreen'
+import Verify from './screens/user/Verify';
 
 import './App.css'
 
@@ -30,7 +33,11 @@ function App() {
       <Route path='/match/:id' element={<MactherScreen/>} />
       <Route path='/profile' element={<ProfileScreen/>}/>
       <Route path='/register' element={<Log/>}/>
-      
+      <Route path='/before' element={<BeforeVerification/>}/>
+      <Route path='/verify/:id/:token' element={<Verify/>}/>
+      <Route path='/userdetails' element={<UserDetailsScreen/>}/>
+
+ 
 
  
 

@@ -22,6 +22,10 @@ const userDetailsSchema=mongoose.Schema({
          type:String,
          required:true,
      },
+     profilepic:{
+         type:String,
+         default:null
+     },
      images:[{
          type:String,
        
@@ -29,18 +33,16 @@ const userDetailsSchema=mongoose.Schema({
      answers:[{
          question:{
              type:mongoose.Schema.Types.ObjectId,
-             required:true
+             ref:"Question",
+             
          },
          answer:{
              type:mongoose.Schema.Types.ObjectId,
-             required:true
+             
          }
      }],
-     friends:[{
-         type:mongoose.Schema.Types.ObjectId,
-     }]
+    
      
-
 })
 
 const UserDetails = mongoose.model("UserDetails", userDetailsSchema);

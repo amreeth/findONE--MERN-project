@@ -12,13 +12,17 @@ import Matches from "../../Components/user/Matches/Matches";
 const HomeScreen = () => {
   const [matches, setMatches] = useState();
   const [loading, setloading] = useState(true);
-  const [name, setName] = useState("user");
+  const [user, setUser] = useState("user");
   let navigate = useNavigate();
 
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     const info = JSON.parse(userInfo);
-    setName(info ? info.fname : "user");
+
+    // console.log(info,'ingooo');
+
+    setUser(info ? info.name : "user");
+
     if (userInfo) {
       navigate("/");
     } else {
@@ -36,22 +40,14 @@ const HomeScreen = () => {
             className=" border shadow mx-auto"
             style={{ borderRadius: "10px" }}
           >
-            <Sidebar />
+            <Sidebar name={user.name} email={user.email} />
           </Col>
 
           <Col lg={9} sm={12} className=" mx-auto">
-            <Row className="mt-4">
-              <Col lg={4} md={4}>
-                <Card />
-              </Col>
 
-              <Col lg={4} md={4}>
+            <Row className="mt-4 ">       
                 <Card />
-              </Col>
-              <Col lg={4} md={4}>
-                <Card />
-              </Col>
-            </Row>
+            </Row>   
           </Col>
         </Row>
       </Container>

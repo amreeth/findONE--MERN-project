@@ -35,9 +35,11 @@ const UserManagement = () => {
       <Header />
       <Container fluid className="mt-2">
         <Row>
-          <Col lg={2} className="border mx-auto">
+
+          <Col lg={2}  className="border mx-auto">
             <Sidebar />
           </Col>
+
           <Col lg={9} className="border mx-auto">
             <h1>Users</h1>
             {loading ? (

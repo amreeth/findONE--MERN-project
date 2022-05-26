@@ -2,14 +2,14 @@ import React from 'react'
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar,Nav,Container,Form,FormControl,Button,Row,Col} from "react-bootstrap";
 
-const Sidebar = () => {
+const Sidebar = ({name,email}) => {
   return (
     <div className='' >
       <Container>
           <Row className='mt-4'>
           <LinkContainer to="/profile">
                 <Nav.Link>
-                  Profile<i className="fa fa-user" aria-hidden="true"></i>
+                  {name}<i className="fa fa-user" aria-hidden="true"></i>
                 </Nav.Link>
               </LinkContainer>
           </Row>

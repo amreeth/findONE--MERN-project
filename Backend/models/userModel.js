@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import Joi from 'joi'
+import Joi from "joi";
 
 const userSchema = mongoose.Schema(
   {
@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema(
       unique: true,
     },
     dob: {
-      type: Date,
+      type: String,
       required: false,
     },
     gender: {
@@ -34,28 +34,55 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    cpassword:{
-      type:String,
-      required:true,
+    cpassword: {
+      type: String,
+      required: true,
     },
     isblocked: {
       type: Boolean,
       required: true,
       default: false,
     },
+
     verified: {
       type: Boolean,
       default: false,
     },
-
-    // resetPasswordToken: String,
-    // resetPasswordExpire: Date,
+    avatar: {
+      public_id: String,
+      url: String,
+    },
+    favourites: [
+      {
+        type: String,
+        default: null,
+      },
+    ],
+    incomingrequests: [
+      {
+        type: String,
+        default: null,
+      },
+    ],
+    sentrequests: [
+      {
+        type: String,
+        default: null,
+      },
+    ],
+    friends: [
+      {
+        type: String,
+        default: null,
+      },
+    ],
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   {
     timestamps: true,
   }
 );
-
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
@@ -69,10 +96,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-
-
 userSchema.methods.getResetPasswordToken = function () {
-    
   const resetToken = crypto.randomBytes(20).toString("hex");
 
   this.resetPasswordToken = crypto
@@ -83,12 +107,9 @@ userSchema.methods.getResetPasswordToken = function () {
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
   return resetToken;
-
 };
 
 const User = mongoose.model("User", userSchema);
-
-
 
 // const validate = (user) => {
 //   const schema = Joi.object({
