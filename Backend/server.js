@@ -6,10 +6,11 @@ import adminRoutes from './routes/adminRoutes.js'
 import matchRoutes from './routes/matchRouter.js'
 import {notFound,errorHandler} from './middleware/errorMiddleware.js'
 import cors from 'cors'
+import cloudinary from 'cloudinary'
 
 const app=express()
 
-app.use(cors())
+app.use(cors()) 
 
 //body parser
 app.use(express.json())
@@ -17,6 +18,13 @@ app.use(express.json())
 
 dotenv.config()
 connectDB()
+
+
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_NAME,
+    api_key:process.env.CLOUDINARY_KEY,
+    api_secret:process.env.CLOUDINARY_SECRET
+})
 
 
 app.get('/',(req,res)=>{

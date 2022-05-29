@@ -135,12 +135,14 @@ export const allSentRequestsReducer = (
 ) => {
   switch (action.type) {
     case ALL_SENT_REQUESTS_REQUEST:
-      return { loading: true };
+      return {
+        loading: true,
+      };
 
     case ALL_SENT_REQUESTS_SUCCESS:
       return {
-        ...state,
         loading: false,
+        ...state,
         sentrequests: action.payload,
       };
 
@@ -193,3 +195,6 @@ export const allReceivedRequestReducer = (
       return state;
   }
 };
+
+
+

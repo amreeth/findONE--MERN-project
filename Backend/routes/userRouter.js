@@ -35,7 +35,7 @@ router.route('/forgotpassword').post(forgotPassword)
 
 router.route('/password/reset/:token').put(resetPassword)
 
-router.route("/profile")
+router.route("/:id")
   .get(protect, getUserProfile)
   .put(protect, updateProfile);
 
@@ -48,7 +48,7 @@ router.route('/favadd/:id').get(protect,addandRemoveFavourites)
 
 router.route('/sentrequest/:id').get(protect,sendRequest)
 
-router.route('/allsentrequests').get(protect,allSentRequests)
+router.route('/usersend').get(protect,allSentRequests)
 
 router.route('/allrequests').get(protect,allReceivedRequest)
 

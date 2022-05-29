@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import {
   ADMIN_ADD_QUESTION_FAIL,
   ADMIN_ADD_QUESTION_SUCCESS,
@@ -36,7 +36,7 @@ export const addQuestion =
       const id = "profile";
 
       const { data } = await axios.post(
-        `/api/admin/question/${id}`,
+        `/admin/question/${id}`,
         { question, option1, option2, option3, option4 },
         config
       );
@@ -76,7 +76,7 @@ export const allQuestions = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/api/admin/allquestions", config);
+    const { data } = await axios.get("/admin/allquestions", config);
 
     console.log(data, "questions");
 

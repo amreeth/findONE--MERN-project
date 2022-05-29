@@ -6,10 +6,17 @@ import Token from "../models/token.js";
 import verifyEmail from "../utils/verifyEmail.js";
 import crypto from "crypto";
 import mongoose from "mongoose";
+import cloudinary from "cloudinary";
 
 const ObjectId = mongoose.Types.ObjectId;
 
 //==========user registration========//
+
+// const registerUser=asyncHandler(async(req,res)=>{
+
+//   console.log('jiiiii');
+
+// })
 
 const registerUser = asyncHandler(async (req, res) => {
   console.log(req.body, "user register");
@@ -21,6 +28,7 @@ const registerUser = asyncHandler(async (req, res) => {
     gender,
     oppGender,
     phonenumber,
+    image,
     password,
     cpassword,
   } = req.body;
@@ -35,13 +43,12 @@ const registerUser = asyncHandler(async (req, res) => {
     }
     return age;
   }
-  const age=getAge(dob);
 
-  console.log(age);
+  const age = getAge(dob);
+  // console.log(age);
 
   const userExist = await User.findOne({ email });
-
-  console.log(userExist, "eddksmldmsadm");
+  // console.log(userExist, "eddksmldmsadm");
 
   if (userExist) {
     res.status(400);
@@ -49,6 +56,22 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   console.log("no user exist");
+let myCloud;
+  if (image) {
+
+    console.log('hoiii image ');
+
+     myCloud = await cloudinary.v2.uploader.upload(image, {
+      folder: "newpropic",
+      crop:"scale"
+    });
+
+    
+
+  } else {
+    res.status(400);
+    throw new Error("image not found");
+  }
 
   const user = await User.create({
     name: name,
@@ -59,7 +82,7 @@ const registerUser = asyncHandler(async (req, res) => {
     oppGender: oppGender,
     password: password,
     cpassword: cpassword,
-    avatar: { public_id: "sample_id", url: "sampleurl" },
+    avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
   });
 
   console.log("user created");
@@ -85,6 +108,8 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid user data");
   }
 });
+
+//===============email===============//
 
 const emailVerify = asyncHandler(async (req, res) => {
   console.log(req.params);
@@ -122,6 +147,7 @@ const emailVerify = asyncHandler(async (req, res) => {
 //===========user login======//
 
 const authUser = asyncHandler(async (req, res) => {
+  // console.log('hiii');
   const { email, password } = req.body;
 
   const userExist = await User.findOne({ email });
@@ -331,7 +357,6 @@ const updateProfile = asyncHandler(async (req, res) => {
 //==========add favourites====================//
 
 const addandRemoveFavourites = asyncHandler(async (req, res) => {
-
   // console.log('add remove favorite');
 
   try {
@@ -371,7 +396,6 @@ const addandRemoveFavourites = asyncHandler(async (req, res) => {
   }
 });
 
-
 //======send a request =====//
 
 const sendRequest = asyncHandler(async (req, res) => {
@@ -387,12 +411,12 @@ const sendRequest = asyncHandler(async (req, res) => {
     }
 
     if (loggedInUser.sentrequests.includes(userFollow._id)) {
-
       const indexsent = loggedInUser.sentrequests.indexOf(userFollow._id);
       loggedInUser.sentrequests.splice(indexsent, 1);
 
-
-      const indexincoming = userFollow.incomingrequests.indexOf(loggedInUser._id);
+      const indexincoming = userFollow.incomingrequests.indexOf(
+        loggedInUser._id
+      );
       userFollow.incomingrequests.splice(indexincoming, 1);
 
       await loggedInUser.save();
@@ -412,7 +436,7 @@ const sendRequest = asyncHandler(async (req, res) => {
       res.status(200).json({
         success: true,
         message: "user sent request",
-        match:userFollow
+        match: userFollow,
       });
     }
   } catch (error) {
@@ -427,11 +451,17 @@ const sendRequest = asyncHandler(async (req, res) => {
 
 const allSentRequests = asyncHandler(async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).populate("sentrequests");
+    const dets = req.user.sentrequests;
+    const users = [];
+
+    for (let i = 0; i < dets.length; i++) {
+      users.push(await User.findById(dets[i]));
+    }
+    // console.log(users);
 
     res.status(200).json({
       success: true,
-      sentrequests: user.sentrequests,
+      users,
     });
   } catch (error) {
     res.status(404).json({
@@ -444,12 +474,18 @@ const allSentRequests = asyncHandler(async (req, res) => {
 //====all incoming request ====//
 
 const allReceivedRequest = asyncHandler(async (req, res) => {
+  // console.log("hoo");
   try {
-    const user = await User.findById(req.user._id).populate("incomingrequests");
+    const dets = req.user.incomingrequests;
+    const users = [];
+
+    for (let i = 0; i < dets.length; i++) {
+      users.push(await User.findById(dets[i]));
+    }
 
     res.status(200).json({
       success: true,
-      incomingrequests: user.incomingrequests,
+      users,
     });
   } catch (error) {
     res.status(404).json({

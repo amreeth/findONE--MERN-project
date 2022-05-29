@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 
 import {
   ALL_MATCHES_FAIL,
@@ -39,7 +39,9 @@ export const getMatches = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/api/match/allMatches", config);
+    const { data } = await axios.get("/match/allMatches", config);
+
+    console.log(data);
 
     dispatch({
       type: ALL_MATCHES_SUCCESS,
@@ -71,7 +73,7 @@ export const getMatchDetails = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`/api/users/match/${id}`, config);
+    const { data } = await axios.get(`/users/match/${id}`, config);
 
     dispatch({
       type: MATCH_DETAILS_SUCCESS,
@@ -107,7 +109,7 @@ export const favAddRemove = (id) => async (dispatch) => {
     };
 
     // console.log(id,'config');
-    const { data } = await axios.get(`/api/users/favadd/${id}`, config);
+    const { data } = await axios.get(`/users/favadd/${id}`, config);
 
     console.log(data, "dadadasd");
 
@@ -139,7 +141,7 @@ export const sentRequest = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`/api/users/sentrequest/${id}`, config);
+    const { data } = await axios.get(`/users/sentrequest/${id}`, config);
 
     console.log(data);
 
@@ -158,6 +160,7 @@ export const sentRequest = (id) => async (dispatch) => {
 //================all requests============//
 
 export const allSentRequests = () => async (dispatch) => {
+  // console.log('hhiii');
   try {
     dispatch({
       type: ALL_SENT_REQUESTS_REQUEST,
@@ -171,11 +174,13 @@ export const allSentRequests = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/api/users/allsentrequests", config);
+    const { data } = await axios.get("/users/usersend", config);
+
+console.log(data.users,'fadda');
 
     dispatch({
       type: ALL_SENT_REQUESTS_SUCCESS,
-      payload: data,
+      payload: data.users,
     });
   } catch (error) {
     dispatch({
@@ -201,11 +206,11 @@ export const allReceivedRequest = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/api/users/allrequests", config);
+    const { data } = await axios.get("/users/allrequests", config);
 
     dispatch({
       type: ALL_RECEIVED_REQUESTS_SUCCESS,
-      payload: data,
+      payload: data.users,
     });
 
 
@@ -216,6 +221,9 @@ export const allReceivedRequest = () => async (dispatch) => {
     });
   }
 };
+
+
+
 
 //================clear errors=============//
 

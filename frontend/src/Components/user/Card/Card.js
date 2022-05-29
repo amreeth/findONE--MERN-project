@@ -15,17 +15,11 @@ import {
   sentRequest,
 } from "../../../actions/matchActions";
 import { Col } from "react-bootstrap";
-import {useAlert} from 'react-alert'
+import { useAlert } from "react-alert";
+import Loader from '../../Loader'
 
 const Card = () => {
-  const ownerId = "";
-  const ownerImage = null;
-  const location = "thalassery";
-
-  // const [liked, setLike] = useState(false);
-  // const [request, setRequest] = useState(false);
-
-  const alert=useAlert()
+  const alert = useAlert();
 
   const dispatch = useDispatch();
   const allMatches = useSelector((state) => state.matches);
@@ -37,37 +31,35 @@ const Card = () => {
   const sentRemoveRequest = useSelector((state) => state.sentRemoveRequest);
   const { loading: requestLoading, sentrequest } = sentRemoveRequest;
 
- useEffect(()=>{
-  dispatch(getMatches());
- },[dispatch])
   
-
+  useEffect(() => {
+    dispatch(getMatches());
+  }, [dispatch]);
 
   const handleLike = (id) => {
-    dispatch(favAddRemove(id))
+    dispatch(favAddRemove(id));
     // console.log('hiiiii');
-    alert.success("Add to Favourites")
-
+    alert.success("Add to Favourites");
   };
 
   const handleRequest = (id) => {
-    dispatch(sentRequest(id))
-    alert.success("sent request to user")
+    dispatch(sentRequest(id));
+    alert.success("sent request to user");
   };
 
   return (
     <>
-  
-      {matches? 
+      {matches ? (
         matches
           .sort(() => Math.random() - 0.5)
           .slice(0, 3)
           .map((e) => (
-            
             <Col key={e._id} lg={4}>
               <div className="card">
                 <Link to={`/match/${e._id}`}>
-                  <img height={300} width={"100%"} src="/images/arunab.jpeg" />
+                 
+                  <img height={300} width={"100%"} src={e.avatar.url}></img>
+              
                 </Link>
                 <div class="footer">
                   <div class="info">
@@ -75,10 +67,9 @@ const Card = () => {
                       <Typography>{e.name}</Typography>
                       <Typography>{e.dob}</Typography>
                     </div>
-                    <div class="location">{location}</div>
+                    {/* <div class="location">{location}</div> */}
                     <div className="Cardfooter">
-
-                      <Button onClick={(()=>handleLike(e._id))}>
+                      <Button onClick={() => handleLike(e._id)}>
                         {fav ? (
                           <Favorite style={{ color: "red" }} />
                         ) : (
@@ -86,7 +77,7 @@ const Card = () => {
                         )}
                       </Button>
 
-                      <Button onClick={(()=>handleRequest(e._id))}>
+                      <Button onClick={() => handleRequest(e._id)}>
                         {sentrequest ? (
                           <Chat style={{ color: "black" }} />
                         ) : (
@@ -99,9 +90,12 @@ const Card = () => {
                 </div>
               </div>
             </Col>
-          )):
-          <div>LOading</div>}
-      
+          ))
+      ) : (
+        <div>
+          <Loader/>
+        </div>
+      )}
     </>
   );
 };

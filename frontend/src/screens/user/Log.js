@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,19 +15,28 @@ import Loader from "../../Components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { FormControl } from "react-bootstrap";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
+import CropImage from "../../Components/Cropper/CropImage";
 
+import "./RegisterScreen.css";
 
 const theme = createTheme();
 
 export default function Log() {
 
   const navigate = useNavigate();
-  
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo,success } = userRegister;
 
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, userInfo, success } = userRegister;
+
+  const [showCropper, setShowCropper] = useState(false);
+  const [cropImage, setCropImage] = useState(false);
+  const [image, setImage] = useState(null);
   const dispatch = useDispatch();
+  // console.log(image);
 
   const {
     register,
@@ -37,27 +46,43 @@ export default function Log() {
   } = useForm();
 
 
-  const submitForm = (data) => {
 
-    console.log(data);
-
-    const {name,email,phonenumber,dob,gender,oppGender,password,cpassword}=data
+function submitForm(data) {
+    const {
+      name,
+      email,
+      phonenumber,
+      dob,
+      gender,
+      oppGender,
+      password,
+      cpassword,
+      
+    } = data;
 
     dispatch(
-      registers({ name,email,phonenumber,dob,gender,oppGender,password,cpassword})
+      registers({
+        name,
+        email,
+        phonenumber,
+        image,
+        dob,
+        gender,
+        oppGender,
+        password,
+        cpassword,
+      })
     );
   };
 
-
   React.useEffect(() => {
-    if(success){
-      navigate('/before')
+    if (success) {
+      navigate("/before");
     }
-  }, [success])
-  
+  }, [success]);
 
   return (
-    <React.Fragment>
+    <div className="registerForm">
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -69,11 +94,8 @@ export default function Log() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-    
-            </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              SIGN UP
             </Typography>
 
             {error?.status && (
@@ -89,15 +111,65 @@ export default function Log() {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
+                {/*///////////////////////////// imageuplod////////////////////// */}
 
-                <Grid item xs={12} >
+                <Grid item xs={12}>
+                  <FormControl
+                    className="crop_image d-none"
+                    id="upload_image"
+                    type="file"
+                    name="crop_image"
+                    required
+                    onChange={(e) => {
+                      setCropImage(e.target.files[0]);
+                      setShowCropper(true);
+                    }}
+                    accept=".jpg,.jpeg,.png,"
+                  />
+                  <div className="text-center">
+                    {" "}
+                    <label for="upload_image">
+                      <span class="profilepic__icon">
+                        {" "}
+                        <p className="h2  mx-auto">
+                        <Tooltip title="Add profile picture">
+                          <Avatar
+                            src={image}
+                            alt="user"
+                            className="border shadow"
+                            sx={{ height: "10vmax", width: "10vmax" }}
+                          />
+                          </Tooltip>
+                        </p>
+                      </span>
+                      
+                    </label>
+                  </div>
+
+                  {showCropper && (
+                    <CropImage
+                      src={cropImage}
+                      imageCallback={(image) => {
+                        setImage(image);
+                        setShowCropper(false);
+                      }}
+                      closeHander={() => {
+                        setShowCropper(false);
+                      }}
+                    />
+                  )}
+                </Grid>
+
+                {/*///////////////////////////// imageuplod////////////////////// */}
+
+                <Grid item xs={12}>
                   <TextField
                     autoComplete="given-name"
                     name="name"
                     required
                     fullWidth
                     id="firstname"
-                    label="First Name"
+                    label=" Name"
                     autoFocus
                     {...register("name", {
                       required: "This field cannot be blank",
@@ -115,9 +187,7 @@ export default function Log() {
                       },
                     })}
                     error={!!errors?.name}
-                    helperText={
-                      errors?.name ? errors?.name.message : ""
-                    }
+                    helperText={errors?.name ? errors?.name.message : ""}
                   />
                 </Grid>
 
@@ -157,10 +227,11 @@ export default function Log() {
                       },
                     })}
                     error={!!errors?.phonenumber}
-                    helperText={errors?.phonenumber ? errors.phonenumber.message : ""}
+                    helperText={
+                      errors?.phonenumber ? errors.phonenumber.message : ""
+                    }
                   />
                 </Grid>
-
 
                 <Grid item xs={12}>
                   <TextField
@@ -177,46 +248,45 @@ export default function Log() {
                     helperText={errors?.dob ? errors.dob.message : ""}
                   />
                 </Grid>
-               
-                <Grid item xs={12}>+
-                
-                  <InputLabel id="demo-simple-select-label">I am</InputLabel>
+
+                <Grid item xs={12}>
+                  +<InputLabel id="demo-simple-select-label">I am</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     fullWidth
                     id="demo-simple-select"
-                    {...register("gender",{
-                        required: "select one option"
-                     })}
-                     error={!!errors?.gender}
+                    {...register("gender", {
+                      required: "select one option",
+                    })}
+                    error={!!errors?.gender}
                     helperText={errors?.gender ? errors.gender.message : ""}
                   >
                     <MenuItem value={"Male"}>Male</MenuItem>
                     <MenuItem value={"Female"}>Female</MenuItem>
-                    
                   </Select>
                 </Grid>
 
-
-                <Grid item xs={12}>+
-                
-                <InputLabel id="demo-simple-select-label">Looking for</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  fullWidth
-                  id="demo-simple-select"
-                  {...register("oppGender",{
-                      required: "select one option"
-                   })}
-                   error={!!errors?.oppGender}
-                  helperText={errors?.oppGender ? errors.oppGender.message : ""}
-                >
-                  <MenuItem value={"Male"}>Male</MenuItem>
-                  <MenuItem value={"Female"}>Female</MenuItem>
-                  
-                </Select>
-              </Grid>
-
+                <Grid item xs={12}>
+                  +
+                  <InputLabel id="demo-simple-select-label">
+                    Looking for
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    fullWidth
+                    id="demo-simple-select"
+                    {...register("oppGender", {
+                      required: "select one option",
+                    })}
+                    error={!!errors?.oppGender}
+                    helperText={
+                      errors?.oppGender ? errors.oppGender.message : ""
+                    }
+                  >
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female</MenuItem>
+                  </Select>
+                </Grid>
 
                 <Grid item xs={12}>
                   <TextField
@@ -273,8 +343,10 @@ export default function Log() {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link to="/" variant="body2">
-                    Already have an account? Sign in
+                  <Link to="/">
+                    <Typography>
+                       Already have an account? Log in
+                    </Typography>
                   </Link>
                 </Grid>
               </Grid>
@@ -282,6 +354,6 @@ export default function Log() {
           </Box>
         </Container>
       </ThemeProvider>
-    </React.Fragment>
+    </div>
   );
 }

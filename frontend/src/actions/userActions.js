@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/axios'
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -33,7 +33,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "/api/users/login",
+      "/users/login",
       {
         email,
         password,
@@ -70,11 +70,12 @@ export const logout = () => (dispatch) => {
 //===============user registration==========//
 
 export const registers =
-  ({ name,email,phonenumber,dob,gender,oppGender,password,cpassword}) =>
+  ({ name,email,phonenumber,image,dob,gender,oppGender,password,cpassword}) =>
+  
   async (dispatch) => {
 
     console.log("reache action");
-
+    // console.log(name,email,phonenumber,image,dob,gender,oppGender,password,cpassword);
     try {
       dispatch({
         type: USER_REGISTER_REQUEST,
@@ -85,11 +86,13 @@ export const registers =
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post(
-        "api/users/register",
-        { name,email,phonenumber,dob,gender,oppGender,password,cpassword},
-        config
-      );
+
+      // console.log(image,'reached here');
+
+      const { data } = await axios.post("users/register",
+        { name,email,phonenumber,image,dob,gender,oppGender,password,cpassword},config);
+
+      console.log(data);
 
       dispatch({
         type: USER_REGISTER_SUCCESS,
@@ -106,10 +109,10 @@ export const registers =
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: error.response 
+          // && error.response.data.message
+          //   ? error.response.data.message
+          //   : error.message,
       });
     }
   };
@@ -134,7 +137,7 @@ export const listUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get("/api/admin/usermanagement", config);
+    const { data } = await axios.get("/admin/usermanagement", config);
 
     console.log(data, "usersss");
 
@@ -155,43 +158,43 @@ export const listUsers = () => async (dispatch, getState) => {
 
 //=================user profile=====================//
 
-export const getUserDetails = (id) => async (dispatch, getState) => {
+// export const getUserDetails = (id) => async (dispatch, getState) => {
  
-  try {
-    dispatch({
-      type: USER_DETAILS_REQUEST,
-    });
+//   try {
+//     dispatch({
+//       type: USER_DETAILS_REQUEST,
+//     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+//     const {
+//       userLogin: { userInfo },
+//     } = getState();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+//     const config = {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${userInfo.token}`,
+//       },
+//     };
 
-    const { data } = await axios.get(`/api/users/profile/${id}`, config);
+//     const { data } = await axios.get(`/users/${id}`, config);
 
 
 
-    dispatch({
-      type: USER_DETAILS_SUCCESS,
-      payload: data,
-    });
+//     dispatch({
+//       type: USER_DETAILS_SUCCESS,
+//       payload: data,
+//     });
 
-  } catch (error) {
-    dispatch({
-      type: USER_DETAILS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+//   } catch (error) {
+//     dispatch({
+//       type: USER_DETAILS_FAIL,
+//       payload:
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     });
+//   }
+// };
 
 //==============update profile============//
 
@@ -216,7 +219,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     };
     const id='profile';
 
-    const { data } = await axios.put(`/api/users/profile/${id}`, user, config);
+    const { data } = await axios.put(`/users/profile/${id}`, user, config);
 
     console.log(data, "useraction...");
 

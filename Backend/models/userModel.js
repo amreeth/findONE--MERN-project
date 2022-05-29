@@ -54,19 +54,22 @@ const userSchema = mongoose.Schema(
     },
     favourites: [
       {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref:"User",
         default: null,
       },
     ],
     incomingrequests: [
       {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref:"User",
         default: null,
       },
     ],
     sentrequests: [
       {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref:"User",
         default: null,
       },
     ],
