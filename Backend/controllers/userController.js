@@ -56,18 +56,15 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   console.log("no user exist");
-let myCloud;
+
+  let myCloud;
   if (image) {
+    console.log("hoiii image ");
 
-    console.log('hoiii image ');
-
-     myCloud = await cloudinary.v2.uploader.upload(image, {
+    myCloud = await cloudinary.v2.uploader.upload(image, {
       folder: "newpropic",
-      crop:"scale"
+      crop: "scale",
     });
-
-    
-
   } else {
     res.status(400);
     throw new Error("image not found");
@@ -101,6 +98,11 @@ let myCloud;
       _id: user._id,
       name: user.name,
       email: user.email,
+      phonenumber: user.phonenumber,
+      dob: user.dob,
+      gender: user.gender,
+      oppGender: user.oppGender,
+      avatar: user.avatar,
       token: generateToken(user._id),
     });
   } else {
@@ -157,6 +159,12 @@ const authUser = asyncHandler(async (req, res) => {
       _id: userExist._id,
       name: userExist.name,
       email: userExist.email,
+      phonenumber: userExist.phonenumber,
+      dob: userExist.dob,
+      gender: userExist.gender,
+      oppGender: userExist.oppGender,
+      avatar: userExist.avatar,
+
       token: generateToken(userExist._id),
     });
   } else {
@@ -168,20 +176,26 @@ const authUser = asyncHandler(async (req, res) => {
 //==========forgot password=========//
 
 const forgotPassword = asyncHandler(async (req, res) => {
+  console.log(req.body);
+
   const user = await User.findOne({ email: req.body.email });
 
+  // console.log(user);
+
   if (!user) {
+    console.log("user not found");
     res.status(401);
-    throw new Error("User not found");
+    throw new Error("Enter valid email id");
   }
 
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/users/password/reset/${resetToken}`;
+  // const resetPasswordUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/password/reset/${resetToken}`;
+  const resetPasswordUrl = `http://localhost:3000/password/reset/${resetToken}`;
 
   const message = `Reset your password by clicking on the link below :\n\n ${resetPasswordUrl} \n\n if you are not requested this email the please ignore it `;
 
@@ -191,6 +205,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
       subject: `FindOne Password recovery`,
       message,
     });
+
+    console.log("email sent successfully");
 
     res.status(200).json({
       success: true,
@@ -225,10 +241,13 @@ const resetPassword = asyncHandler(async (req, res) => {
       });
     }
     user.password = req.body.password;
+    user.cpassword = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
     await user.save();
+
+    console.log("password reset successfully");
 
     res.status(200).json({
       success: true,
@@ -242,25 +261,6 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
-//=====user profile=======//
-
-const getUserProfile = asyncHandler(async (req, res) => {
-  // console.log('hiiii');
-  const user = await User.findById(req.user._id);
-  // console.log(user);
-  if (user) {
-    res.json({
-      // _id: user._id,
-      // name: user.name,
-      // email: user.email,
-      user,
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
-});
-
 //=====all users===========//
 
 const getUsers = asyncHandler(async (req, res) => {
@@ -269,60 +269,49 @@ const getUsers = asyncHandler(async (req, res) => {
   res.json(users);
 });
 
-//==========update user profile==========//
-
-// const updateUserProfile = asyncHandler(async (req, res) => {
-//   // console.log('hii from update profile');
-
-//   const user = await User.findById(req.user._id);
-
-//   if (user) {
-//     user.name = req.body.name || user.name;
-//     user.email = req.body.email || user.email;
-
-//     if (req.body.password) {
-//       user.password = req.body.password;
-//     }
-
-//     const updateUser = await user.save();
-
-//     res.json({
-//       _id: updateUser._id,
-//       name: updateUser.name,
-//       isblocked: updateUser.isblocked,
-//       token: generateToken(user._id),
-//     });
-//   } else {
-//     res.status(404);
-//     throw new Error("user");
-//   }
-// });
-
 //============update password================//
 
 const updatePassword = asyncHandler(async (req, res) => {
   try {
+    // console.log(req.body);
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    // console.log(confirmPassword,'confir,');
+
     const user = await User.findById(req.user._id);
-
-    const { oldPassword, newPassword } = req.body;
-
+    // console.log(user);
     const isMatch = await user.matchPassword(oldPassword);
 
     if (!isMatch) {
       return res.status(404).json({
         success: false,
-        message: "incorrect password",
+        message: "Old password not matching ",
       });
     }
-    user.password = newPassword;
 
-    await user.save();
+    if (newPassword == confirmPassword) {
+      // console.log("no problem");
 
-    res.status(200).json({
-      success: true,
-      message: "password updated",
+      user.password = newPassword;
+      user.cpassword = confirmPassword;
+
+      await user.save();
+      res.status(200).json({
+        success: true,
+        message: "password updated",
+      });
+    } else {
+      // console.log("not match");
+      return res.status(404).json({
+        success: false,
+        message: "New passwords are not match",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
-  } catch (error) {}
+  }
 });
 
 //============ new update profile =============//
@@ -331,21 +320,68 @@ const updateProfile = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
-    const { name, email } = req.body;
+    const { name, avatar, phonenumber, dob, gender, oppGender } = req.body;
 
-    if (name) {
-      user.name = name;
+    if (name || phonenumber || dob || gender || oppGender) {
+      if (name) {
+        user.name = name;
+      }
+      if (phonenumber) {
+        user.phonenumber = phonenumber;
+      }
+      if (dob) {
+        function getAge(dateString) {
+          var today = new Date();
+          var birthDate = new Date(dateString);
+          var age = today.getFullYear() - birthDate.getFullYear();
+          var m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          return age;
+        }
+        const age = getAge(dob);
+
+        user.dob = age;
+      }
+      if (gender) {
+        user.gender = gender;
+      }
+      if (oppGender) {
+        user.oppGender = oppGender;
+      }
+
+      if (avatar) {
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
+        const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+          folder: "newpropic",
+        });
+        user.avatar.public_id = myCloud.public_id;
+        user.avatar.url = myCloud.secure_url;
+      }
+
+      await user.save();
+
+      // console.log(user, "user");
+
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phonenumber: user.phonenumber,
+        dob: user.dob,
+        gender: user.gender,
+        oppGender: user.oppGender,
+        avatar: user.avatar,
+        token: generateToken(user._id),
+        success: true,
+        messsge: "profile updated",
+      });
+    } else {
+      res.status(400);
+      throw new Error("No data found for update");
     }
-    if (email) {
-      user.email = email;
-    }
-
-    await user.save();
-
-    res.status(200).json({
-      success: true,
-      messsge: "profile updated",
-    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -498,7 +534,6 @@ const allReceivedRequest = asyncHandler(async (req, res) => {
 export {
   getUsers,
   authUser,
-  getUserProfile,
   registerUser,
   updateProfile,
   forgotPassword,

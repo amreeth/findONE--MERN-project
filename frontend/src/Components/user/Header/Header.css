@@ -1,7 +1,9 @@
+
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ffffff42;
 }
 
 .header > a {

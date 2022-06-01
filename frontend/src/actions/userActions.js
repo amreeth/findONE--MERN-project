@@ -1,5 +1,11 @@
-import axios from '../utils/axios'
+import axios from "../utils/axios";
 import {
+  FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -13,6 +19,9 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_UPDATE_PASSWORD_FAIL,
+  USER_UPDATE_PASSWORD_REQUEST,
+  USER_UPDATE_PASSWORD_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
@@ -47,7 +56,6 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     localStorage.setItem("userInfo", JSON.stringify(data));
-    
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -70,10 +78,18 @@ export const logout = () => (dispatch) => {
 //===============user registration==========//
 
 export const registers =
-  ({ name,email,phonenumber,image,dob,gender,oppGender,password,cpassword}) =>
-  
+  ({
+    name,
+    email,
+    phonenumber,
+    image,
+    dob,
+    gender,
+    oppGender,
+    password,
+    cpassword,
+  }) =>
   async (dispatch) => {
-
     console.log("reache action");
     // console.log(name,email,phonenumber,image,dob,gender,oppGender,password,cpassword);
     try {
@@ -89,8 +105,21 @@ export const registers =
 
       // console.log(image,'reached here');
 
-      const { data } = await axios.post("users/register",
-        { name,email,phonenumber,image,dob,gender,oppGender,password,cpassword},config);
+      const { data } = await axios.post(
+        "users/register",
+        {
+          name,
+          email,
+          phonenumber,
+          image,
+          dob,
+          gender,
+          oppGender,
+          password,
+          cpassword,
+        },
+        config
+      );
 
       console.log(data);
 
@@ -98,21 +127,20 @@ export const registers =
         type: USER_REGISTER_SUCCESS,
         payload: data,
       });
-      
+
       dispatch({
-          type: USER_LOGIN_SUCCESS,
-          payload: data
-      })
-      
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
       localStorage.setItem("userInfo", JSON.stringify(data));
-      
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
-        payload: error.response 
-          // && error.response.data.message
-          //   ? error.response.data.message
-          //   : error.message,
+        payload: error.response,
+        // && error.response.data.message
+        //   ? error.response.data.message
+        //   : error.message,
       });
     }
   };
@@ -126,7 +154,7 @@ export const listUsers = () => async (dispatch, getState) => {
     });
 
     let adminInfo = await localStorage.getItem("adminInfo");
-    
+
     adminInfo = JSON.parse(adminInfo);
 
     console.log(adminInfo.token);
@@ -156,85 +184,158 @@ export const listUsers = () => async (dispatch, getState) => {
   }
 };
 
-//=================user profile=====================//
-
-// export const getUserDetails = (id) => async (dispatch, getState) => {
- 
-//   try {
-//     dispatch({
-//       type: USER_DETAILS_REQUEST,
-//     });
-
-//     const {
-//       userLogin: { userInfo },
-//     } = getState();
-
-//     const config = {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${userInfo.token}`,
-//       },
-//     };
-
-//     const { data } = await axios.get(`/users/${id}`, config);
-
-
-
-//     dispatch({
-//       type: USER_DETAILS_SUCCESS,
-//       payload: data,
-//     });
-
-//   } catch (error) {
-//     dispatch({
-//       type: USER_DETAILS_FAIL,
-//       payload:
-//         error.response && error.response.data.message
-//           ? error.response.data.message
-//           : error.message,
-//     });
-//   }
-// };
-
 //==============update profile============//
 
-export const updateUserProfile = (user) => async (dispatch, getState) => {
-  
-  // console.log('hiiiiiii');
+export const updateUserProfile =
+  ({ name, phonenumber, dob, gender, oppGender }) =>
+  async (dispatch, getState) => {
+    console.log("heyy reached here");
 
-  try {
-    dispatch({
-      type: USER_UPDATE_PROFILE_REQUEST,
-    });
+    try {
+      dispatch({
+        type: USER_UPDATE_PROFILE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    const id='profile';
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(`/users/profile/${id}`, user, config);
+      const { data } = await axios.put(
+        "/users/profile",
+        { name, phonenumber, dob, gender, oppGender },
+        config
+      );
 
-    console.log(data, "useraction...");
+      console.log(data, "useraction...");
 
-    dispatch({
-      type: USER_UPDATE_PROFILE_SUCCESS,
-      payload: data,
-    });
-    
-  } catch (error) {
-    dispatch({
-      type: USER_UPDATE_PROFILE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+
+      dispatch({
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: USER_UPDATE_PROFILE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const updatePassword =
+  ({ oldPassword, newPassword, confirmPassword }) =>
+  async (dispatch, getState) => {
+    console.log("hiiiiii");
+    try {
+      dispatch({
+        type: USER_UPDATE_PASSWORD_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      console.log(config);
+
+      const { data } = await axios.put(
+        "/users/updatepassword",
+        { oldPassword, newPassword, confirmPassword },
+        config
+      );
+
+      console.log(data);
+
+      dispatch({
+        type: USER_UPDATE_PASSWORD_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: USER_UPDATE_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const forgotPassword =
+  ({ email }) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: FORGOT_PASSWORD_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post("/users/forgotpassword",{email}, config);
+
+      dispatch({
+        type: FORGOT_PASSWORD_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: FORGOT_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+
+  export const resetPassword=({token,password})=>async(dispatch)=>{
+    try {
+      dispatch({
+        type:RESET_PASSWORD_REQUEST
+      })
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const {data}=await axios.put(`/users/password/reset/${token}`,{password},config)
+
+      dispatch({
+        type:RESET_PASSWORD_SUCCESS,
+        payload:data
+      })
+
+
+    } catch (error) {
+      dispatch({
+        type:RESET_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
   }
-};

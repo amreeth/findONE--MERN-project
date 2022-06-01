@@ -4,7 +4,6 @@ import multer from "multer";
 const upload=multer({dest:'uploads/'})
 import {
   authUser,
-  getUserProfile,
   registerUser,
   updateProfile,
   forgotPassword,
@@ -35,11 +34,9 @@ router.route('/forgotpassword').post(forgotPassword)
 
 router.route('/password/reset/:token').put(resetPassword)
 
-router.route("/:id")
-  .get(protect, getUserProfile)
-  .put(protect, updateProfile);
+router.route("/profile").put(protect, updateProfile);
 
-router.route('updatepassword').put(updatePassword)  
+router.route('/updatepassword').put(protect,updatePassword)  
 
 router.route('/verify/:id/:token').get(emailVerify)
 

@@ -22,10 +22,6 @@ const userDetailsSchema=mongoose.Schema({
          type:String,
          required:true,
      },
-     profilepic:{
-         type:String,
-         default:null
-     },
      images:[{
          type:String,
        
@@ -38,7 +34,6 @@ const userDetailsSchema=mongoose.Schema({
          },
          answer:{
              type:mongoose.Schema.Types.ObjectId,
-             
          }
      }],
     

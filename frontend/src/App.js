@@ -9,6 +9,8 @@ import ProfileScreen from './screens/user/ProfileScreen';
 import Log from './screens/user/Log';
 import AllSentRequestScreen from './screens/user/AllSentRequestScreen';
 import AllReceivedRequestScreen from './screens/user/AllReceivedRequestScreen';
+import ForgotPassword from './screens/user/ForgotPassword';
+import ResetPassword from './screens/user/ResetPassword';
 
 // import RegisterScreen from "./screens/user/RegisterScreen";
 
@@ -21,6 +23,7 @@ import AllQuestionsScreen from './screens/admin/AllQuestionsScreen';
 
 
 import './App.css'
+
 
 
 
@@ -44,6 +47,9 @@ function App() {
       <Route path='/match/:id' element={<MactherScreen/>} />
       <Route path='/allsentrequest' element={<AllSentRequestScreen/>}/>
       <Route path='/allreceivedrequest' element={<AllReceivedRequestScreen/>}/>
+
+      <Route path='/forgotpassword' element={<ForgotPassword/>}/>
+      <Route path='/password/reset/:token' element={<ResetPassword/>}/>
 
  
 

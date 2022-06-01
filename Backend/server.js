@@ -27,9 +27,7 @@ cloudinary.config({
 })
 
 
-app.get('/',(req,res)=>{
-    res.send('hello')
-})
+
 
 app.use('/api/users',userRoutes)
 app.use('/api/admin',adminRoutes)

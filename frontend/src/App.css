@@ -1,4 +1,17 @@
 .main{
     min-height: 100vh;
-    /* background-image: linear-gradient(to right top, #c2caff, #c7c7f8, #cac5f1, #ccc2eb, #cec0e4, #d2c1e4, #d6c1e4, #dac2e4, #e2c5e9, #ebc8ee, #f4caf2, #fdcdf6); */
+    /* background-image: linear-gradient(
+        45deg,
+        hsl(240deg 100% 20%) 0%,
+        hsl(289deg 100% 21%) 11%,
+        hsl(315deg 100% 27%) 22%,
+        hsl(329deg 100% 36%) 33%,
+        rgb(238, 67, 133) 44%,
+        rgb(182, 31, 39) 56%,
+        hsl(17deg 100% 59%) 67%,
+        hsl(34deg 100% 53%) 78%,
+        hsl(45deg 100% 50%) 89%,
+        hsl(55deg 100% 50%) 100%
+      ); */
+      background-image: linear-gradient(to right bottom, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
 }

@@ -5,8 +5,10 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userListReducer,
-  userDetailsReducer,
   userUpdateProfileReducer,
+  userUpdatePasswordReducer,
+  forgotPasswordReducer,
+  resetPasswordReducer
 } from "./reducers/userReducers";
 
 import {
@@ -29,14 +31,23 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userList: userListReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  updatePassword:userUpdatePasswordReducer,
+  forgotPassword:forgotPasswordReducer,
+  resetpassword:resetPasswordReducer,
+
+
+
   matches: matchesReducer,
   matchDetails: matchesDetailsReducer,
-  adminAddQuestion: adminAddQuestionReducer,
-  adminAllQuestions: adminAllQuestionReducer,
   addRemoveFav: addRemoveFavReducer,
   sentRemoveRequest: matchSentRequestReducer,
   allsentrequests:allSentRequestsReducer,
-  allreceivedrequests:allReceivedRequestReducer
+  allreceivedrequests:allReceivedRequestReducer,
+
+
+
+  adminAddQuestion: adminAddQuestionReducer,
+  adminAllQuestions: adminAllQuestionReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

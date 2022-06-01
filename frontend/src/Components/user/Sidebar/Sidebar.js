@@ -1,44 +1,68 @@
-import React from 'react'
-import { LinkContainer } from "react-router-bootstrap";
-import { Navbar,Nav,Container,Form,FormControl,Button,Row,Col} from "react-bootstrap";
+import React from "react";
+import "./sidebar.css";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Container, Row, Col } from "react-bootstrap";
+import { Typography } from "@mui/material";
+import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
+import Avatar from "@mui/material/Avatar";
+const Sidebar = () => {
+  let {
+    userLogin: { userInfo },
+  } = useSelector((state) => state);
 
-const Sidebar = ({name,email}) => {
   return (
-    <div className='' >
+    
+    <div className="sidebarclass">
       <Container>
-          <Row className='mt-4'>
-          <LinkContainer to="/profile">
-                <Nav.Link>
-                  {name}<i className="fa fa-user" aria-hidden="true"></i>
-                </Nav.Link>
-              </LinkContainer>
-          </Row>
-          <Row className='mt-4'>
-          <LinkContainer to="/matches">
-                <Nav.Link>Matches</Nav.Link>
-              </LinkContainer>
+        <Row className="mt-4  mx-auto ">
+          <Col className="mx-auto" lg={12}>
+            <Avatar
+            className="mx-auto"
+              alt="Cindy Baker"
+              sx={{ width: 60, height: 60 }}
+              src={userInfo ? userInfo.avatar.url : ""}
+            />
+          </Col>
 
-          </Row>
-          <Row className='mt-4'>
-          <LinkContainer to="/Requests">
-                <Nav.Link>Requests</Nav.Link>
-              </LinkContainer>
+          <Col className="" lg={12}>
+            <Link to="/profile" className="text-center text-white text-uppercase text-bold" style={{ textDecoration: "none" }}>
+              <Typography  variant="h5">{userInfo.name}</Typography>
+            </Link>
+          </Col>
+        </Row>
 
-          </Row>
-          <Row className='mt-4'>
-          <LinkContainer to="/messages">
-                <Nav.Link>Messages</Nav.Link>
-              </LinkContainer>
-          </Row>
-          <Row className='mt-4'>
-          <LinkContainer to="/notifications">
-                <Nav.Link>Notification</Nav.Link>
-              </LinkContainer>
-          </Row>
+        <Row className="mt-4">
+          <Link
+            to="/friends"
+            className="d-flex"
+            style={{ textDecoration: "none" }}
+          >
+            <PeopleRoundedIcon />
+            <Typography variant="h5">Friends</Typography>
+          </Link>
+        </Row>
+
+        <Row className="mt-4">
+          <Link to="/Requests" style={{ textDecoration: "none" }}>
+            <Typography variant="h5">Requests</Typography>
+          </Link>
+        </Row>
+
+        <Row className="mt-4">
+          <Link to="/messages" style={{ textDecoration: "none" }}>
+            <Typography variant="h5">Message</Typography>
+          </Link>
+        </Row>
+
+        <Row className="mt-4">
+          <Link to="/notifications" style={{ textDecoration: "none" }}>
+            <Typography variant="h5">Notifiaction</Typography>
+          </Link>
+        </Row>
       </Container>
-
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
