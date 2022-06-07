@@ -14,12 +14,12 @@ const ForgotPassword = () => {
   const forgotpassword = useSelector((state) => state.forgotPassword);
   const { loading, error, message } = forgotpassword;
 
-  //   let success;
+    let success;
 
-  //   if(message.success)
-  //   {
-  //     success=message.success
-  //   }
+    if(message)
+    {
+      success=message.success
+    }
 
   console.log(forgotpassword);
 
@@ -28,17 +28,10 @@ const ForgotPassword = () => {
     dispatch(forgotPassword({ email }));
   };
 
-  //   useEffect(() => {
-  //   if(message){
-  //       alert.success(message)
-  //   }
-
-  //   }, [message])
-
   return (
     <div className="forgotPassword">
       {error && <Message variant="danger">{error}</Message>}
-      {/* {message&&<Message variant='success'>{message.message}</Message>} */}
+      {message&&<Message variant='success'>{message.message}</Message>}
       {loading && <Loader></Loader>}
       <form className="forgotPasswordForm" onSubmit={submitHandler}>
         <Typography variant="h4" style={{ padding: "2vamx" }}>

@@ -28,7 +28,6 @@ export function getCroppedImg(image, crop, fileName) {
     // As Base64 string
     const base64Image = canvas.toDataURL("image/jpeg");
     return base64Image;
-  
     // As a blob
     // return new Promise((resolve, reject) => {
     //   canvas.toBlob(

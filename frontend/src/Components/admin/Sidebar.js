@@ -26,7 +26,7 @@ const Sidebar = () => {
 
           </Row>
           <Row className='mt-4'>
-          <LinkContainer to="">
+          <LinkContainer to="/admin/allpremiumlist">
                 <Nav.Link>Premium Category</Nav.Link>
               </LinkContainer>
           </Row>

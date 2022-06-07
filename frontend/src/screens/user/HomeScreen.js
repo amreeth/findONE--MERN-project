@@ -12,12 +12,13 @@ const HomeScreen = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
+
     const userInfo = localStorage.getItem("userInfo");
     const info = JSON.parse(userInfo);
 
     setUser(info ? info.name : "user");
 
-    if (userInfo) {
+    if (info) {
       navigate("/");
     } else {
       navigate("/login");
@@ -30,14 +31,14 @@ const HomeScreen = () => {
       <Container fluid>
         <Row className="mt-3">
           <Col
-            lg={2}
+            lg={2} xs={1} sm={2}
             className=" border shadow mx-auto"
             style={{ borderRadius: "10px" }}
           >
             <Sidebar/>
           </Col>
 
-          <Col lg={9} sm={12} className=" mx-auto">
+          <Col lg={9} sm={9} className=" mx-auto">
             <Row className="mt-4 ">       
                 <Card />
             </Row>   

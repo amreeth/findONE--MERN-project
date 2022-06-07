@@ -157,7 +157,7 @@ export const listUsers = () => async (dispatch, getState) => {
 
     adminInfo = JSON.parse(adminInfo);
 
-    console.log(adminInfo.token);
+    // console.log(adminInfo.token);
 
     const config = {
       headers: {
@@ -167,7 +167,7 @@ export const listUsers = () => async (dispatch, getState) => {
 
     const { data } = await axios.get("/admin/usermanagement", config);
 
-    console.log(data, "usersss");
+    // console.log(data, "usersss");
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -309,7 +309,7 @@ export const forgotPassword =
   };
 
 
-  export const resetPassword=({token,password})=>async(dispatch)=>{
+  export const resetPasswordAction=({token,password})=>async(dispatch)=>{
     try {
       dispatch({
         type:RESET_PASSWORD_REQUEST

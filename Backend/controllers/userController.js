@@ -226,6 +226,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 const resetPassword = asyncHandler(async (req, res) => {
   try {
+    console.log("reached here");
     const resetPasswordToken = crypto
       .Hash("sha256")
       .update(req.params.token)
@@ -261,13 +262,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
-//=====all users===========//
 
-const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-
-  res.json(users);
-});
 
 //============update password================//
 
@@ -483,7 +478,7 @@ const sendRequest = asyncHandler(async (req, res) => {
   }
 });
 
-//======== all sent requests=====//
+//======== all sent requests============//
 
 const allSentRequests = asyncHandler(async (req, res) => {
   try {
@@ -507,7 +502,7 @@ const allSentRequests = asyncHandler(async (req, res) => {
   }
 });
 
-//====all incoming request ====//
+//==============all incoming request ===============//
 
 const allReceivedRequest = asyncHandler(async (req, res) => {
   // console.log("hoo");
@@ -531,8 +526,97 @@ const allReceivedRequest = asyncHandler(async (req, res) => {
   }
 });
 
+
+//===================accept request=====================//
+
+const acceptRequest = asyncHandler(async (req, res) => {
+  try {
+    const requestedUser = await User.findById(req.params.id);
+    const loggedInUser = await User.findById(req.user._id);
+    // console.log(userFollow);
+    if (!requestedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+
+    if (loggedInUser.incomingrequests.includes(requestedUser._id)) {
+      requestedUser.friends.push(loggedInUser._id);
+      loggedInUser.friends.push(requestedUser._id);
+
+      const indexsent = requestedUser.sentrequests.indexOf(loggedInUser._id);
+      console.log(indexsent, "ddddd");
+      requestedUser.sentrequests.splice(indexsent, 1);
+
+      const indexincoming = loggedInUser.incomingrequests.indexOf(
+        requestedUser._id
+      );
+      console.log(indexincoming, "eee");
+      loggedInUser.incomingrequests.splice(indexincoming, 1);
+
+      await loggedInUser.save();
+      await requestedUser.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Friend request accepted",
+      });
+    } 
+    
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+
+//========================delete request==================//
+
+
+const deleteRequest = asyncHandler(async (req, res) => {
+  try {
+    console.log('hey reached here');
+
+    const requestedUser = await User.findById(req.params.id);
+    const loggedInUser = await User.findById(req.user._id);
+
+    if (!requestedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+
+    if (loggedInUser.incomingrequests.includes(requestedUser._id)) {
+
+      const indexsent = loggedInUser.incomingrequests.indexOf(requestedUser._id);
+      loggedInUser.incomingrequests.splice(indexsent, 1);
+
+      const indexincoming = requestedUser.sentrequests.indexOf(
+        loggedInUser._id
+      );
+      requestedUser.sentrequests.splice(indexincoming, 1);
+
+      await loggedInUser.save();
+      await requestedUser.save();
+
+      res.status(200).json({
+        success: false,
+        message: "user remove request",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 export {
-  getUsers,
   authUser,
   registerUser,
   updateProfile,
@@ -544,4 +628,6 @@ export {
   allReceivedRequest,
   updatePassword,
   resetPassword,
+  acceptRequest,
+  deleteRequest
 };

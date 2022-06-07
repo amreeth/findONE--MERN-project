@@ -22,7 +22,7 @@ const addQuestion=asyncHandler(async(req,res)=>{
         })
     }else{
         res.status(400)
-        throw new Error("new Error")
+        throw new Error("something went wrong")
     }
 
 })
@@ -32,11 +32,17 @@ const addQuestion=asyncHandler(async(req,res)=>{
 
 const allQuestions=asyncHandler(async(req,res)=>{
     const questions=await Questions.find({})
-    res.json(questions)
+
+    if(questions){
+        res.status(200).json(questions)
+    }else{
+        res.status(400)
+        throw new Error('Questions not found')
+    }
 })
 
 
-//====delete question =====//
+//=========delete question ========//
 
 const deleteQuestion=asyncHandler(async(req,res)=>{
     const question=await Questions.findById(req.params.id)
@@ -47,12 +53,41 @@ const deleteQuestion=asyncHandler(async(req,res)=>{
             success:"success"
         })
     }else{
-        throw new Error("new Error")
         res.status(400)
+        throw new Error("new Error")
     }
 })
 
 
 
+//================edit questioin====================//
 
-export {addQuestion,allQuestions,deleteQuestion}
+
+const editQuestion=asyncHandler(async(req,res)=>{
+   
+    const Editquestion=await Questions.findById(req.params.id)
+
+    const {question,option1,option2,option3,option4}=req.body;
+
+    if(Editquestion){
+        Editquestion.question=question;
+        Editquestion.option1=option1;
+        Editquestion.option2=option2;
+        Editquestion.option3=option3;
+        Editquestion.option4=option4;
+    }else{
+        res.status(400)
+        throw new Error('question not found')
+    }
+
+    Editquestion.save()
+    res.status(200).json({
+        message:"Question Edited",
+        success:true
+    })
+
+})
+
+
+
+export {addQuestion,allQuestions,deleteQuestion,editQuestion}

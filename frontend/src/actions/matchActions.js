@@ -20,6 +20,12 @@ import {
   ALL_RECEIVED_REQUESTS_REQUEST,
   ALL_RECEIVED_REQUESTS_SUCCESS,
   ALL_RECEIVED_REQUESTS_FAIL,
+  ACCEPT_REQUEST_REQUEST,
+  ACCEPT_REQUEST_SUCCESS,
+  ACCEPT_REQUEST_FAIL,
+  REMOVE_REQUEST_REQUEST,
+  REMOVE_REQUEST_SUCCESS,
+  REMOVE_REQUEST_FAIL
 } from "../constants/matchConstants";
 
 //=============all matches===============//
@@ -73,11 +79,11 @@ export const getMatchDetails = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`/users/match/${id}`, config);
+    const { data } = await axios.get(`/match/${id}`, config);
 
     dispatch({
       type: MATCH_DETAILS_SUCCESS,
-      payload: data.match,
+      payload: data
     });
   } catch (error) {
     dispatch({
@@ -127,7 +133,7 @@ export const favAddRemove = (id) => async (dispatch) => {
 
 //==========sentRequest===============//
 
-export const sentRequest = (id) => async (dispatch) => {
+export const sentRequest = (id) => async (dispatch,getState) => {
   try {
     dispatch({
       type: MATCH_SENTREQUEST_REQUEST,
@@ -174,7 +180,7 @@ export const allSentRequests = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/users/usersend", config);
+    const { data } = await axios.get("/users/allsentrequest", config);
 
 console.log(data.users,'fadda');
 
@@ -222,6 +228,92 @@ export const allReceivedRequest = () => async (dispatch) => {
   }
 };
 
+
+
+//===================accept request==========//
+
+export const acceptRequest=(id)=>async(dispatch,getState)=>{
+
+  const {allreceivedrequests:{receivedrequest}}=getState()
+  try {
+    dispatch({
+      type:ACCEPT_REQUEST_REQUEST
+    })
+
+    let userInfo = await localStorage.getItem("userInfo");
+    userInfo = JSON.parse(userInfo);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const {data}=await axios.get(`/users/acceptrequest/${id}`,config)
+
+    dispatch({
+      type:ACCEPT_REQUEST_SUCCESS,
+      payload:data
+    })
+    dispatch({
+      type: ALL_RECEIVED_REQUESTS_SUCCESS,
+      payload:receivedrequest.filter((obj)=>{
+        if(obj._id!=id){
+          return obj
+        }
+      })
+    });
+
+  } catch (error) {
+    dispatch({
+      type:ACCEPT_REQUEST_FAIL,
+      payload: error.response.data.message,
+    })
+  }
+}
+
+
+
+//==========delete request ===========//
+
+export const deleteRequest=(id)=>async(dispatch,getState)=>{
+
+  try {
+    dispatch({
+      type:REMOVE_REQUEST_REQUEST
+    })
+    
+    const {allreceivedrequests:{receivedrequest}}=getState()
+
+    let userInfo = await localStorage.getItem("userInfo");
+    userInfo = JSON.parse(userInfo);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const {data}=await axios.get(`/users/deleterequest/${id}`,config)
+
+    dispatch({
+      type:REMOVE_REQUEST_SUCCESS,
+      payload:data
+    })
+
+    dispatch({
+      type: ALL_RECEIVED_REQUESTS_SUCCESS,
+      payload:receivedrequest.filter((obj)=>{
+        if(obj._id!=id){
+          return obj
+        }
+      })
+    });
+
+  } catch (error) {
+    dispatch({
+      type:REMOVE_REQUEST_FAIL,
+      payload: error.response.data.message,
+    })
+  }
+}
 
 
 

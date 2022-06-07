@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import axios from "axios"
+import axios from "../../utils/axios"
 import { useNavigate } from "react-router-dom";
 import Message from '../../Components/Message';
 import './Admin.css'
@@ -33,7 +33,7 @@ const AdminLogin = () => {
                 },
             }
 
-            const { data } = await axios.post("/api/admin/login", {
+            const { data } = await axios.post("/admin/login", {
                 email,
                 password,
             }, config)

@@ -14,7 +14,9 @@ import {
 import {
   adminAddQuestionReducer,
   adminAllQuestionReducer,
-  adminQuestionDeleteReducer,
+  adminEditQuestionReducer,
+  allPremiumDetailsReducer,
+  adminAddPremiumReducer
 } from "./reducers/adminReducers";
 
 import {
@@ -23,7 +25,8 @@ import {
   addRemoveFavReducer,
   matchSentRequestReducer,
   allSentRequestsReducer,
-  allReceivedRequestReducer
+  allReceivedRequestReducer,
+  acceptRequestReducer
 } from "./reducers/matchReducer";
 
 const reducer = combineReducers({
@@ -34,6 +37,7 @@ const reducer = combineReducers({
   updatePassword:userUpdatePasswordReducer,
   forgotPassword:forgotPasswordReducer,
   resetpassword:resetPasswordReducer,
+  acceptRequest:acceptRequestReducer,
 
 
 
@@ -48,6 +52,10 @@ const reducer = combineReducers({
 
   adminAddQuestion: adminAddQuestionReducer,
   adminAllQuestions: adminAllQuestionReducer,
+  editQuestion:adminEditQuestionReducer,
+  allPremiumList:allPremiumDetailsReducer,
+  addPremium:adminAddPremiumReducer
+
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

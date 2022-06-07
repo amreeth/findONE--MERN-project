@@ -42,7 +42,6 @@ const protect = asyncHandler(async (req, res, next) => {
 const protectAdmin=asyncHandler(async(req,res,next)=>{
   
 // console.log("admin auth middleware");
-console.log( req.headers.authorization );
   let token;
   if (
     req.headers.authorization &&
@@ -53,14 +52,12 @@ console.log( req.headers.authorization );
         token=req.headers.authorization.split(' ')[1]
         const decoded=jwt.verify(token,process.env.JWT_SECRET)
         // console.log(decoded);
-
         req.admin=await Admin.findById(decoded.id).select('-password')
 
         // console.log("admin auth PASSED");
-
         next()
     } catch (error) {
-        console.error(error)
+        // console.error(error)
         res.status(401)
         throw new Error('not authorized token failed')
     }

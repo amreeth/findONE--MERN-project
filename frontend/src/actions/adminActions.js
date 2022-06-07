@@ -9,13 +9,23 @@ import {
   ADMIN_DELETE_QUESTION_REQUEST,
   ADMIN_DELETE_QUESTION_SUCCESS,
   ADMIN_DELETE_QUESTION_FAIL,
+  EDIT_QUESTION_REQUEST,
+  EDIT_QUESTION_SUCCESS,
+  EDIT_QUESTION_FAIL,
+  ALL_PREMIUM_DETAILS_REQUEST,
+  ALL_PREMIUM_DETAILS_SUCCESS,
+  ALL_PREMIUM_DETAILS_FAIL,
+  ADD_PREMIUM_REQUEST,
+  ADD_PREMIUM_SUCCESS,
+  ADD_PREMIUM_FAIL,
 } from "../constants/adminConstants";
+
+
+//==============add question==================//
 
 export const addQuestion =
   ({ question, option1, option2, option3, option4 }) =>
   async (dispatch) => {
-    // console.log("reache action");
-    // console.log(question);
     try {
       dispatch({
         type: ADMIN_ADD_QUESTION_REQUEST,
@@ -24,8 +34,6 @@ export const addQuestion =
       let adminInfo = await localStorage.getItem("adminInfo");
 
       adminInfo = JSON.parse(adminInfo);
-
-      // console.log(adminInfo.token);
 
       const config = {
         headers: {
@@ -57,6 +65,52 @@ export const addQuestion =
   };
 
 
+//===================edit question==================//
+
+  export const editQuestion =
+  ({ id,question, option1, option2, option3, option4 }) =>
+  async (dispatch,getState) => {
+
+    console.log('here');
+
+    try {
+      dispatch({
+        type: EDIT_QUESTION_REQUEST,
+      });
+
+      const { adminAllQuestions: {questions}} = getState()
+
+      let adminInfo = await localStorage.getItem("adminInfo");
+      adminInfo = JSON.parse(adminInfo);
+      
+      const config = {
+        headers: {
+          Authorization: `Bearer ${adminInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/admin/question/${id}`,
+        { question, option1, option2, option3, option4 },
+        config
+      );
+
+      dispatch({
+        type: EDIT_QUESTION_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: EDIT_QUESTION_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+//==============all question ====================//
 
 export const allQuestions = () => async (dispatch) => {
   try {
@@ -65,10 +119,7 @@ export const allQuestions = () => async (dispatch) => {
     });
 
     let adminInfo = await localStorage.getItem("adminInfo");
-
     adminInfo = JSON.parse(adminInfo);
-
-    // console.log(adminInfo.token);
 
     const config = {
       headers: {
@@ -77,13 +128,13 @@ export const allQuestions = () => async (dispatch) => {
     };
 
     const { data } = await axios.get("/admin/allquestions", config);
-
     console.log(data, "questions");
 
     dispatch({
       type: ADMIN_ALL_QUESTION_SUCCESS,
       payload: data,
     });
+
   } catch (error) {
     dispatch({
       type: ADMIN_ALL_QUESTION_FAIL,
@@ -96,4 +147,83 @@ export const allQuestions = () => async (dispatch) => {
 };
 
 
+
+
+//======================all premium status=================//
+
+export const allPremiumList = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: ALL_PREMIUM_DETAILS_REQUEST,
+    });
+
+    let adminInfo = await localStorage.getItem("adminInfo");
+    adminInfo = JSON.parse(adminInfo);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${adminInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get("/admin/allPremiumStatus", config);
+    console.log(data, "all premium status");
+
+    dispatch({
+      type: ALL_PREMIUM_DETAILS_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: ALL_PREMIUM_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
+//===============add premium =================//
+
+
+export const addPremium =
+  ({ name,category,price,days}) =>
+  async (dispatch) => {
+
+    try {
+      dispatch({
+        type: ADD_PREMIUM_REQUEST,
+      });
+
+      let adminInfo = await localStorage.getItem("adminInfo");
+      adminInfo = JSON.parse(adminInfo);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${adminInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        '/admin/addpremium',{ name,category,price,days},
+        config
+      );
+
+      dispatch({
+        type: ADD_PREMIUM_SUCCESS,
+        payload: data,
+      });
+
+    } catch (error) {
+      dispatch({
+        type: ADD_PREMIUM_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 

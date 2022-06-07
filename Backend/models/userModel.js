@@ -52,6 +52,10 @@ const userSchema = mongoose.Schema(
       public_id: String,
       url: String,
     },
+    premium:{
+      type:String,
+      default:null
+    },
     favourites: [
       {
         type: mongoose.Schema.ObjectId,
@@ -75,7 +79,8 @@ const userSchema = mongoose.Schema(
     ],
     friends: [
       {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref:"User",
         default: null,
       },
     ],

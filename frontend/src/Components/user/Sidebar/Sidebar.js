@@ -20,14 +20,14 @@ const Sidebar = () => {
             <Avatar
             className="mx-auto"
               alt="Cindy Baker"
-              sx={{ width: 60, height: 60 }}
-              src={userInfo ? userInfo.avatar.url : ""}
+              // sx={{ width: 60, height: 60 }}
+              src={userInfo && userInfo ? userInfo.avatar.url : ""}
             />
           </Col>
 
           <Col className="" lg={12}>
             <Link to="/profile" className="text-center text-white text-uppercase text-bold" style={{ textDecoration: "none" }}>
-              <Typography  variant="h5">{userInfo.name}</Typography>
+              <Typography  variant="h5">{userInfo && userInfo.name}</Typography>
             </Link>
           </Col>
         </Row>
@@ -44,7 +44,7 @@ const Sidebar = () => {
         </Row>
 
         <Row className="mt-4">
-          <Link to="/Requests" style={{ textDecoration: "none" }}>
+          <Link to="/allrequests" style={{ textDecoration: "none" }}>
             <Typography variant="h5">Requests</Typography>
           </Link>
         </Row>

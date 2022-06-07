@@ -1,6 +1,8 @@
-import Admin from "../models/adminModel.js"
-import asyncHandler from "express-async-handler"
-import generateToken from '../utils/generateToken.js'
+import Admin from "../models/adminModel.js";
+import asyncHandler from "express-async-handler";
+import generateToken from "../utils/generateToken.js";
+import User from "../models/userModel.js";
+import Premium from "../models/premiumModel.js";
 
 // const registerAdmin = asyncHandler(async (req, res) => {
 //     const { name, email, password } = req.body
@@ -25,21 +27,83 @@ import generateToken from '../utils/generateToken.js'
 //     }
 // })
 
+//=========admin login============//
+
 const authAdmin = asyncHandler(async (req, res) => {
-    // res.send('hiii')
-    const { email, password } = req.body
-    const admin = await Admin.findOne({ email })
-    if (admin && (await admin.matchPassword(password))) {
-        res.json({
-            _id: admin._id,
-            email: admin.email,
-            token: generateToken(admin._id)
-        })
+  // res.send('hiii')
+  const { email, password } = req.body;
+  const admin = await Admin.findOne({ email });
+  if (admin && (await admin.matchPassword(password))) {
+    res.json({
+      _id: admin._id,
+      email: admin.email,
+      token: generateToken(admin._id),
+    });
+  } else {
+    throw new Error("Invalid login");
+  }
+});
 
+//=======all users===========//
+
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+
+  if (users) {
+    res.status(200).json(users);
+  } else {
+    res.status(400);
+    throw new Error("users not found");
+  }
+});
+
+//=======all premium status===========//
+
+const allPremiumStatus = asyncHandler(async (req, res) => {
+  const allPremiumLists = await Premium.find({});
+
+//   console.log(allPremiumLists,'sss');
+
+  if (allPremiumLists) {
+    res.status(200).json(allPremiumLists);
+  } else {
+    res.status(400);
+    throw new Error("No data found");
+  }
+});
+
+//===========add premium ==================//
+
+const addPremium = asyncHandler(async (req, res) => {
+//   console.log(req.body);
+  const { name, category, price, days } = req.body;
+
+  const exist = await Premium.findOne({ name });
+
+  if (exist) {
+    // console.log("exist");
+    res.status(400);
+    throw new Error("This premium already exist");
+
+  } else {
+    // console.log("elsee");
+    const premium = await Premium.create({
+      name: name,
+      category: category,
+      price: price,
+      days: days,
+    });
+
+    if(premium) {
+        // console.log('premium created');
+      res.status(201).json({
+        premium,
+      });
     } else {
-        throw new Error("Invalid login")
+      res.status(400);
+      throw new Error("invalid data");
     }
-})
+  }
+});
 
-export  { authAdmin}
-
+export { authAdmin, getUsers, allPremiumStatus, addPremium };

@@ -22,10 +22,6 @@ const userDetailsSchema=mongoose.Schema({
          type:String,
          required:true,
      },
-     images:[{
-         type:String,
-       
-     }],
      answers:[{
          question:{
              type:mongoose.Schema.Types.ObjectId,

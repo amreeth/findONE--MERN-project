@@ -54,7 +54,7 @@ const Card = () => {
           .sort(() => Math.random() - 0.5)
           .slice(0, 3)
           .map((e) => (
-            <Col key={e._id} lg={4}>
+            <Col key={e._id} lg={4} sm={6} xs={12}>
               <div className="card">
                 <Link to={`/match/${e._id}`}>
                  

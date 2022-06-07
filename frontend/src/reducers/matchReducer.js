@@ -18,6 +18,12 @@ import {
   ALL_RECEIVED_REQUESTS_REQUEST,
   ALL_RECEIVED_REQUESTS_SUCCESS,
   ALL_RECEIVED_REQUESTS_FAIL,
+  ACCEPT_REQUEST_REQUEST,
+  ACCEPT_REQUEST_SUCCESS,
+  ACCEPT_REQUEST_FAIL,
+  REMOVE_REQUEST_REQUEST,
+  REMOVE_REQUEST_SUCCESS,
+  REMOVE_REQUEST_FAIL,
 } from "../constants/matchConstants";
 
 export const matchesReducer = (state = { matches: [] }, action) => {
@@ -58,7 +64,7 @@ export const matchesDetailsReducer = (state = { match: {} }, action) => {
     case MATCH_DETAILS_SUCCESS:
       return {
         loading: false,
-        match: action.payload,
+        match: action.payload.match,
       };
 
     case MATCH_DETAILS_FAIL:
@@ -197,4 +203,59 @@ export const allReceivedRequestReducer = (
 };
 
 
+export const acceptRequestReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ACCEPT_REQUEST_REQUEST:
+      return {
+        loadingg: true,
+      };
+    case ACCEPT_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loadingg: false,
+        data: action.payload,
+      };
+    case ACCEPT_REQUEST_FAIL:
+      return {
+        loadingg: false,
+        errors: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        errors: null,
+      };
+    default:
+      return state;
+  }
+};
+
+
+
+export const deleteRequestReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REMOVE_REQUEST_REQUEST:
+      return {
+        loadingg: true,
+      };
+    case REMOVE_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loadingg: false,
+        data: action.payload,
+      };
+    case REMOVE_REQUEST_FAIL:
+      return {
+        loadingg: false,
+        errors: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        errors: null,
+      };
+    default:
+      return state;
+  }
+};
 

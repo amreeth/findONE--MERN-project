@@ -1,18 +1,24 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import UserDetails from "../models/userDetailsModel.js";
+import mongoose from "mongoose";
+
+
+const ObjectId = mongoose.Types.ObjectId;
+
+
+//================get all matches ===============//
 
 const getAllMatches = asyncHandler(async (req, res) => {
-  // console.log('hi from  getall matchess');
+
   try {
-    // console.log(req.user,'dzxzxfzfzdfdsas');
+
     const user = await User.findById(req.user._id);
     const looking = user.oppGender;
-
     // console.log(looking);
     const matches = await User.find({ gender: looking });
 
-    // console.log(matches,'matches are');
-
+    // console.log(matches,'matches are')
     if (matches.length>0) {
       res.status(200).json({
         success: true,
@@ -33,4 +39,26 @@ const getAllMatches = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllMatches };
+//=============match detail====================//
+
+const matchDetail=asyncHandler(async(req,res)=>{
+  try {
+
+    const id=req.params.id
+    const match=await User.findById(id)
+
+    console.log(match);
+
+    if(match){
+      res.status(200).json({
+        match,
+        messge:"match details are"
+      })
+    }
+  } catch (error) {
+    res.status(400)
+    throw new Error("Match not found")
+  }
+})
+
+export { getAllMatches,matchDetail };
