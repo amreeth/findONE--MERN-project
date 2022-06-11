@@ -4,6 +4,8 @@ import connectDB from './Config/db.js'
 import userRoutes from './routes/userRouter.js'
 import adminRoutes from './routes/adminRoutes.js'
 import matchRoutes from './routes/matchRouter.js'
+import messageRoutes from './routes/messagesRouter.js'
+import conversationRoutes from './routes/conversationRouter.js'
 import {notFound,errorHandler} from './middleware/errorMiddleware.js'
 import cors from 'cors'
 import cloudinary from 'cloudinary'
@@ -11,7 +13,6 @@ import bodyParser from 'body-parser'
 import fileUpload from 'express-fileupload'
 
 const app=express()
-
 app.use(cors()) 
 
 
@@ -41,6 +42,10 @@ cloudinary.config({
 app.use('/api/users',userRoutes)
 app.use('/api/admin',adminRoutes)
 app.use('/api/match',matchRoutes)
+app.use('/api/message',messageRoutes)
+app.use('/api/conversation',conversationRoutes)
+
+
 
 
 //error handling middleware

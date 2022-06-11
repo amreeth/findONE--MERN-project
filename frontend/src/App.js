@@ -9,6 +9,7 @@ import Log from "./screens/user/Log";
 import AllRequestScreen from "./screens/user/AllRequestScreen";
 import ForgotPassword from "./screens/user/ForgotPassword";
 import ResetPassword from "./screens/user/ResetPassword";
+import MessangerScreen from "./screens/user/MessangerScreen";
 
 // import RegisterScreen from "./screens/user/RegisterScreen";
 
@@ -43,6 +44,7 @@ function App() {
 
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/password/reset/:token" element={<ResetPassword />} />
+          <Route path="/messanger" element={<MessangerScreen/>}></Route>
 
           {/* admin */}
 

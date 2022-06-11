@@ -50,7 +50,7 @@ const Sidebar = () => {
         </Row>
 
         <Row className="mt-4">
-          <Link to="/messages" style={{ textDecoration: "none" }}>
+          <Link to="/messanger" style={{ textDecoration: "none" }}>
             <Typography variant="h5">Message</Typography>
           </Link>
         </Row>

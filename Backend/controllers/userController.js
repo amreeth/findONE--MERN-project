@@ -12,12 +12,6 @@ const ObjectId = mongoose.Types.ObjectId;
 
 //==========user registration========//
 
-// const registerUser=asyncHandler(async(req,res)=>{
-
-//   console.log('jiiiii');
-
-// })
-
 const registerUser = asyncHandler(async (req, res) => {
   console.log(req.body, "user register");
 
@@ -103,6 +97,7 @@ const registerUser = asyncHandler(async (req, res) => {
       gender: user.gender,
       oppGender: user.oppGender,
       avatar: user.avatar,
+      friends:user.friends,
       token: generateToken(user._id),
     });
   } else {
@@ -164,7 +159,7 @@ const authUser = asyncHandler(async (req, res) => {
       gender: userExist.gender,
       oppGender: userExist.oppGender,
       avatar: userExist.avatar,
-
+      friends:userExist.friends,
       token: generateToken(userExist._id),
     });
   } else {
@@ -261,8 +256,6 @@ const resetPassword = asyncHandler(async (req, res) => {
     });
   }
 });
-
-
 
 //============update password================//
 
@@ -526,7 +519,6 @@ const allReceivedRequest = asyncHandler(async (req, res) => {
   }
 });
 
-
 //===================accept request=====================//
 
 const acceptRequest = asyncHandler(async (req, res) => {
@@ -562,8 +554,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
         success: true,
         message: "Friend request accepted",
       });
-    } 
-    
+    }
   } catch (error) {
     res.status(404).json({
       success: false,
@@ -572,13 +563,11 @@ const acceptRequest = asyncHandler(async (req, res) => {
   }
 });
 
-
 //========================delete request==================//
-
 
 const deleteRequest = asyncHandler(async (req, res) => {
   try {
-    console.log('hey reached here');
+    console.log("hey reached here");
 
     const requestedUser = await User.findById(req.params.id);
     const loggedInUser = await User.findById(req.user._id);
@@ -591,8 +580,9 @@ const deleteRequest = asyncHandler(async (req, res) => {
     }
 
     if (loggedInUser.incomingrequests.includes(requestedUser._id)) {
-
-      const indexsent = loggedInUser.incomingrequests.indexOf(requestedUser._id);
+      const indexsent = loggedInUser.incomingrequests.indexOf(
+        requestedUser._id
+      );
       loggedInUser.incomingrequests.splice(indexsent, 1);
 
       const indexincoming = requestedUser.sentrequests.indexOf(
@@ -616,6 +606,49 @@ const deleteRequest = asyncHandler(async (req, res) => {
   }
 });
 
+//=============get all friends==========//
+
+const allFriends = asyncHandler(async (req, res) => {
+  try {
+    const friendsIdArray = req.user.friends;
+    const friends = [];
+
+    for (let i = 0; i < friendsIdArray.length; i++) {
+      let a=await User.findById(friendsIdArray[i])
+      friends.push(a);
+    }
+    // console.log(friends,'friends array');
+
+    if(friends.length>0){
+      res.status(200).json(friends);
+    }else{
+      res.status(400).json({
+        friends,
+        message:"You have no friends..."
+      })
+    }
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+//======get recent ==============//
+const getUserFriend=asyncHandler(async(req,res)=>{
+  const userId=req.query.userId;
+  // console.log(userId);
+  try {
+    const recent=await User.findById(userId)
+    // console.log(recent);
+    res.status(200).json(recent)
+  } catch (error) {
+    res.status(500)
+    throw new Error('Recent friends not found')
+  }
+})
+
+
+
+
 export {
   authUser,
   registerUser,
@@ -629,5 +662,7 @@ export {
   updatePassword,
   resetPassword,
   acceptRequest,
-  deleteRequest
+  deleteRequest,
+  allFriends,
+  getUserFriend
 };
