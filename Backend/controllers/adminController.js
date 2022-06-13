@@ -3,6 +3,8 @@ import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
 import Premium from "../models/premiumModel.js";
+import PremiumUsers from "../models/premiumUsersModel.js";
+
 
 // const registerAdmin = asyncHandler(async (req, res) => {
 //     const { name, email, password } = req.body
@@ -75,16 +77,13 @@ const allPremiumStatus = asyncHandler(async (req, res) => {
 //===========add premium ==================//
 
 const addPremium = asyncHandler(async (req, res) => {
-//   console.log(req.body);
-  const { name, category, price, days } = req.body;
 
+  const { name, category, price, days } = req.body;
   const exist = await Premium.findOne({ name });
 
   if (exist) {
-    // console.log("exist");
     res.status(400);
     throw new Error("This premium already exist");
-
   } else {
     // console.log("elsee");
     const premium = await Premium.create({
@@ -93,9 +92,7 @@ const addPremium = asyncHandler(async (req, res) => {
       price: price,
       days: days,
     });
-
     if(premium) {
-        // console.log('premium created');
       res.status(201).json({
         premium,
       });
@@ -106,4 +103,18 @@ const addPremium = asyncHandler(async (req, res) => {
   }
 });
 
-export { authAdmin, getUsers, allPremiumStatus, addPremium };
+
+//===========get all premium users======//
+
+const getAllPremiumUsers=asyncHandler(async(req,res)=>{
+
+  const allPremiumUsers=await PremiumUsers.find({})
+  if(allPremiumUsers){
+    res.status(200).json(allPremiumUsers)
+  }else{
+    res.status(500)
+    throw new Error('Premium users not found')
+  }
+})
+
+export { authAdmin, getUsers, allPremiumStatus, addPremium,getAllPremiumUsers};

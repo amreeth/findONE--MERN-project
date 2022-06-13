@@ -7,6 +7,8 @@ import verifyEmail from "../utils/verifyEmail.js";
 import crypto from "crypto";
 import mongoose from "mongoose";
 import cloudinary from "cloudinary";
+import PremiumUsers from "../models/premiumUsersModel.js";
+import Premium from "../models/premiumModel.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -49,7 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists");
   }
 
-  console.log("no user exist");
+  // console.log("no user exist");
 
   let myCloud;
   if (image) {
@@ -76,7 +78,7 @@ const registerUser = asyncHandler(async (req, res) => {
     avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
   });
 
-  console.log("user created");
+  // console.log("user created");
 
   let token = await Token.create({
     userId: user._id,
@@ -171,7 +173,7 @@ const authUser = asyncHandler(async (req, res) => {
 //==========forgot password=========//
 
 const forgotPassword = asyncHandler(async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const user = await User.findOne({ email: req.body.email });
 
@@ -538,13 +540,13 @@ const acceptRequest = asyncHandler(async (req, res) => {
       loggedInUser.friends.push(requestedUser._id);
 
       const indexsent = requestedUser.sentrequests.indexOf(loggedInUser._id);
-      console.log(indexsent, "ddddd");
+      // console.log(indexsent, "ddddd");
       requestedUser.sentrequests.splice(indexsent, 1);
 
       const indexincoming = loggedInUser.incomingrequests.indexOf(
         requestedUser._id
       );
-      console.log(indexincoming, "eee");
+      // console.log(indexincoming, "eee");
       loggedInUser.incomingrequests.splice(indexincoming, 1);
 
       await loggedInUser.save();
@@ -567,7 +569,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
 
 const deleteRequest = asyncHandler(async (req, res) => {
   try {
-    console.log("hey reached here");
+    // console.log("hey reached here");
 
     const requestedUser = await User.findById(req.params.id);
     const loggedInUser = await User.findById(req.user._id);
@@ -633,6 +635,7 @@ const allFriends = asyncHandler(async (req, res) => {
 });
 
 //======get recent ==============//
+
 const getUserFriend=asyncHandler(async(req,res)=>{
   const userId=req.query.userId;
   // console.log(userId);
@@ -646,6 +649,48 @@ const getUserFriend=asyncHandler(async(req,res)=>{
   }
 })
 
+
+//==========premium purchase=========//
+
+const premiumPurchase=asyncHandler(async(req,res)=>{
+  try {
+    const {premiumId,paymentResult}=req.body
+
+    const premiumDetails=await Premium.findById(ObjectId(req.body.premiumId))
+    // console.log(premiumDetails,'selected premium details');
+
+    const user=await User.findById(req.user._id)
+    // console.log(user,'user details');
+
+    if(premiumDetails){
+      const premiumUser=await PremiumUsers.create({
+        premiumId:premiumDetails._id,
+        price:premiumDetails.price,
+        category:premiumDetails.category,
+        valid:premiumDetails.days,
+        userId:user._id,
+        userName:user.name,
+        status:paymentResult.status
+      })
+
+      if(premiumUser){
+        console.log('premiumUser created');
+        res.status(200).json(premiumUser)
+      }else{
+        console.log('something went wrong');
+        res.status(500)
+        throw new Error("Premium details not found")
+      }
+    }else{
+      res.status(500)
+      throw new Error('premium was not found')
+    }
+    
+  } catch (error) {
+    res.status(400)
+    throw new Error('invalid data')
+  }
+})
 
 
 
@@ -664,5 +709,6 @@ export {
   acceptRequest,
   deleteRequest,
   allFriends,
-  getUserFriend
+  getUserFriend,
+  premiumPurchase
 };

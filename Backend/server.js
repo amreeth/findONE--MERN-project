@@ -46,6 +46,9 @@ app.use('/api/message',messageRoutes)
 app.use('/api/conversation',conversationRoutes)
 
 
+app.get('/api/config/paypal',(req,res)=>res.send(process.env.PAYPAL_CLIENT_ID))
+
+
 
 
 //error handling middleware

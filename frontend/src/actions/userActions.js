@@ -3,6 +3,9 @@ import {
   FORGOT_PASSWORD_FAIL,
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
+  PAYEMENT_FAIL,
+  PAYEMENT_REQUEST,
+  PAYEMENT_SUCCESS,
   RESET_PASSWORD_FAIL,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
@@ -332,6 +335,46 @@ export const forgotPassword =
     } catch (error) {
       dispatch({
         type:RESET_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+
+  export const premiumPayment=({premiumId,paymentResult})=>async(dispatch,getState)=>{
+    try{
+      dispatch({
+        type:PAYEMENT_REQUEST
+      })
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      console.log('here');  
+      
+      const {data}=await axios.post('users/premiumpurchase',{premiumId,paymentResult},config)
+      console.log(data);
+
+      dispatch({
+        type:PAYEMENT_SUCCESS,
+        success:true,
+        payload:data
+      })
+
+    }catch(error){
+      dispatch({
+        type:PAYEMENT_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

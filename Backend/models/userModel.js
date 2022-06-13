@@ -54,7 +54,7 @@ const userSchema = mongoose.Schema(
     },
     premium:{
       type:String,
-      default:null
+      default:false,
     },
     favourites: [
       {

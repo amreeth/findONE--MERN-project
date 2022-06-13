@@ -25,6 +25,7 @@ import {
   deleteRequest,
   allFriends,
   getUserFriend,
+  premiumPurchase
 } from "../controllers/userController.js";
 
 import {
@@ -54,10 +55,10 @@ router.route("/friends").get(protect, allFriends);
 
 router.route("/getUsersRecent").get(getUserFriend);
 
-router
-  .route("/userpersonaldetails")
-  .post(registerUserDetails)
-  .put(protect, upload.single("image"), imagesUpload);
+router.route("/userpersonaldetails").post(registerUserDetails).put(protect, upload.single("image"), imagesUpload);
 router.route("/multipleimages").post(mutltipleImageUpload);
+
+router.route('/premiumpurchase').post(protect,premiumPurchase)
+
 
 export default router;

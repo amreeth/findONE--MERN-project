@@ -10,6 +10,8 @@ import AllRequestScreen from "./screens/user/AllRequestScreen";
 import ForgotPassword from "./screens/user/ForgotPassword";
 import ResetPassword from "./screens/user/ResetPassword";
 import MessangerScreen from "./screens/user/MessangerScreen";
+import GetPremiumScreen from "./screens/user/GetPremiumScreen";
+import PaymentSuccessScreen from "./screens/user/PaymentSuccessScreen";
 
 // import RegisterScreen from "./screens/user/RegisterScreen";
 
@@ -20,6 +22,7 @@ import AddQuestionScreen from "./screens/admin/AddQuestionScreen";
 import AllQuestionsScreen from "./screens/admin/AllQuestionsScreen";
 import PremiumDetailsScreen from "./screens/admin/PremiumDetailsScreen";
 import AddPremiumScreen from "./screens/admin/AddPremiumScreen";
+import AllPremiumUsersScreen from "./screens/admin/AllPremiumUsersScreen";
 
 import "./App.css";
 
@@ -30,21 +33,21 @@ function App() {
         <Routes>
           {/* user */}
 
-          <Route path="/login" element={<LoginScreen />} />
-          {/* <Route path="/registernew" element={<RegisterScreen/>}/> */}
-
           <Route exact path="/" element={<HomeScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
           <Route path="/register" element={<Log />} />
           <Route path="/before" element={<BeforeVerification />} />
           <Route path="/verify/:id/:token" element={<Verify />} />
-
           <Route path="/match/:id" element={<MactherScreen />} />
           <Route path="/allrequests" element={<AllRequestScreen />} />
-
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/password/reset/:token" element={<ResetPassword />} />
           <Route path="/messanger" element={<MessangerScreen/>}></Route>
+          <Route path='/getpremium' element={<GetPremiumScreen/>}/>
+          <Route path='/paymentsccess' element={<PaymentSuccessScreen/>}/>
+
+
 
           {/* admin */}
 
@@ -53,11 +56,11 @@ function App() {
           <Route path="/admin/usermanagement" element={<UserManagement />} />
           <Route path="/admin/addquestion" element={<AddQuestionScreen />} />
           <Route path="/admin/allquestions" element={<AllQuestionsScreen />} />
-          <Route
-            path="/admin/allpremiumlist"
-            element={<PremiumDetailsScreen />}
-          />
+          <Route path="/admin/allpremiumlist" element={<PremiumDetailsScreen />}/>
           <Route path='/admin/addpremium' element={<AddPremiumScreen/>}/>
+          <Route path='/admin/allpremiumusers' element={<AllPremiumUsersScreen/>}/>
+
+          
         </Routes>
       </Router>
     </div>

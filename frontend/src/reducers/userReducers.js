@@ -21,6 +21,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAIL,
+  PAYEMENT_REQUEST,
+  PAYEMENT_FAIL,
+  PAYEMENT_SUCCESS,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -148,6 +151,27 @@ export const resetPasswordReducer = (state = {}, action) => {
         error: action.payload,
       };
 
+    default:
+      return state;
+  }
+};
+
+export const payementReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYEMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case PAYEMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case PAYEMENT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

@@ -14,6 +14,9 @@ import {
   ADD_PREMIUM_REQUEST,
   ADD_PREMIUM_SUCCESS,
   ADD_PREMIUM_FAIL,
+  ALL_PREMIUM_USERS_REQUEST,
+  ALL_PREMIUM_USERS_SUCCESS,
+  ALL_PREMIUM_USERS_FAIL,
 } from "../constants/adminConstants";
 
 export const adminAddQuestionReducer = (state = {}, action) => {
@@ -92,3 +95,18 @@ export const adminAddPremiumReducer = (state = {}, action) => {
   }
 };
 
+
+export const allPremiumUsersReducer = (state = {premiumUsers:[]}, action) => {
+  switch (action.type) {
+    case ALL_PREMIUM_USERS_REQUEST:
+      return {loading: true };
+
+    case ALL_PREMIUM_USERS_SUCCESS:
+      return {loading: false, premiumUsers: action.payload,};
+
+    case ALL_PREMIUM_USERS_FAIL:
+      return {loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

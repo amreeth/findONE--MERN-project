@@ -8,7 +8,8 @@ import {
   userUpdateProfileReducer,
   userUpdatePasswordReducer,
   forgotPasswordReducer,
-  resetPasswordReducer
+  resetPasswordReducer,
+  payementReducer
 } from "./reducers/userReducers";
 
 import {
@@ -16,7 +17,8 @@ import {
   adminAllQuestionReducer,
   adminEditQuestionReducer,
   allPremiumDetailsReducer,
-  adminAddPremiumReducer
+  adminAddPremiumReducer,
+  allPremiumUsersReducer
 } from "./reducers/adminReducers";
 
 import {
@@ -38,8 +40,7 @@ const reducer = combineReducers({
   forgotPassword:forgotPasswordReducer,
   resetpassword:resetPasswordReducer,
   acceptRequest:acceptRequestReducer,
-
-
+  payment:payementReducer,
 
   matches: matchesReducer,
   matchDetails: matchesDetailsReducer,
@@ -54,7 +55,8 @@ const reducer = combineReducers({
   adminAllQuestions: adminAllQuestionReducer,
   editQuestion:adminEditQuestionReducer,
   allPremiumList:allPremiumDetailsReducer,
-  addPremium:adminAddPremiumReducer
+  addPremium:adminAddPremiumReducer,
+  allPremiumUsers:allPremiumUsersReducer
 
 });
 

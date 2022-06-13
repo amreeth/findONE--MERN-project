@@ -18,10 +18,8 @@ const PremiumDetailsScreen = () => {
   const allpremiumList = useSelector((state) => state.allPremiumList);
   const { loading, error, premiumList } = allpremiumList;
 
-  console.log(allpremiumList,'all');
-
-
-  console.log(premiumList,'lists');
+  // console.log(allpremiumList,'all');
+  // console.log(premiumList,'lists');
 
   const editPremium = (id) => {
     console.log(id);
@@ -58,7 +56,7 @@ const PremiumDetailsScreen = () => {
     },
     {
       name: "Price",
-      selctor: (row) => row.price,
+      selector: (row) => row.price,
     },
     {
       name: "Manage",

@@ -18,6 +18,9 @@ import {
   ADD_PREMIUM_REQUEST,
   ADD_PREMIUM_SUCCESS,
   ADD_PREMIUM_FAIL,
+  ALL_PREMIUM_USERS_REQUEST,
+  ALL_PREMIUM_USERS_SUCCESS,
+  ALL_PREMIUM_USERS_FAIL,
 } from "../constants/adminConstants";
 
 
@@ -227,3 +230,40 @@ export const addPremium =
     }
   };
 
+
+
+  //===========get premium users===========//
+
+
+  export const getAllPremiumUsers=()=>async(dispatch)=>{
+    try {
+      dispatch({
+        type:ALL_PREMIUM_USERS_REQUEST
+      })
+
+      let adminInfo=await localStorage.getItem('adminInfo')
+      adminInfo=JSON.parse(adminInfo)
+
+      const config={
+        headers:{
+          Authorization:`Bearer ${adminInfo.token}`
+        }
+      }
+
+      const {data}=await axios.get('/admin/allpremiumusers',config)
+
+      dispatch({
+        type:ALL_PREMIUM_USERS_SUCCESS,
+        payload:data
+      })
+
+    } catch (error) {
+      dispatch({
+        type:ALL_PREMIUM_USERS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
