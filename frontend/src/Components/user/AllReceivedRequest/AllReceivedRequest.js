@@ -16,13 +16,9 @@ const AllReceivedRequest = () => {
 
   const allreceivedrequests = useSelector((state) => state.allreceivedrequests);
   const { loading, error, receivedrequest } = allreceivedrequests;
-  // console.log(receivedrequest);
-
+  
   const acceptRequests = useSelector((state) => state.acceptRequest);
-  // console.log(acceptRequests, "dddd");
   const { loadingg, errors, data } = acceptRequests;
-
-
 
  
   useEffect(() => {
@@ -30,13 +26,10 @@ const AllReceivedRequest = () => {
   }, [dispatch]);
 
   const handleAccept = (id) => {
-    // console.log(id, "accept request");
     dispatch(acceptRequest(id));
   };
 
-
   const handleDelete = (id) => {
-    // console.log(id, "delete");
     dispatch(deleteRequest(id))
   };
 
@@ -50,13 +43,11 @@ const AllReceivedRequest = () => {
             style={{ borderRadius: "5px" }}
           >
             <div>
-              <h2>img</h2>
+              <img src={e.avatar.url}/>
             </div>
-
             <div>
               <Typography variant="h5">{e.name}</Typography>
             </div>
-
             <div className="actions">
               <Button onClick={() => handleAccept(e._id)}>Accept</Button>
               <Button onClick={() => handleDelete(e._id)}>Delete</Button>

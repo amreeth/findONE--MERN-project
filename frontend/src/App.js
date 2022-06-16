@@ -12,6 +12,7 @@ import ResetPassword from "./screens/user/ResetPassword";
 import MessangerScreen from "./screens/user/MessangerScreen";
 import GetPremiumScreen from "./screens/user/GetPremiumScreen";
 import PaymentSuccessScreen from "./screens/user/PaymentSuccessScreen";
+import FriendsScreen from "./screens/user/FriendsScreen";
 
 // import RegisterScreen from "./screens/user/RegisterScreen";
 
@@ -28,7 +29,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="main">
+    <div className="main" style={{minHeight:"100vh"}}>
       <Router>
         <Routes>
           {/* user */}
@@ -46,6 +47,7 @@ function App() {
           <Route path="/messanger" element={<MessangerScreen/>}></Route>
           <Route path='/getpremium' element={<GetPremiumScreen/>}/>
           <Route path='/paymentsccess' element={<PaymentSuccessScreen/>}/>
+          <Route path='/friends' element={<FriendsScreen/>}/>
 
 
 

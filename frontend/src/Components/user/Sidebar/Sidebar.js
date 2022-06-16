@@ -27,7 +27,7 @@ const Sidebar = () => {
 
           <Col className="" lg={12}>
             <Link to="/profile" className="text-center text-white text-uppercase text-bold" style={{ textDecoration: "none" }}>
-              <Typography  variant="h5">{userInfo && userInfo.name}</Typography>
+              <Typography  color="black" variant="h5">{userInfo && userInfo.name}</Typography>
             </Link>
           </Col>
         </Row>

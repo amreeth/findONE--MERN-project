@@ -31,8 +31,8 @@ const Sidebar = () => {
               </LinkContainer>
           </Row>
           <Row className='mt-4'>
-          <LinkContainer to="">
-                <Nav.Link>Payment Status</Nav.Link>
+          <LinkContainer to="/admin/allpremiumusers">
+                <Nav.Link>Premium Users</Nav.Link>
               </LinkContainer>
           </Row>
           <Row className='mt-4'>

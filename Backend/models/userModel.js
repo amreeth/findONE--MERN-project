@@ -53,7 +53,7 @@ const userSchema = mongoose.Schema(
       url: String,
     },
     premium:{
-      type:String,
+      type:Boolean,
       default:false,
     },
     favourites: [

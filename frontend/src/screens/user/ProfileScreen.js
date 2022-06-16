@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Sidebar from "../../Components/user/Sidebar/Sidebar";
 import Header from "../../Components/user/Header/Header";
 import { Container, Row, Col } from "react-bootstrap";
 import Footer from "../../Components/user/Footer/Footer";
@@ -64,9 +63,8 @@ const ProfileScreen = () => {
            
           </Col>
         </Row>
-
       </Container>
-
+      
       <Container fluid>
         <Row className="mt-5">
           <Footer />

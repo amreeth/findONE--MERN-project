@@ -15,97 +15,92 @@ const ObjectId = mongoose.Types.ObjectId;
 //==========user registration========//
 
 const registerUser = asyncHandler(async (req, res) => {
-  console.log(req.body, "user register");
+  // console.log("here");
+    // console.log(req.body, "user register");
+    const {
+      name,
+      email,
+      dob,
+      gender,
+      oppGender,
+      phonenumber,
+      image,
+      password,
+      cpassword,
+    } = req.body;
 
-  const {
-    name,
-    email,
-    dob,
-    gender,
-    oppGender,
-    phonenumber,
-    image,
-    password,
-    cpassword,
-  } = req.body;
-
-  function getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
+    function getAge(dateString) {
+      var today = new Date();
+      var birthDate = new Date(dateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
     }
-    return age;
-  }
+    const age = getAge(dob);
+  
+    const userExist = await User.findOne({ email });
+    if (userExist) {
+      // console.log('user exist');
+      res.status(400);
+      throw new Error("User already exists");
+    }
 
-  const age = getAge(dob);
-  // console.log(age);
+    console.log("no user exist");
 
-  const userExist = await User.findOne({ email });
-  // console.log(userExist, "eddksmldmsadm");
+    let myCloud;
+    if (image) {
+      myCloud = await cloudinary.v2.uploader.upload(image, {
+        folder: "newpropic",
+        crop: "scale",
+      });
+    } else {
+      res.status(400);
+      throw new Error("image not found");
+    }
 
-  if (userExist) {
-    res.status(400);
-    throw new Error("User already exists");
-  }
-
-  // console.log("no user exist");
-
-  let myCloud;
-  if (image) {
-    console.log("hoiii image ");
-
-    myCloud = await cloudinary.v2.uploader.upload(image, {
-      folder: "newpropic",
-      crop: "scale",
+    const user = await User.create({
+      name: name,
+      email: email,
+      phonenumber: phonenumber,
+      dob: age,
+      gender: gender,
+      oppGender: oppGender,
+      password: password,
+      cpassword: cpassword,
+      avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
-  } else {
-    res.status(400);
-    throw new Error("image not found");
-  }
+    console.log("user created");
 
-  const user = await User.create({
-    name: name,
-    email: email,
-    phonenumber: phonenumber,
-    dob: age,
-    gender: gender,
-    oppGender: oppGender,
-    password: password,
-    cpassword: cpassword,
-    avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
-  });
-
-  // console.log("user created");
-
-  let token = await Token.create({
-    userId: user._id,
-    token: crypto.randomBytes(32).toString("hex"),
-  });
-
-  const message = `http://localhost:3000/verify/${user.id}/${token.token}`;
-
-  await verifyEmail(user.email, "Verify Email", message);
-
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phonenumber: user.phonenumber,
-      dob: user.dob,
-      gender: user.gender,
-      oppGender: user.oppGender,
-      avatar: user.avatar,
-      friends:user.friends,
-      token: generateToken(user._id),
+    let token = await Token.create({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString("hex"),
     });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
-  }
+
+    const message = `http://localhost:3000/verify/${user.id}/${token.token}`;
+
+    await verifyEmail(user.email, "Verify Email", message);
+
+    if (user) {
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phonenumber: user.phonenumber,
+        dob: user.dob,
+        gender: user.gender,
+        oppGender: user.oppGender,
+        avatar: user.avatar,
+        friends: user.friends,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid user data");
+    }
+ 
 });
 
 //===============email===============//
@@ -161,7 +156,7 @@ const authUser = asyncHandler(async (req, res) => {
       gender: userExist.gender,
       oppGender: userExist.oppGender,
       avatar: userExist.avatar,
-      friends:userExist.friends,
+      friends: userExist.friends,
       token: generateToken(userExist._id),
     });
   } else {
@@ -173,12 +168,7 @@ const authUser = asyncHandler(async (req, res) => {
 //==========forgot password=========//
 
 const forgotPassword = asyncHandler(async (req, res) => {
-  // console.log(req.body);
-
   const user = await User.findOne({ email: req.body.email });
-
-  // console.log(user);
-
   if (!user) {
     console.log("user not found");
     res.status(401);
@@ -192,6 +182,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   // const resetPasswordUrl = `${req.protocol}://${req.get(
   //   "host"
   // )}/password/reset/${resetToken}`;
+
   const resetPasswordUrl = `http://localhost:3000/password/reset/${resetToken}`;
 
   const message = `Reset your password by clicking on the link below :\n\n ${resetPasswordUrl} \n\n if you are not requested this email the please ignore it `;
@@ -263,12 +254,9 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 const updatePassword = asyncHandler(async (req, res) => {
   try {
-    // console.log(req.body);
     const { oldPassword, newPassword, confirmPassword } = req.body;
-    // console.log(confirmPassword,'confir,');
-
     const user = await User.findById(req.user._id);
-    // console.log(user);
+
     const isMatch = await user.matchPassword(oldPassword);
 
     if (!isMatch) {
@@ -279,8 +267,6 @@ const updatePassword = asyncHandler(async (req, res) => {
     }
 
     if (newPassword == confirmPassword) {
-      // console.log("no problem");
-
       user.password = newPassword;
       user.cpassword = confirmPassword;
 
@@ -290,7 +276,6 @@ const updatePassword = asyncHandler(async (req, res) => {
         message: "password updated",
       });
     } else {
-      // console.log("not match");
       return res.status(404).json({
         success: false,
         message: "New passwords are not match",
@@ -347,13 +332,12 @@ const updateProfile = asyncHandler(async (req, res) => {
         const myCloud = await cloudinary.v2.uploader.upload(avatar, {
           folder: "newpropic",
         });
+
         user.avatar.public_id = myCloud.public_id;
         user.avatar.url = myCloud.secure_url;
       }
 
       await user.save();
-
-      // console.log(user, "user");
 
       res.status(200).json({
         _id: user._id,
@@ -419,6 +403,32 @@ const addandRemoveFavourites = asyncHandler(async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+});
+
+//===============get all favorites=======================//
+
+const getAllFavourites = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    let allFavourites;
+    if (user) {
+      allFavourites = user.favourites;
+    }
+
+    if (allFavourites.length < 1) {
+      res.status(200).json({
+        message: "You have no favourites ",
+      });
+    } else {
+      res.status(200).json({
+        allFavourites,
+        message: "Your favourites are..",
+      });
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error("User not found");
   }
 });
 
@@ -616,18 +626,16 @@ const allFriends = asyncHandler(async (req, res) => {
     const friends = [];
 
     for (let i = 0; i < friendsIdArray.length; i++) {
-      let a=await User.findById(friendsIdArray[i])
+      let a = await User.findById(friendsIdArray[i]);
       friends.push(a);
     }
-    // console.log(friends,'friends array');
-
-    if(friends.length>0){
+    if (friends.length > 0) {
       res.status(200).json(friends);
-    }else{
-      res.status(400).json({
+    } else {
+      res.status(200).json({
         friends,
-        message:"You have no friends..."
-      })
+        message: "You have no friends...",
+      });
     }
   } catch (error) {
     res.status(400).json(error);
@@ -636,63 +644,71 @@ const allFriends = asyncHandler(async (req, res) => {
 
 //======get recent ==============//
 
-const getUserFriend=asyncHandler(async(req,res)=>{
-  const userId=req.query.userId;
-  // console.log(userId);
-  try {
-    const recent=await User.findById(userId)
-    // console.log(recent);
-    res.status(200).json(recent)
-  } catch (error) {
-    res.status(500)
-    throw new Error('Recent friends not found')
-  }
-})
+const getUserFriend = asyncHandler(async (req, res) => {
+  const userId = req.query.userId;
 
+  try {
+    const recent = await User.findById(userId);
+
+    res.status(200).json(recent);
+  } catch (error) {
+    res.status(500);
+    throw new Error("Recent friends not found");
+  }
+});
+
+//=======all premium status===========//
+
+const allPremiumsStatus = asyncHandler(async (req, res) => {
+  const allPremiumLists = await Premium.find({});
+  if (allPremiumLists) {
+    res.status(200).json(allPremiumLists);
+  } else {
+    res.status(400);
+    throw new Error("No data found");
+  }
+});
 
 //==========premium purchase=========//
 
-const premiumPurchase=asyncHandler(async(req,res)=>{
+const premiumPurchase = asyncHandler(async (req, res) => {
   try {
-    const {premiumId,paymentResult}=req.body
+    const { premiumId, paymentResult } = req.body;
+    const premiumDetails = await Premium.findById(ObjectId(req.body.premiumId));
 
-    const premiumDetails=await Premium.findById(ObjectId(req.body.premiumId))
-    // console.log(premiumDetails,'selected premium details');
+    const user = await User.findById(req.user._id);
 
-    const user=await User.findById(req.user._id)
-    // console.log(user,'user details');
+    if (premiumDetails) {
+      const premiumUser = await PremiumUsers.create({
+        premiumId: premiumDetails._id,
+        price: premiumDetails.price,
+        category: premiumDetails.category,
+        valid: premiumDetails.days,
+        userId: user._id,
+        userName: user.name,
+        status: paymentResult.status,
+      });
 
-    if(premiumDetails){
-      const premiumUser=await PremiumUsers.create({
-        premiumId:premiumDetails._id,
-        price:premiumDetails.price,
-        category:premiumDetails.category,
-        valid:premiumDetails.days,
-        userId:user._id,
-        userName:user.name,
-        status:paymentResult.status
-      })
+      user.premium = true;
+      await user.save();
 
-      if(premiumUser){
-        console.log('premiumUser created');
-        res.status(200).json(premiumUser)
-      }else{
-        console.log('something went wrong');
-        res.status(500)
-        throw new Error("Premium details not found")
+      if (premiumUser) {
+        console.log("premiumUser created");
+        res.status(200).json(premiumUser);
+      } else {
+        console.log("something went wrong");
+        res.status(500);
+        throw new Error("Premium details not found");
       }
-    }else{
-      res.status(500)
-      throw new Error('premium was not found')
+    } else {
+      res.status(500);
+      throw new Error("premium was not found");
     }
-    
   } catch (error) {
-    res.status(400)
-    throw new Error('invalid data')
+    res.status(400);
+    throw new Error("invalid data");
   }
-})
-
-
+});
 
 export {
   authUser,
@@ -710,5 +726,7 @@ export {
   deleteRequest,
   allFriends,
   getUserFriend,
-  premiumPurchase
+  allPremiumsStatus,
+  premiumPurchase,
+  getAllFavourites,
 };

@@ -18,8 +18,29 @@
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-
+    height: 91vh !important;
 }
+
+.chatBoxWrapper ::-webkit-scrollbar {
+    width: 5px !important;
+  }
+  
+  /* Track */
+  .chatBoxWrapper ::-webkit-scrollbar-track {
+    background: #f1f1f127; 
+    border-radius: 20px !important;
+  }
+   
+  /* Handle */
+  .chatBoxWrapper ::-webkit-scrollbar-thumb {
+    background: rgba(92, 21, 139, 0.384); 
+    border-radius: 10px!important;
+  }
+  
+  /* Handle on hover */
+  .chatBoxWrapper ::-webkit-scrollbar-thumb:hover {
+    background: rgb(85, 85, 85); 
+  }
 
 .chatBoxTop{
     height: 100%;
@@ -38,6 +59,9 @@
     width: 80%;
     height: 90px;
     padding: 10px;
+    background-color: rgba(240, 255, 255, 0.514);
+    border-radius: 10px;
+    border: none !important;
 
 }
 
@@ -48,6 +72,17 @@
     border-radius: 5px;
     cursor: pointer;
     background-color: teal;
+    color: white;
+
+}
+
+.chatSubmitButtonNo{
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgb(54, 54, 54);
     color: white;
 
 }

@@ -18,6 +18,8 @@ const AllPremiumUsersScreen = () => {
   const allPremiumUsers = useSelector((state) => state.allPremiumUsers);
   const { loading, error, premiumUsers, success } = allPremiumUsers;
 
+
+
   useEffect(() => {
     const adminInfo = localStorage.getItem("adminInfo");
     if (adminInfo) {
@@ -29,9 +31,6 @@ const AllPremiumUsersScreen = () => {
 
   console.log(premiumUsers, "userssss");
 
-  const approvePayment = () => {
-
-  };
 
   const coloums = [
     {
@@ -59,17 +58,17 @@ const AllPremiumUsersScreen = () => {
       name: "Payment Status",
       selector: (row) => row.status,
     },
-    {
-      name: "Payment Approve",
-      cell: (row) => (
-        <button
-          className="btn btn-danger"
-          onClick={() => approvePayment(row._id)}
-        >
-          Approve
-        </button>
-      ),
-    },
+    // {
+    //   name: "Payment Approve",
+    //   cell: (row) => (
+    //     <button
+    //       className="btn btn-danger"
+    //       onClick={() => approvePayment(row._id)}
+    //     >
+    //       Approve
+    //     </button>
+    //   ),
+    // },
   ];
 
   return (

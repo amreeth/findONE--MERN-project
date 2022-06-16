@@ -1,10 +1,12 @@
 import nodemailer from "nodemailer"
 
 const verifyEmail = async (email, subject, text) => {
-  // console.log('hiiiiiiiiiiiiiiii');
-  // console.log(email);
+  
   try {
     console.log('try inside');
+    console.log(process.env.SMPT_MAIL);
+    console.log(process.env.SMPT_PASSWORD);
+    
     const transporter = nodemailer.createTransport({
       host: process.env.SMPT_HOST,
       service: process.env.SMPT_SERVICE,
@@ -15,6 +17,7 @@ const verifyEmail = async (email, subject, text) => {
         pass: process.env.SMPT_PASSWORD,
       },
     });
+    // console.log(transporter,'transporte');
 
     await transporter.sendMail({
       from: process.env.SMPT_MAIL,
@@ -23,6 +26,7 @@ const verifyEmail = async (email, subject, text) => {
       text: text,
     });
     console.log("email sent sucessfully");
+
   } catch (error) {
     console.log("email not sent");
     console.log(error);

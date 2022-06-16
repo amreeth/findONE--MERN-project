@@ -8,6 +8,7 @@ import {
   ChatBubbleOutline,
   Chat,
 } from "@material-ui/icons";
+import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
 import { useSelector, useDispatch } from "react-redux";
 import {
   getMatches,
@@ -19,7 +20,14 @@ import { useAlert } from "react-alert";
 import Loader from '../../Loader'
 
 const Card = () => {
+
+  let userInfo=localStorage.getItem('userInfo')
+  userInfo=JSON.parse(userInfo)
+  // console.log(userInfo);
+  let userId=userInfo._id
+
   const alert = useAlert();
+
 
   const dispatch = useDispatch();
   const allMatches = useSelector((state) => state.matches);
@@ -46,6 +54,8 @@ const Card = () => {
     dispatch(sentRequest(id));
     alert.success("sent request to user");
   };
+
+
 
   return (
     <>
@@ -77,13 +87,19 @@ const Card = () => {
                         )}
                       </Button>
 
-                      <Button onClick={() => handleRequest(e._id)}>
+                      {
+                        e.friends.includes(userId)?<Chat />:
+                        <Button onClick={() => handleRequest(e._id)}>
                         {sentrequest ? (
                           <Chat style={{ color: "black" }} />
                         ) : (
-                          <ChatBubbleOutline />
+                          <PersonAddSharpIcon />
                         )}
                       </Button>
+                      }
+                     
+
+
                     </div>
                   </div>
                   <div></div>

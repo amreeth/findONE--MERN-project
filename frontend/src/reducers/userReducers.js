@@ -1,3 +1,4 @@
+import Friends from "../Components/user/Friends/Friends";
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -24,6 +25,12 @@ import {
   PAYEMENT_REQUEST,
   PAYEMENT_FAIL,
   PAYEMENT_SUCCESS,
+  ALL_FRIENDS_REQUEST,
+  ALL_FRIENDS_SUCCESS,
+  ALL_FRIENDS_FAIL,
+  ALL_PREMIUMS_DETAILS_REQUEST,
+  ALL_PREMIUMS_DETAILS_SUCCESS,
+  ALL_PREMIUMS_DETAILS_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -156,6 +163,22 @@ export const resetPasswordReducer = (state = {}, action) => {
   }
 };
 
+
+export const allPremiumsDetailsReducer = (state = {premiumList:[]}, action) => {
+  switch (action.type) {
+    case ALL_PREMIUMS_DETAILS_REQUEST:
+      return {loading: true };
+
+    case ALL_PREMIUMS_DETAILS_SUCCESS:
+      return {loading: false, premiumList: action.payload,};
+
+    case ALL_PREMIUMS_DETAILS_FAIL:
+      return {loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const payementReducer = (state = {}, action) => {
   switch (action.type) {
     case PAYEMENT_REQUEST:
@@ -172,6 +195,32 @@ export const payementReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+
+
+export const allFriendsReducer = (state = { friends: [] }, action) => {
+  switch (action.type) {
+    case ALL_FRIENDS_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_FRIENDS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        friends: action.payload,
+      };
+    case ALL_FRIENDS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }

@@ -9,7 +9,9 @@ import {
   userUpdatePasswordReducer,
   forgotPasswordReducer,
   resetPasswordReducer,
-  payementReducer
+  payementReducer,
+  allFriendsReducer,
+  allPremiumsDetailsReducer
 } from "./reducers/userReducers";
 
 import {
@@ -41,6 +43,11 @@ const reducer = combineReducers({
   resetpassword:resetPasswordReducer,
   acceptRequest:acceptRequestReducer,
   payment:payementReducer,
+  allFriends:allFriendsReducer,
+  allPremiumsLists:allPremiumsDetailsReducer,
+  
+
+  
 
   matches: matchesReducer,
   matchDetails: matchesDetailsReducer,

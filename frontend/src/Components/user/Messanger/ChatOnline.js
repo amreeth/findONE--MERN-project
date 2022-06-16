@@ -18,7 +18,7 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
         },
       };
       const { data } = await axios.get("/users/friends", config);
-      console.log("getfriends", data);
+      // console.log("getfriends", data);
       setFriends(data);
     };
     getFriends();
@@ -39,7 +39,7 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
       setCurrentChat(data);
       
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

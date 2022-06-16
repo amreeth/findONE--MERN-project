@@ -17,6 +17,8 @@ const MessangerScreen = () => {
   const [arrivalMessage, setArivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
+  console.log(newMessage.length);
+
   const socket = useRef(io("ws://localhost:8900"));
   const scrollRef = useRef();
 
@@ -52,7 +54,6 @@ const MessangerScreen = () => {
     });
   }, [user.friends]);
 
-
   useEffect(() => {
     const getConversation = async () => {
       try {
@@ -65,15 +66,14 @@ const MessangerScreen = () => {
     getConversation();
   }, [user._id]);
 
-
   useEffect(() => {
     const getMessages = async () => {
       try {
         const res = await axios.get(`/message/${currentChat?._id}`);
-        console.log(res.data,'messagessssssssssssssssssssss');
+        // console.log(res.data,'messagessssssssssssssssssssss');
         setMessages(res.data);
       } catch (error) {
-        console.log(error,'error from getMessage');
+        console.log(error, "error from getMessage");
       }
     };
     getMessages();
@@ -81,7 +81,7 @@ const MessangerScreen = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //sender:user._id 
+    //sender:user._id
     const message = {
       sender: user,
       text: newMessage,
@@ -102,9 +102,9 @@ const MessangerScreen = () => {
     });
 
     try {
-      const {data} = await axios.post("/message", message);
-      console.log(message);
-      setMessages([...messages,data]);
+      const { data } = await axios.post("/message", message);
+      // console.log(message);
+      setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
       console.log(error);
@@ -115,16 +115,16 @@ const MessangerScreen = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-console.log(messages,'message');
+  // console.log(messages,'message');
 
   return (
     <>
       <Header />
-      <Container fluid>
+      <Container>
         <div className="messanger">
           <div className="chatMenu">
             <div className="chatMenuWrapper">
-              <Typography variant='h5'>Recent Chat</Typography>
+              <Typography variant="h5">Recent Chat</Typography>
               {conversations.map((cov) => (
                 <div onClick={() => setCurrentChat(cov)}>
                   <Conversation conversation={cov} currentUser={user} />
@@ -132,7 +132,10 @@ console.log(messages,'message');
               ))}
             </div>
           </div>
+
+          
           <div className="chatBox">
+            {}
             <div className="chatBoxWrapper">
               {currentChat ? (
                 <>
@@ -150,9 +153,16 @@ console.log(messages,'message');
                       onChange={(e) => setNewMessage(e.target.value)}
                       value={newMessage}
                     ></textarea>
-                    <button className="chatSubmitButton" onClick={handleSubmit}>
-                      Send
-                    </button>
+                    {newMessage.length < 1 ? (
+                      <button className="chatSubmitButtonNo">Send</button>
+                    ) : (
+                      <button
+                        className="chatSubmitButton"
+                        onClick={handleSubmit}
+                      >
+                        Send
+                      </button>
+                    )}
                   </div>
                 </>
               ) : (
@@ -165,7 +175,7 @@ console.log(messages,'message');
           <div className="chatOnline">
             <div className="chatOnlineWrapper">
               <ChatOnline
-                onlineUsers={onlineUsers&&onlineUsers}
+                onlineUsers={onlineUsers && onlineUsers}
                 currentId={user._id}
                 setCurrentChat={setCurrentChat}
               />

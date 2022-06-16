@@ -1,8 +1,5 @@
 .test {
-    background-image: 
-    url(
-  "https://media.geeksforgeeks.org/wp-content/uploads/rk.png");
     background-size: cover;
-    height: 100vh;
+    height: 80vh;
     background-repeat:no-repeat; 
   }

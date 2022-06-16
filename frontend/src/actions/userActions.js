@@ -1,5 +1,11 @@
 import axios from "../utils/axios";
 import {
+  ALL_FRIENDS_FAIL,
+  ALL_FRIENDS_REQUEST,
+  ALL_FRIENDS_SUCCESS,
+  ALL_PREMIUMS_DETAILS_FAIL,
+  ALL_PREMIUMS_DETAILS_REQUEST,
+  ALL_PREMIUMS_DETAILS_SUCCESS,
   FORGOT_PASSWORD_FAIL,
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
@@ -9,9 +15,6 @@ import {
   RESET_PASSWORD_FAIL,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
-  USER_DETAILS_FAIL,
-  USER_DETAILS_REQUEST,
-  USER_DETAILS_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
@@ -29,6 +32,7 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
 } from "../constants/userConstants";
+
 
 //=============user login===============//
 
@@ -138,6 +142,8 @@ export const registers =
 
       localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
+
+      console.log(error)
       dispatch({
         type: USER_REGISTER_FAIL,
         payload: error.response,
@@ -238,7 +244,7 @@ export const updateUserProfile =
 export const updatePassword =
   ({ oldPassword, newPassword, confirmPassword }) =>
   async (dispatch, getState) => {
-    console.log("hiiiiii");
+    // console.log("hiiiiii");
     try {
       dispatch({
         type: USER_UPDATE_PASSWORD_REQUEST,
@@ -255,7 +261,7 @@ export const updatePassword =
         },
       };
 
-      console.log(config);
+      // console.log(config);
 
       const { data } = await axios.put(
         "/users/updatepassword",
@@ -263,7 +269,7 @@ export const updatePassword =
         config
       );
 
-      console.log(data);
+      // console.log(data);
 
       dispatch({
         type: USER_UPDATE_PASSWORD_SUCCESS,
@@ -344,6 +350,34 @@ export const forgotPassword =
   }
 
 
+
+  export const allPremiumLists = () => async (dispatch) => {
+    try {
+      dispatch({
+        type: ALL_PREMIUMS_DETAILS_REQUEST,
+      });
+
+      const { data } = await axios.get("users/allpremium");
+      console.log(data, "all premium status");
+  
+      dispatch({
+        type: ALL_PREMIUMS_DETAILS_SUCCESS,
+        payload: data,
+      });
+  
+    } catch (error) {
+      dispatch({
+        type: ALL_PREMIUMS_DETAILS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+
+
   export const premiumPayment=({premiumId,paymentResult})=>async(dispatch,getState)=>{
     try{
       dispatch({
@@ -361,20 +395,59 @@ export const forgotPassword =
         },
       };
 
-      console.log('here');  
+      // console.log('here');  
       
       const {data}=await axios.post('users/premiumpurchase',{premiumId,paymentResult},config)
       console.log(data);
 
       dispatch({
         type:PAYEMENT_SUCCESS,
-        success:true,
         payload:data
       })
 
     }catch(error){
       dispatch({
         type:PAYEMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+
+  export const allFriends=()=>async(dispatch,getState)=>{
+    try {
+      dispatch({
+        type:ALL_FRIENDS_REQUEST
+      })
+
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+
+      const {data}=await axios.get('users/friends',config)
+
+      dispatch({
+        type:ALL_FRIENDS_SUCCESS,
+        payload:data,
+
+      })
+
+    } catch (error) {
+      dispatch({
+        type:ALL_FRIENDS_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

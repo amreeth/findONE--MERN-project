@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormControl } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-
 import CropImage from "../../Components/Cropper/CropImage";
 
 import "./RegisterScreen.css";
@@ -36,7 +35,7 @@ export default function Log() {
   const [cropImage, setCropImage] = useState(false);
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
-  // console.log(image);
+ 
 
   const {
     register,
@@ -151,6 +150,7 @@ function submitForm(data) {
                       src={cropImage}
                       imageCallback={(image) => {
                         setImage(image);
+                        console.log(image);
                         setShowCropper(false);
                       }}
                       closeHander={() => {

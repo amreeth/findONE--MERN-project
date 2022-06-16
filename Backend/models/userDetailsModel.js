@@ -8,19 +8,19 @@ const userDetailsSchema=mongoose.Schema({
       },
     height:{
         type:String,
-        required:true
+
     },
     weight:{
         type:String,
-        required:true
+       
     },
      job:{
          type:String,
-         required:true
+         
      },
      location:{
          type:String,
-         required:true,
+         
      },
      answers:[{
          question:{
@@ -32,8 +32,18 @@ const userDetailsSchema=mongoose.Schema({
              type:mongoose.Schema.Types.ObjectId,
          }
      }],
-    
-     
+
+     images: [
+        {
+          publicId:{
+            type:String,
+          },
+          url:{
+            type:String,
+          }
+        }
+      ]
+
 })
 
 const UserDetails = mongoose.model("UserDetails", userDetailsSchema);

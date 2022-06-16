@@ -10,10 +10,10 @@ import {
 export default function Footer() {
   return (
     <MDBFooter className='border text-center text-white'>
-      <div className='container p-4 pb-0'>
-        <section className='mb-4'>
+      <div className='container p-4 pb-0 text-end' >
+        <section className='mb-4 ' style={{position:"fixed",top:"10rem",right:0,display:"flex",flexDirection:"column"}}>
           <a
-            className='btn border-0 btn-primary btn-floating m-1'
+            className='btn border-0 btn-primary  m-1'
             style={{ backgroundColor: '#3b5998' }}
             href='#!'
             role='button'
@@ -49,7 +49,7 @@ export default function Footer() {
 
         </section>
       </div>
-      <div className='text-center px-3' >
+      <div className='text-center px-3 mt-5 pt-5' >
         © 2020 Copyright:
         <a className='mx-3 text-decoration-none' >
           AMREETH ASOK
