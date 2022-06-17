@@ -71,8 +71,9 @@ export const getMatchDetails = (id) => async (dispatch) => {
       type: MATCH_DETAILS_REQUEST,
     });
 
-    let userInfo = await localStorage.getItem("userInfo");
+    let userInfo = localStorage.getItem("userInfo");
     userInfo = JSON.parse(userInfo);
+
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
@@ -80,6 +81,8 @@ export const getMatchDetails = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(`/match/${id}`, config);
+
+    // console.log(data);
 
     dispatch({
       type: MATCH_DETAILS_SUCCESS,
@@ -103,10 +106,9 @@ export const favAddRemove = (id) => async (dispatch) => {
       type: MATCH_FAV_REQUEST,
     });
 
-    let userInfo = await localStorage.getItem("userInfo");
+    let userInfo =localStorage.getItem("userInfo");
     userInfo = JSON.parse(userInfo);
-
-    console.log(userInfo.token, "userinfo");
+    // console.log(userInfo.token, "userinfo");
 
     const config = {
       headers: {
@@ -114,10 +116,8 @@ export const favAddRemove = (id) => async (dispatch) => {
       },
     };
 
-    // console.log(id,'config');
     const { data } = await axios.get(`/users/favadd/${id}`, config);
-
-    console.log(data, "dadadasd");
+    // console.log(data, "dadadasd");
 
     dispatch({
       type: MATCH_FAV_SUCCESS,
@@ -148,8 +148,7 @@ export const sentRequest = (id) => async (dispatch,getState) => {
     };
 
     const { data } = await axios.get(`/users/sentrequest/${id}`, config);
-
-    console.log(data);
+    // console.log(data);
 
     dispatch({
       type: MATCH_SENTREQUEST_SUCCESS,
@@ -166,7 +165,6 @@ export const sentRequest = (id) => async (dispatch,getState) => {
 //================all requests============//
 
 export const allSentRequests = () => async (dispatch) => {
-  // console.log('hhiii');
   try {
     dispatch({
       type: ALL_SENT_REQUESTS_REQUEST,
@@ -181,8 +179,7 @@ export const allSentRequests = () => async (dispatch) => {
     };
 
     const { data } = await axios.get("/users/allsentrequest", config);
-
-console.log(data.users,'fadda');
+// console.log(data.users,'fadda');
 
     dispatch({
       type: ALL_SENT_REQUESTS_SUCCESS,

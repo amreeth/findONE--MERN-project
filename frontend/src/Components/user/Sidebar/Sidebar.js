@@ -18,46 +18,44 @@ const Sidebar = () => {
         <Row className="mt-4  mx-auto ">
           <Col className="mx-auto" lg={12}>
             <Avatar
-            className="mx-auto"
+
+            className="mx-auto user-card-avatar" 
               alt="Cindy Baker"
-              // sx={{ width: 60, height: 60 }}
               src={userInfo && userInfo ? userInfo.avatar.url : ""}
             />
           </Col>
 
           <Col className="" lg={12}>
             <Link to="/profile" className="text-center text-white text-uppercase text-bold" style={{ textDecoration: "none" }}>
-              <Typography  color="black" variant="h5">{userInfo && userInfo.name}</Typography>
+              <p  color="black" className="pt-3 side-bar-user-name" >{userInfo && userInfo.name}</p>
             </Link>
           </Col>
         </Row>
-
+<hr style={{color:"black"}}/>
         <Row className="mt-4">
           <Link
             to="/friends"
-            className="d-flex"
             style={{ textDecoration: "none" }}
           >
-            <PeopleRoundedIcon />
-            <Typography variant="h5">Friends</Typography>
+            <p className="side-bar-texts" >Friends</p>
           </Link>
         </Row>
 
         <Row className="mt-4">
           <Link to="/allrequests" style={{ textDecoration: "none" }}>
-            <Typography variant="h5">Requests</Typography>
+            <p className="side-bar-texts" >Requests</p>
           </Link>
         </Row>
 
         <Row className="mt-4">
           <Link to="/messanger" style={{ textDecoration: "none" }}>
-            <Typography variant="h5">Message</Typography>
+            <p className="side-bar-texts" >Message</p>
           </Link>
         </Row>
 
         <Row className="mt-4">
           <Link to="/notifications" style={{ textDecoration: "none" }}>
-            <Typography variant="h5">Notifiaction</Typography>
+            <p className="side-bar-texts" >Notifiaction</p>
           </Link>
         </Row>
       </Container>

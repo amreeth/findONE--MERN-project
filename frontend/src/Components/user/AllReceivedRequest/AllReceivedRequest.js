@@ -9,10 +9,12 @@ import {
 import { useAlert } from "react-alert";
 import { Typography, Button } from "@mui/material";
 import Loader from "../../Loader";
+import DeleteOutlineTwoToneIcon from '@mui/icons-material/DeleteOutlineTwoTone';
+import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
+
 
 const AllReceivedRequest = () => {
   const dispatch = useDispatch();
-  const [refresh, setRefresh] = useState(false);
 
   const allreceivedrequests = useSelector((state) => state.allreceivedrequests);
   const { loading, error, receivedrequest } = allreceivedrequests;
@@ -43,14 +45,14 @@ const AllReceivedRequest = () => {
             style={{ borderRadius: "5px" }}
           >
             <div>
-              <img src={e.avatar.url}/>
+            <img style={{width:"50px",borderRadius: "5px"}} src={e.avatar.url}></img>
             </div>
-            <div>
+            <div className="p-2">
               <Typography variant="h5">{e.name}</Typography>
             </div>
-            <div className="actions">
-              <Button onClick={() => handleAccept(e._id)}>Accept</Button>
-              <Button onClick={() => handleDelete(e._id)}>Delete</Button>
+            <div className="p-2">
+              <Button onClick={() => handleAccept(e._id)}><DoneAllTwoToneIcon/></Button>
+              <Button onClick={() => handleDelete(e._id)}><DeleteOutlineTwoToneIcon/></Button>
             </div>
           </Col>
         ))

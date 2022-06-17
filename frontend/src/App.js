@@ -13,6 +13,7 @@ import MessangerScreen from "./screens/user/MessangerScreen";
 import GetPremiumScreen from "./screens/user/GetPremiumScreen";
 import PaymentSuccessScreen from "./screens/user/PaymentSuccessScreen";
 import FriendsScreen from "./screens/user/FriendsScreen";
+import AfterRegScreen from "./screens/user/AfterRegScreen";
 
 // import RegisterScreen from "./screens/user/RegisterScreen";
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='/getpremium' element={<GetPremiumScreen/>}/>
           <Route path='/paymentsccess' element={<PaymentSuccessScreen/>}/>
           <Route path='/friends' element={<FriendsScreen/>}/>
+          <Route path='/after' element={<AfterRegScreen/>}/>
 
 
 

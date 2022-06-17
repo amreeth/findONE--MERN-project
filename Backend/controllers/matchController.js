@@ -12,10 +12,8 @@ const ObjectId = mongoose.Types.ObjectId;
 const getAllMatches = asyncHandler(async (req, res) => {
 
   try {
-
     const user = await User.findById(req.user._id);
     const looking = user.oppGender;
-    // console.log(looking);
     const matches = await User.find({ gender: looking });
 
     // console.log(matches,'matches are')
@@ -43,15 +41,16 @@ const getAllMatches = asyncHandler(async (req, res) => {
 
 const matchDetail=asyncHandler(async(req,res)=>{
   try {
-
     const id=req.params.id
     const match=await User.findById(id)
-
-    console.log(match);
+    // console.log(match);
+    const moreDetails=await UserDetails.findOne({userId:ObjectId(id)})
+    // console.log(moreDetails,'moredetailss');
 
     if(match){
       res.status(200).json({
         match,
+        moreDetails,
         messge:"match details are"
       })
     }
@@ -61,4 +60,10 @@ const matchDetail=asyncHandler(async(req,res)=>{
   }
 })
 
-export { getAllMatches,matchDetail };
+
+
+
+
+
+
+export { getAllMatches,matchDetail};

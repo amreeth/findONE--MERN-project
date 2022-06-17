@@ -4,9 +4,8 @@ import Grid from "@mui/material/Grid";
 import { FormControl } from "react-bootstrap";
 import CropImage from "../../Cropper/CropImage";
 import Tooltip from "@mui/material/Tooltip";
-import { Typography, Button } from "@mui/material";
+import {Button } from "@mui/material";
 import axios from "../../../utils/axios";
-
 import { useAlert } from "react-alert";
 
 const Moredetail = () => {
@@ -21,7 +20,7 @@ const Moredetail = () => {
   const [result, setResult] = useState([]);
 
   const imageUpload = async (e) => {
-    console.log('herre');
+    // console.log('herre');
     try {
       let userInfo = localStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
@@ -31,10 +30,7 @@ const Moredetail = () => {
           Authorization:`Bearer ${userInfo.token}`
         },
       };
-      console.log(result);
-      
       const { data } = await axios.post("users/multipleimages",{image,image2,image3},config);
-        
       if (data) {
         alert("image uploaded successfully");
       }

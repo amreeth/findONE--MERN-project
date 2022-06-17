@@ -12,18 +12,13 @@ const Changepassword = () => {
   const { loading, error, success, user } = changepassword;
 
   const [show, setShow] = useState(false);
-
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setnewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleChangePassword = (e) => {
     e.preventDefault();
-    console.log(oldPassword, newPassword, confirmPassword);
     dispatch(updatePassword({ oldPassword, newPassword, confirmPassword }));
-
-    // console.log(success);
-
     if (success) {
       setTimeout(() => {
         setShow(false);
@@ -32,12 +27,11 @@ const Changepassword = () => {
   };
 
   const handleClose = () => setShow(false);
-
   const handleShow = () => setShow(true);
 
   return (
     <>
-      <Button variant="danger" onClick={handleShow}>
+      <Button style={{color:"black"}} onClick={handleShow}>
         Change Password
       </Button>
 

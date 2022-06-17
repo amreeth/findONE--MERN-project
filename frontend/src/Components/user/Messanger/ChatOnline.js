@@ -34,7 +34,6 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
     try {
       console.log(currentId,user._id,'handleclcik');
       const { data } = await axios.get(`/conversation/find/${currentId}/${user._id}`);
-  
       console.log(data, "dddddd");
       setCurrentChat(data);
       

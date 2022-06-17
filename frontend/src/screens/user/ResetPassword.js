@@ -3,16 +3,16 @@ import "./ResetPassword.css";
 import { Button, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPasswordAction } from "../../actions/userActions";
-import { useParams,Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Message from "../../Components/Message";
 import Loader from "../../Components/Loader";
-import {useNaviagate} from 'react-router-dom'
+import { useNaviagate } from "react-router-dom";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const params = useParams();
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   console.log(params.token);
   let token = params.token;
@@ -25,14 +25,11 @@ const ResetPassword = () => {
 
   console.log(resetPassword);
   let success;
-  
-  if(message){
-    success=message.success
+
+  if (message) {
+    success = message.success;
     console.log(success);
   }
-
-  
-
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -40,13 +37,12 @@ const ResetPassword = () => {
   };
 
   useEffect(() => {
-   if(success){
-     setTimeout(()=>{
-       navigate('/login')
-     },3000)
-   }
-  }, [success])
-  
+    if (success) {
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+  }, [success]);
 
   return (
     <div className="resetPassword">
@@ -56,7 +52,6 @@ const ResetPassword = () => {
         <Typography variant="h4" style={{ padding: "2vamx" }}>
           Reset Password
         </Typography>
-
         <input
           type="password"
           placeholder="Enter the password"
@@ -65,15 +60,11 @@ const ResetPassword = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-         <Link to='/forgotpassword'>
+        <Link to="/forgotpassword">
           <Typography>Resend Mail</Typography>
-      </Link>
-
+        </Link>
         <Button type="submit">Reset Password</Button>
       </form>
-
-     
     </div>
   );
 };

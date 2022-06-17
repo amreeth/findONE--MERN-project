@@ -7,4 +7,5 @@ import { protect } from "../middleware/authMiddleware.js";
 router.route('/allMatches').get(protect,getAllMatches)
 router.route('/:id').get(protect,matchDetail)
 
+
 export default router

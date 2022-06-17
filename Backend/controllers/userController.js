@@ -94,6 +94,8 @@ const registerUser = asyncHandler(async (req, res) => {
         oppGender: user.oppGender,
         avatar: user.avatar,
         friends: user.friends,
+        favourites:user.favourites,
+        sentrequests:user.sentrequests,
         token: generateToken(user._id),
       });
     } else {
@@ -141,9 +143,8 @@ const emailVerify = asyncHandler(async (req, res) => {
 //===========user login======//
 
 const authUser = asyncHandler(async (req, res) => {
-  // console.log('hiii');
+ 
   const { email, password } = req.body;
-
   const userExist = await User.findOne({ email });
 
   if (userExist && (await userExist.matchPassword(password))) {
@@ -157,6 +158,8 @@ const authUser = asyncHandler(async (req, res) => {
       oppGender: userExist.oppGender,
       avatar: userExist.avatar,
       friends: userExist.friends,
+      sentrequests:userExist.sentrequests,
+      favourites:userExist.favourites,
       token: generateToken(userExist._id),
     });
   } else {
@@ -348,6 +351,9 @@ const updateProfile = asyncHandler(async (req, res) => {
         gender: user.gender,
         oppGender: user.oppGender,
         avatar: user.avatar,
+        friends: user.friends,
+        favourites:user.favourites,
+        sentrequests:user.sentrequests,
         token: generateToken(user._id),
         success: true,
         messsge: "profile updated",
@@ -367,8 +373,6 @@ const updateProfile = asyncHandler(async (req, res) => {
 //==========add favourites====================//
 
 const addandRemoveFavourites = asyncHandler(async (req, res) => {
-  // console.log('add remove favorite');
-
   try {
     const user = await User.findById(req.user._id);
 
@@ -392,7 +396,6 @@ const addandRemoveFavourites = asyncHandler(async (req, res) => {
     } else {
       user.favourites.push(req.params.id);
       await user.save();
-
       return res.status(200).json({
         success: true,
         message: "added to favourites",

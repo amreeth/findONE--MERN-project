@@ -67,11 +67,12 @@
 import React, { useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
-import { Home, HomeOutlined, Search, SearchOutlined } from "@material-ui/icons";
+import { Home, HomeOutlined, Search } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../actions/userActions";
 import { Nav } from "react-bootstrap";
-
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import LogoutIcon from '@mui/icons-material/Logout';
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,19 +92,20 @@ const Header = () => {
     <div className="header">
       <Link to="/" onClick={()=>setTab('/')}>
         {
-          tab==='/'?<Home style={{color:"green"}} />:<HomeOutlined/>
+          tab==='/'?<Home style={{color:"white"}} />:<HomeOutlined style={{color:"white"}}/>
         }
       </Link>
 
       <Link to="/search" onClick={()=>setTab('/search')}>
       {
-        tab==='/search' ? <Search/> : <SearchOutlined/>
+        tab==='/search' ? <Search style={{color:"white"}} /> : <PersonSearchIcon style={{color:"white"}} />
       }
       </Link>
 
       <Nav>
-        <Nav.Link onClick={logoutHandler} style={{color:"black"}}>
-          Logout   <i className="fa fa-sign-out" aria-hidden="true"></i>
+        <Nav.Link onClick={logoutHandler} style={{color:"white"}} >
+          <LogoutIcon style={{color:"white"}} />
+          {/* Logout   <i style={{color:"white"}}className="fa fa-sign-out" aria-hidden="true"></i> */}
         </Nav.Link>
       </Nav>
     </div>

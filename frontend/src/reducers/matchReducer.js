@@ -56,7 +56,7 @@ export const matchesReducer = (state = { matches: [] }, action) => {
   }
 };
 
-export const matchesDetailsReducer = (state = { match: {} }, action) => {
+export const matchesDetailsReducer = (state = { }, action) => {
   switch (action.type) {
     case MATCH_DETAILS_REQUEST:
       return { loading: true, ...state };
@@ -65,6 +65,7 @@ export const matchesDetailsReducer = (state = { match: {} }, action) => {
       return {
         loading: false,
         match: action.payload.match,
+        moreDetails:action.payload.moreDetails
       };
 
     case MATCH_DETAILS_FAIL:

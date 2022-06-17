@@ -81,7 +81,6 @@ const MessangerScreen = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //sender:user._id
     const message = {
       sender: user,
       text: newMessage,
@@ -103,7 +102,6 @@ const MessangerScreen = () => {
 
     try {
       const { data } = await axios.post("/message", message);
-      // console.log(message);
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {

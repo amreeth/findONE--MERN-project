@@ -6,11 +6,11 @@ import {
   MDBRow,
   MDBIcon
 } from 'mdb-react-ui-kit';
-
+import "./Footer.css"
 export default function Footer() {
   return (
-    <MDBFooter className='border text-center text-white'>
-      <div className='container p-4 pb-0 text-end' >
+    <MDBFooter className=' text-center text-white mt-5'>
+      <div className='container  pb-0 text-end' >
         <section className='mb-4 ' style={{position:"fixed",top:"10rem",right:0,display:"flex",flexDirection:"column"}}>
           <a
             className='btn border-0 btn-primary  m-1'
@@ -49,11 +49,9 @@ export default function Footer() {
 
         </section>
       </div>
-      <div className='text-center px-3 mt-5 pt-5' >
-        © 2020 Copyright:
-        <a className='mx-3 text-decoration-none' >
-          AMREETH ASOK
-        </a>
+      <div className='text-center px-3 ' style={{color:"black"}}>
+        <p className='text-center px-3 copyright-text'>Copyright © 2022 findOne. All Rights Reserved</p>
+        
       </div>
     </MDBFooter>
   );

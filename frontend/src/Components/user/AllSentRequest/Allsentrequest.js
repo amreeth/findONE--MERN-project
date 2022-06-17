@@ -5,6 +5,7 @@ import { allSentRequests ,sentRequest} from "../../../actions/matchActions";
 import { useAlert } from "react-alert";
 import { Typography, Button } from "@mui/material";
 import Loader from "../../Loader";
+import DeleteOutlineTwoToneIcon from '@mui/icons-material/DeleteOutlineTwoTone';
 
 const Allsentrequest = () => {
   const dispatch = useDispatch();
@@ -31,18 +32,18 @@ const Allsentrequest = () => {
           <Col
             key={e._id}
             lg={8}
-            className="mt-2 borrder shadow mx-auto d-flex"
-            style={{ borderRadius: "5px" }}
+            className="mt-2 borrder shadow mx-auto d-flex "
+            style={{ borderRadius: "5px",textAlign:'center' }}
           >
             <div>
-              <h2>img</h2>
+             <img style={{width:"50px",borderRadius: "5px"}} src={e.avatar.url}></img>
             </div>
-            <div>
-              <Typography>{e.name}</Typography> 
+            <div className="p-2">
+              <Typography variant='h4'>{e.name}</Typography> 
             </div>
-            <div className="actions">
+            <div className="p-2">
               <Button onClick={()=>handleDelete(e._id)}>
-              Remove
+              <DeleteOutlineTwoToneIcon/>
               </Button>
 
             </div>

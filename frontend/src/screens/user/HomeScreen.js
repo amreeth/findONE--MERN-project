@@ -12,7 +12,6 @@ const HomeScreen = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-
     const userInfo = localStorage.getItem("userInfo");
     const info = JSON.parse(userInfo);
 
@@ -28,18 +27,37 @@ const HomeScreen = () => {
   return (
     <>
       <Header />
-      <Container fluid>
+      <div className="container pt-5">
+        <div className="row d-flex justify-content-between">
+          <div
+            className="col-3 col-lg-3 col-md-2 "
+            style={{
+              borderRadius: "10px",
+              backgroundColor: "white",
+              width: "16rem",
+            }}
+          >
+            <Sidebar />
+          </div>
+          <div className="col-9 d-flex col-lg-9 col-md-10">
+            <Card />
+          </div>
+        </div>
+        <Footer  className="pt-5"/>
+      </div>
+
+      {/* <Container fluid>
         <Row className="mt-3">
-          <Col
+          <Col 
             lg={2} xs={1} sm={2}
-            className=" border shadow mx-auto"
-            style={{ borderRadius: "10px" }}
+            className=" border 5px shadow mx-auto"
+            style={{ borderRadius: "10px" , backgroundColor:"white" , width:"17rem"}}
           >
             <Sidebar/>
           </Col>
 
           <Col lg={9} sm={9} className=" mx-auto">
-            <Row className="mt-4 ">       
+            <Row>       
                 <Card />
             </Row>   
           </Col>
@@ -49,7 +67,7 @@ const HomeScreen = () => {
         <Row className="mt-5">
           <Footer />
         </Row>
-      </Container>
+      </Container> */}
     </>
   );
 };

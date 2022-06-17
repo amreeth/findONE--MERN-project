@@ -3,9 +3,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff42;
+  background-color: #ffe1bcf6;
 }
-
+.header > Link {
+  color: white;
+}
 .header > a {
   width: 2vmax;
   height: 2vmax;

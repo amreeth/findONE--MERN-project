@@ -1,3 +1,20 @@
 .sidebarclass{
     color: white;
 }
+.side-bar-texts{
+    font-size: 20px;
+    text-align: center;
+    color: rgb(29, 27, 27);
+}
+.user-card-avatar{
+    width: 75px !important;
+    height: 75px !important;
+
+}
+.side-bar-user-name{
+    font-size: 24px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 600;
+    color: rgb(3, 3, 70);
+}

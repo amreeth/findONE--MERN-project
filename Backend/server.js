@@ -20,7 +20,6 @@ app.use(cors())
 //body parser
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-
 //==============//  
 
 dotenv.config()
@@ -41,8 +40,6 @@ app.use('/api/admin',adminRoutes)
 app.use('/api/match',matchRoutes)
 app.use('/api/message',messageRoutes)
 app.use('/api/conversation',conversationRoutes)
-
-
 app.get('/api/config/paypal',(req,res)=>res.send(process.env.PAYPAL_CLIENT_ID))
 
 

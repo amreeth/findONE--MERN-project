@@ -93,7 +93,6 @@ const userSchema = mongoose.Schema(
 );
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -107,14 +106,13 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
-
+  
   this.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-
   return resetToken;
 };
 

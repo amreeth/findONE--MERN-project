@@ -57,7 +57,7 @@ const EditProfile = () => {
   
   return (
     <>
-      <Button varinat="success" onClick={handleShow}>
+      <Button style={{color:"black"}} onClick={handleShow}>
         Edit profile
       </Button>
 
@@ -103,29 +103,6 @@ const EditProfile = () => {
                 helperText={errors?.name ? errors?.name.message : ""}
               />
             </Grid>
-
-            {/* <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                placeholder={userInfo.email}
-                name="email"
-                
-                autoComplete="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
-                error={!!errors?.email}
-                helperText={errors?.email ? errors.email.message : ""}
-              />
-            </Grid> */}
-
             <Grid item xs={12}>
               <TextField
                 required

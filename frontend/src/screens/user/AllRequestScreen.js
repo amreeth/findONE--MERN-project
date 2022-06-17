@@ -1,5 +1,4 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import Footer from "../../Components/user/Footer/Footer";
 import Header from "../../Components/user/Header/Header";
 import Sidebar from "../../Components/user/Sidebar/Sidebar";
@@ -10,43 +9,31 @@ const AllRequestScreen = () => {
   return (
     <>
       <Header />
-      <Container fluid>
-        <Row className="mt-3">
-          <Col
-            lg={2}
-            className=" border shadow mx-auto"
-            style={{ borderRadius: "10px" }}
+      <div className="container pt-5">
+        <div className="row d-flex justify-content-between">
+          <div
+            className="col-3 col-lg-3 col-md-2 "
+            style={{
+              borderRadius: "10px",
+              backgroundColor: "white",
+              width: "16rem",
+            }}
           >
             <Sidebar />
-          </Col>
-
-          <Col lg={9} className=" mx-auto">
-            <Container>
-              <Row>
-                <Col lg={5} sm={12}>
-                  <h4>All Received Request</h4>
-                  <Row className="mt-4">
-                    <AllReceivedRequest />
-                  </Row>
-                </Col>
-
-                <Col lg={5} sm={12}>
-                  <h4>All Sent Requests</h4>
-                  <Row className="mt-4">
-                    <Allsentrequest />
-                  </Row>
-                </Col>
-                
-              </Row>
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-      <Container fluid>
-        <Row className="mt-5">
-          <Footer />
-        </Row>
-      </Container>
+          </div>
+          <div className="col-9 d-flex col-lg-9 col-md-10">
+            <div className="col-6">
+              <h4>All Received Request</h4>
+              <AllReceivedRequest />
+            </div>
+            <div className="col-6">
+              <h4>All Sent Requests</h4>  
+              <Allsentrequest />
+            </div>
+          </div>
+        </div>
+        <Footer className="pt-5" />
+      </div>
     </>
   );
 };

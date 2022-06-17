@@ -1,0 +1,33 @@
+.question-wrapper{
+    height: 35rem;
+    border-radius: 8px;
+
+}
+.question{
+    background-color: rgb(66, 61, 61);
+    margin: 20px;
+    color: aliceblue;
+    border-radius: 8px;
+}
+.details-wrapper{
+    height: 14.7rem;
+    border-radius: 8px;
+}
+.image-wrapper{
+    margin-top: 5px;
+    height: 17rem;
+    border-radius: 8px;
+}
+.enter-details {
+    font-size: 20px;
+}
+.img-or-icon{
+background-color: white;
+width: 10rem;
+border: 1px solid rgb(235, 234, 234);
+border-radius: 8px;
+}
+.icons-question{
+    margin-top: 5rem;
+    
+}
