@@ -96,6 +96,8 @@ const registerUser = asyncHandler(async (req, res) => {
         friends: user.friends,
         favourites:user.favourites,
         sentrequests:user.sentrequests,
+        incomingrequests:user.incomingrequests,
+        premium:user.premium,
         token: generateToken(user._id),
       });
     } else {
@@ -160,6 +162,8 @@ const authUser = asyncHandler(async (req, res) => {
       friends: userExist.friends,
       sentrequests:userExist.sentrequests,
       favourites:userExist.favourites,
+      incomingrequests:userExist.incomingrequests,
+      premium:userExist.premium,
       token: generateToken(userExist._id),
     });
   } else {
@@ -353,6 +357,8 @@ const updateProfile = asyncHandler(async (req, res) => {
         avatar: user.avatar,
         friends: user.friends,
         favourites:user.favourites,
+        incomingrequests:user.incomingrequests,
+        premium:user.premium,
         sentrequests:user.sentrequests,
         token: generateToken(user._id),
         success: true,
@@ -540,7 +546,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
   try {
     const requestedUser = await User.findById(req.params.id);
     const loggedInUser = await User.findById(req.user._id);
-    // console.log(userFollow);
+  
     if (!requestedUser) {
       return res.status(404).json({
         success: false,
@@ -553,13 +559,11 @@ const acceptRequest = asyncHandler(async (req, res) => {
       loggedInUser.friends.push(requestedUser._id);
 
       const indexsent = requestedUser.sentrequests.indexOf(loggedInUser._id);
-      // console.log(indexsent, "ddddd");
       requestedUser.sentrequests.splice(indexsent, 1);
 
       const indexincoming = loggedInUser.incomingrequests.indexOf(
         requestedUser._id
       );
-      // console.log(indexincoming, "eee");
       loggedInUser.incomingrequests.splice(indexincoming, 1);
 
       await loggedInUser.save();
@@ -582,8 +586,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
 
 const deleteRequest = asyncHandler(async (req, res) => {
   try {
-    // console.log("hey reached here");
-
+ 
     const requestedUser = await User.findById(req.params.id);
     const loggedInUser = await User.findById(req.user._id);
 
@@ -595,9 +598,7 @@ const deleteRequest = asyncHandler(async (req, res) => {
     }
 
     if (loggedInUser.incomingrequests.includes(requestedUser._id)) {
-      const indexsent = loggedInUser.incomingrequests.indexOf(
-        requestedUser._id
-      );
+      const indexsent = loggedInUser.incomingrequests.indexOf(requestedUser._id);
       loggedInUser.incomingrequests.splice(indexsent, 1);
 
       const indexincoming = requestedUser.sentrequests.indexOf(
@@ -645,6 +646,36 @@ const allFriends = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+//============remove friend================//
+
+const removeFriend=asyncHandler(async(req,res)=>{
+  try {
+    let id=ObjectId(req.body.id)
+    const user=await User.findById(req.user._id)
+    const friend=await User.findById(id)
+
+    if(user.friends.includes(id)){
+      const indexfriend=user.friends.indexOf(id)
+      user.friends.splice(indexfriend,1)
+
+      const indexuser=friend.friends.indexOf(ObjectId(user._id))
+      friend.friends.splice(indexuser,1)
+    }
+
+    await user.save()
+    await friend.save()
+
+    res.status(200).json({
+      message:"friends remove successfully"
+    })
+
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
+
 //======get recent ==============//
 
 const getUserFriend = asyncHandler(async (req, res) => {
@@ -652,8 +683,8 @@ const getUserFriend = asyncHandler(async (req, res) => {
 
   try {
     const recent = await User.findById(userId);
-
     res.status(200).json(recent);
+    
   } catch (error) {
     res.status(500);
     throw new Error("Recent friends not found");
@@ -713,6 +744,16 @@ const premiumPurchase = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+//===============================//
+
+const allQuestion=asyncHandler(async(req,res)=>{
+  
+})
+
+
+
 export {
   authUser,
   registerUser,
@@ -728,6 +769,7 @@ export {
   acceptRequest,
   deleteRequest,
   allFriends,
+  removeFriend,
   getUserFriend,
   allPremiumsStatus,
   premiumPurchase,

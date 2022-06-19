@@ -11,7 +11,8 @@ import {
   resetPasswordReducer,
   payementReducer,
   allFriendsReducer,
-  allPremiumsDetailsReducer
+  allPremiumsDetailsReducer,
+  removefriendReducer
 } from "./reducers/userReducers";
 
 import {
@@ -44,6 +45,7 @@ const reducer = combineReducers({
   acceptRequest:acceptRequestReducer,
   payment:payementReducer,
   allFriends:allFriendsReducer,
+  removeFriend:removefriendReducer,
   allPremiumsLists:allPremiumsDetailsReducer,
   
 

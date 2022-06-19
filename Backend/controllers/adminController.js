@@ -5,7 +5,6 @@ import User from "../models/userModel.js";
 import Premium from "../models/premiumModel.js";
 import PremiumUsers from "../models/premiumUsersModel.js";
 
-
 // const registerAdmin = asyncHandler(async (req, res) => {
 //     const { name, email, password } = req.body
 //     const adminExists = await Admin.findOne({ email })
@@ -64,7 +63,7 @@ const getUsers = asyncHandler(async (req, res) => {
 const allPremiumStatus = asyncHandler(async (req, res) => {
   const allPremiumLists = await Premium.find({});
 
-//   console.log(allPremiumLists,'sss');
+  //   console.log(allPremiumLists,'sss');
 
   if (allPremiumLists) {
     res.status(200).json(allPremiumLists);
@@ -77,7 +76,6 @@ const allPremiumStatus = asyncHandler(async (req, res) => {
 //===========add premium ==================//
 
 const addPremium = asyncHandler(async (req, res) => {
-
   const { name, category, price, days } = req.body;
   const exist = await Premium.findOne({ name });
 
@@ -92,7 +90,7 @@ const addPremium = asyncHandler(async (req, res) => {
       price: price,
       days: days,
     });
-    if(premium) {
+    if (premium) {
       res.status(201).json({
         premium,
       });
@@ -103,18 +101,58 @@ const addPremium = asyncHandler(async (req, res) => {
   }
 });
 
-
 //===========get all premium users======//
 
-const getAllPremiumUsers=asyncHandler(async(req,res)=>{
+const getAllPremiumUsers = asyncHandler(async (req, res) => {
+  const allPremiumUsers = await PremiumUsers.find({});
+  if (allPremiumUsers) {
+    res.status(200).json(allPremiumUsers);
+  } else {
+    res.status(500);
+    throw new Error("Premium users not found");
+  }
+});
 
-  const allPremiumUsers=await PremiumUsers.find({})
-  if(allPremiumUsers){
-    res.status(200).json(allPremiumUsers)
-  }else{
-    res.status(500)
-    throw new Error('Premium users not found')
+const allProfit = asyncHandler(async (req, res) => {
+  try {
+    const [{ total }] = await PremiumUsers.aggregate([
+      { $group: { _id: "$price", total: { $sum: "$price" } } },
+    ]);
+  
+    if (total) {
+      res.status(200).json(total);
+    }
+  } catch (error) {
+    res.status(400).json(error);
+  }
+  // let data = premiumuser.reduce((acc,data)=>parseInt(data.price)+acc,0)
+});
+
+
+
+const totalUser=asyncHandler(async(req,res)=>{
+  try {
+    const users=await User.find().count()
+    // console.log(users);
+    if(users){
+      res.status(200).json(users)
+    }
+  } catch (error) {
+    res.status(400).json(error)
   }
 })
 
-export { authAdmin, getUsers, allPremiumStatus, addPremium,getAllPremiumUsers};
+
+
+
+
+
+export {
+  authAdmin,
+  getUsers,
+  allPremiumStatus,
+  addPremium,
+  getAllPremiumUsers,
+  allProfit,
+  totalUser
+};

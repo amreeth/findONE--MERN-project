@@ -9,8 +9,8 @@ import Message from "../../Components/Message";
 import axios from "../../utils/axios";
 import { PayPalButton } from "react-paypal-button-v2";
 import { useNavigate } from "react-router-dom";
-import Header from '../../Components/user/Header/Header'
-import Footer from '../../Components/user/Footer/Footer'
+import Header from "../../Components/user/Header/Header";
+import Footer from "../../Components/user/Footer/Footer";
 
 const GetPremiumScreen = () => {
   const dispatch = useDispatch();
@@ -28,10 +28,9 @@ const GetPremiumScreen = () => {
 
   const [total, setTotal] = useState("");
   const [premiumId, setPremiumId] = useState("");
-  const [name,setName]=useState('')
-  const [days,setDays]=useState('')
+  const [name, setName] = useState("");
+  const [days, setDays] = useState("");
   const [sdkReady, setSdkReady] = useState(false);
-
 
   useEffect(() => {
     dispatch(allPremiumLists());
@@ -67,16 +66,15 @@ const GetPremiumScreen = () => {
     });
     setTotal(res[0].price);
     setPremiumId(res[0]._id);
-    setName(res[0].name)
-    setDays(res[0].days)
-
+    setName(res[0].name);
+    setDays(res[0].days);
   };
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     dispatch(premiumPayment({ premiumId, paymentResult }));
   };
-  console.log(paymentSuccess,'payment success');
+  console.log(paymentSuccess, "payment success");
 
   if (paymentSuccess) {
     setTimeout(() => {
@@ -86,10 +84,10 @@ const GetPremiumScreen = () => {
 
   return (
     <>
-    <Header/>
+      <Header />
       <Container>
         <div className="containers">
-          <div className="row m-0">
+          <div className="row ">
             <div className="col-md-7 col-12">
               {loading && <Loader />}
               {error && <Message>{error}</Message>}
@@ -97,23 +95,25 @@ const GetPremiumScreen = () => {
               {premiumList &&
                 premiumList.map((e) => (
                   <div className="row" key={e._id}>
-                    <div className="col-12 mb-4">
+                    <div className="col-12 mb-2">
                       <div className="row box-right">
-                        <div className="col-md-8 ps-0 ">
-                          <input
-                            type="radio"
-                            value={e._id}
-                            onChange={() => handleClick(e._id)}
-                          />
-                          <p className="h1 fw-bold d-flex">
-                            {e.name}
-                          </p>
+                        <div className="col-md-8 ps-0  ">
+                          <div className="d-flex">
+                            <input
+                              type="radio"
+                              value={e._id}
+                              onChange={() => handleClick(e._id)}
+                            />
+                            <p className="h1 fw-bold d-flex">{e.name}</p>
+                          </div>
                           <h3 className="ms-3 px-2 bg-green">
-                           {e.days} days validity
+                            {e.days} days validity  
                           </h3>
                         </div>
                         <div className="col-md-4">
-                          <h2> <span className="fa fa-inr"></span> {e.price}</h2>
+                          <h2>
+                            <span className="fa fa-inr"></span> {e.price}
+                          </h2>
                         </div>
                       </div>
                     </div>
@@ -123,9 +123,9 @@ const GetPremiumScreen = () => {
 
             <div className="col-md-5 col-12 ps-md-5 p-0 ">
               <div className="box-left">
-                <h5 className="fw-bold ">Category : {name}</h5>  
+                <h5 className="fw-bold ">Category : {name}</h5>
                 <h6 className="textmuted">Days: {days}</h6>
-                
+
                 <div className="h8 ">
                   <div className="d-flex h7  mt-4">
                     <h4 className="">Total Amount</h4>
@@ -148,8 +148,7 @@ const GetPremiumScreen = () => {
           </div>
         </div>
       </Container>
-      <Footer/>
-    
+      <Footer />
     </>
   );
 };

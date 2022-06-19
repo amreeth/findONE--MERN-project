@@ -8,7 +8,7 @@ const premiumUsersSchema=mongoose.Schema({
         
     },
     price:{
-        type:String,
+        type:Number,
     },
     premiumId:{
         type:mongoose.Schema.ObjectId,

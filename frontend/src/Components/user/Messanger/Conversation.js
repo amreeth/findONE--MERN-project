@@ -5,7 +5,8 @@ import axios from '../../../utils/axios'
 const Conversation = ({ conversation, currentUser }) => {
   const [user, setUser] = useState(null);
 
-  console.log(conversation,currentUser,'conversa');
+  console.log(conversation,'conversation');
+  console.log(currentUser,'cuurent user');
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
@@ -27,7 +28,6 @@ const Conversation = ({ conversation, currentUser }) => {
     <>
       <div className="conversation">
         <img className="conversationImg" src={user&&user.avatar.url} alt="Img" />
-        
         <span className="conversationName">{user&&user.name}</span>
       </div>
     </>

@@ -12,6 +12,9 @@ import {
   PAYEMENT_FAIL,
   PAYEMENT_REQUEST,
   PAYEMENT_SUCCESS,
+  REMOVE_FRIEND_FAIL,
+  REMOVE_FRIEND_REQUEST,
+  REMOVE_FRIEND_SUCCESS,
   RESET_PASSWORD_FAIL,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
@@ -393,9 +396,7 @@ export const forgotPassword =
           "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
-      };
-
-      // console.log('here');  
+      };  
       
       const {data}=await axios.post('users/premiumpurchase',{premiumId,paymentResult},config)
       console.log(data);
@@ -423,6 +424,45 @@ export const forgotPassword =
         type:ALL_FRIENDS_REQUEST
       })
 
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const {data}=await axios.get('users/friends',config)
+
+      dispatch({
+        type:ALL_FRIENDS_SUCCESS,
+        payload:data,
+
+      })
+
+    } catch (error) {
+      dispatch({
+        type:ALL_FRIENDS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+
+
+
+  export const removefriend=(id)=>async(dispatch,getState)=>{
+    try {
+      dispatch({
+        type:REMOVE_FRIEND_REQUEST
+      })
 
       const {
         userLogin: { userInfo },
@@ -436,18 +476,18 @@ export const forgotPassword =
         },
       };
 
+      console.log('hereee');
 
-      const {data}=await axios.get('users/friends',config)
+      const {data}=await axios.put('users/friends',{id},config)
 
       dispatch({
-        type:ALL_FRIENDS_SUCCESS,
-        payload:data,
-
+        type:REMOVE_FRIEND_SUCCESS,
+        payload:data
       })
 
     } catch (error) {
       dispatch({
-        type:ALL_FRIENDS_FAIL,
+        type:REMOVE_FRIEND_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

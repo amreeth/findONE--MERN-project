@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {Button} from '@mui/material'
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { allFriends } from "../../../actions/userActions";
+import { allFriends,removefriend } from "../../../actions/userActions";
 import Loader from "../../../Components/Loader";
 import Message from "../../Message";
 
@@ -10,17 +10,19 @@ const Friends = () => {
   const dispatch = useDispatch();
 
   const allfriends = useSelector((state) => state.allFriends);
-  const { loading, error, success, friends } = allfriends;
+  const { loading, error,friends } = allfriends;
 
-  // console.log(friends, "friends");
+  const remove=useSelector((state)=>state.removeFriend);
+  const {loading:removeloading,success}=remove
+
 
   useEffect(() => {
     dispatch(allFriends());
-  }, [dispatch]);
+  }, [dispatch,success]);
 
-  const removeFriend=(id)=>{
+  const removeFriends=(id)=>{
     console.log(id);
-
+    dispatch(removefriend(id))
   }
 
   return (
@@ -41,12 +43,7 @@ const Friends = () => {
             }}
           >
             <div className="text-end my-3 mx-2">
-              {/* <i
-                className="text-dark text-end my-5 bg-white p-1 shadow"
-                style={{ borderRadius: "50%", zIndex: "10" }}
-              >
-              </i> */}
-              <Button onClick={()=>removeFriend(e._id)}><CloseRoundedIcon/></Button>  
+              <Button onClick={()=>removeFriends(e._id)}><CloseRoundedIcon sx={{ color: "red"}}/></Button>  
             </div>
             <div style={{ width: "100%", height: "6rem" }}></div>
             <div className="friends-card-body text-center text-white">

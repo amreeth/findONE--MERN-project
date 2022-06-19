@@ -5,9 +5,9 @@ import Conversation from "../../Components/user/Messanger/Conversation";
 import "./MessangerScreen.css";
 import Message from "../../Components/user/Messanger/Message";
 import ChatOnline from "../../Components/user/Messanger/ChatOnline";
-import { Typography } from "@mui/material";
 import axios from "../../utils/axios";
 import { io } from "socket.io-client";
+import Footer from "../../Components/user/Footer/Footer";
 
 const MessangerScreen = () => {
   const [conversations, setCoversations] = useState([]);
@@ -17,13 +17,12 @@ const MessangerScreen = () => {
   const [arrivalMessage, setArivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-  console.log(newMessage.length);
-
   const socket = useRef(io("ws://localhost:8900"));
   const scrollRef = useRef();
 
   let user = localStorage.getItem("userInfo");
   user = JSON.parse(user);
+  let image = user.avatar.url;
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
@@ -52,13 +51,13 @@ const MessangerScreen = () => {
         users.friends.filter((f) => users.some((u) => u.userId === f._id))
       );
     });
-  }, [user.friends]);
+  }, [user.friends, user._id]);
 
   useEffect(() => {
     const getConversation = async () => {
       try {
-        const res = await axios.get(`/conversation/${user._id}`);
-        setCoversations(res.data);
+        const { data } = await axios.get(`/conversation/${user._id}`);
+        setCoversations(data);
       } catch (error) {
         console.log(error);
       }
@@ -69,11 +68,10 @@ const MessangerScreen = () => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get(`/message/${currentChat?._id}`);
-        // console.log(res.data,'messagessssssssssssssssssssss');
-        setMessages(res.data);
+        const { data } = await axios.get(`/message/${currentChat?._id}`);
+        setMessages(data);
       } catch (error) {
-        console.log(error, "error from getMessage");
+        // console.log(error, "error from getMessage");
       }
     };
     getMessages();
@@ -113,14 +111,12 @@ const MessangerScreen = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // console.log(messages,'message');
-
   return (
     <>
       <Header />
       <Container>
         <div className="messanger">
-          <div className="chatMenu">
+          {/* <div className="chatMenu">
             <div className="chatMenuWrapper">
               <Typography variant="h5">Recent Chat</Typography>
               {conversations.map((cov) => (
@@ -129,18 +125,20 @@ const MessangerScreen = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
-          
           <div className="chatBox">
-            {}
             <div className="chatBoxWrapper">
               {currentChat ? (
                 <>
                   <div className="chatBoxTop">
                     {messages.map((msg) => (
                       <div ref={scrollRef}>
-                        <Message message={msg} own={msg.sender === user._id} />
+                        <Message
+                          message={msg}
+                          own={msg.sender === user._id}
+                          ownImage={image}
+                        />
                       </div>
                     ))}
                   </div>
@@ -181,6 +179,7 @@ const MessangerScreen = () => {
           </div>
         </div>
       </Container>
+      <Footer />
     </>
   );
 };

@@ -16,7 +16,7 @@ const MoreDetails = ({ images }) => {
   return (
     <>
       {images.length > 0 ? (
-        <div>
+        <div className='radio'>
           <input type="radio" name="slider" id="item-1" checked />
           <input type="radio" name="slider" id="item-2" />
           <input type="radio" name="slider" id="item-3" />

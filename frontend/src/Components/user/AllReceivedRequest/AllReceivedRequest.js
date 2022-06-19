@@ -14,6 +14,7 @@ import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
 
 
 const AllReceivedRequest = () => {
+
   const dispatch = useDispatch();
 
   const allreceivedrequests = useSelector((state) => state.allreceivedrequests);
@@ -35,8 +36,12 @@ const AllReceivedRequest = () => {
     dispatch(deleteRequest(id))
   };
 
+  // console.log(receivedrequest.length);
+
   return (
     <>
+    {loading&&<Loader/>}
+
       {receivedrequest ? (
         receivedrequest.map((e) => (
           <Col
@@ -58,7 +63,7 @@ const AllReceivedRequest = () => {
         ))
       ) : (
         <div>
-          <Loader />
+          <h4>You have no friends requests</h4>
         </div>
       )}
     </>

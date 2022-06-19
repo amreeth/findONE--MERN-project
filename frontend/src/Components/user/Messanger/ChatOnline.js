@@ -18,7 +18,6 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
         },
       };
       const { data } = await axios.get("/users/friends", config);
-      // console.log("getfriends", data);
       setFriends(data);
     };
     getFriends();
@@ -26,7 +25,9 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
 
 
   useEffect(() => {
-    setOnlineFriends(friends.filter((f) => onlineUsers.includes(f._id)));
+    if(friends&&friends.length>0){
+      setOnlineFriends(friends.filter((f) => onlineUsers.includes(f._id)));
+    }
   }, [friends, onlineUsers]);
 
 
@@ -34,7 +35,6 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
     try {
       console.log(currentId,user._id,'handleclcik');
       const { data } = await axios.get(`/conversation/find/${currentId}/${user._id}`);
-      console.log(data, "dddddd");
       setCurrentChat(data);
       
     } catch (error) {
@@ -75,11 +75,11 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
 
       <Row className="mt-2">
         <Typography variant="h5">Friends List</Typography>
-        {friends.length < 1 ? (
+        {friends&&friends.length < 1 ? (
           <Typography>You have no friends</Typography>
         ) : (
           <div className="">
-            {friends &&
+            {friends && friends.length>0&&
               friends.map((frnd) => (
                 <div className="friends" onClick={() => handleClick(frnd)}>
                   <div className="friendsImgContainer">

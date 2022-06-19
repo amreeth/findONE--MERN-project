@@ -31,6 +31,9 @@ import {
   ALL_PREMIUMS_DETAILS_REQUEST,
   ALL_PREMIUMS_DETAILS_SUCCESS,
   ALL_PREMIUMS_DETAILS_FAIL,
+  REMOVE_FRIEND_REQUEST,
+  REMOVE_FRIEND_SUCCESS,
+  REMOVE_FRIEND_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -225,3 +228,25 @@ export const allFriendsReducer = (state = { friends: [] }, action) => {
       return state;
   }
 };
+
+
+export const removefriendReducer=(state={},action)=>{
+  switch(action.type){
+    case REMOVE_FRIEND_REQUEST:
+      return {
+        loading:true
+      }
+      case REMOVE_FRIEND_SUCCESS:
+        return {
+          loading:false,
+          success:true
+        }
+        case REMOVE_FRIEND_FAIL:
+          return {
+            loading:false,
+            error:action.payload
+          }
+        default:
+          return state
+  }
+}

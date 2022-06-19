@@ -27,6 +27,7 @@ const Allsentrequest = () => {
 
   return (
     <>
+    {loading&&<Loader/>}
       {sentrequests ? (
         sentrequests.map((e) => (
           <Col
@@ -51,7 +52,7 @@ const Allsentrequest = () => {
         ))
       ) : (
         <div>
-          <Loader />
+         <h4>You did not sent any requests</h4>
         </div>
       )}
     </>

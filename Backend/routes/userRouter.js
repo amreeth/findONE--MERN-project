@@ -28,6 +28,7 @@ import {
   premiumPurchase,
   getAllFavourites,
   allPremiumsStatus,
+  removeFriend
 } from "../controllers/userController.js";
 import {
   registerUserDetails,
@@ -35,6 +36,7 @@ import {
   mutltipleImageUpload,
 } from "../controllers/userDetailsController.js";
 import { protect } from "../middleware/authMiddleware.js";
+import {allQuestions} from '../controllers/questionsController.js'
 
 
 
@@ -54,14 +56,17 @@ router.route("/allrequests").get(protect, allReceivedRequest);
 router.route("/allfavorites").get(protect, getAllFavourites);
 router.route("/acceptrequest/:id").get(protect, acceptRequest);
 router.route("/deleterequest/:id").get(protect, deleteRequest);
-router.route("/friends").get(protect, allFriends);
+router.route("/friends").get(protect, allFriends).put(protect,removeFriend);
 router.route("/getUsersRecent").get(getUserFriend);
 router.route("/allpremium").get(allPremiumsStatus);
 router.route("/premiumpurchase").post(protect, premiumPurchase)
+router.route('/questions').get(protect,allQuestions)
+
 router
   .route("/userpersonaldetails")
   .post(protect, registerUserDetails)
   .put(protect, upload.single("image"), imagesUpload);
 router.route("/multipleimages").post(protect, mutltipleImageUpload);
+router.route('/personaldetails').post()
 
 export default router;

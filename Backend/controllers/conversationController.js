@@ -40,15 +40,12 @@ const getConversationTwoUser = asyncHandler(async (req, res) => {
     const conversation = await Conversation.findOne({
       $and:[{members:{$in:[req.params.firstuser]}},{members:{$in:[req.params.seconduser]}}] 
     });
-
-    console.log(conversation,'conversationssssss');
-
+    // console.log(conversation,'conversationssssss');
     if (conversation) {
       res.status(200).json(conversation);
     } else {
 
-      console.log('new conversation');
-
+      // console.log('new conversation');
       const newConversation = new Conversation({
         members: [req.params.firstuser, req.params.seconduser],
       });
