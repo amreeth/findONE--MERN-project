@@ -179,7 +179,7 @@ const AfterRegScreen = () => {
 
               <div className="image-wrapper bg-white d-flex">
                 <div className="row p-4">
-                  <div className="col-4 img-or-ion border m-1 d-flex justify-content-center">
+                  <div className="col-4 img-or-ion  m-1 d-flex justify-content-center">
                    <label htmlFor="upload_image1">{image ? <img src={image} className='w-100' alt=""/> : <AddBoxIcon className="icons-question" /> }</label>
                     <FormControl
               className="crop_image d-none"

@@ -22,7 +22,7 @@ const premiumUsersSchema=mongoose.Schema({
         type:String,
     },
     valid:{
-        type:String
+        type:Number
     },
     status:{
         type:String,
