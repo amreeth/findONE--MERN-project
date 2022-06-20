@@ -125,8 +125,12 @@ const allProfit = asyncHandler(async (req, res) => {
   } catch (error) {
     res.status(400).json(error);
   }
+  // fgfd
   // let data = premiumuser.reduce((acc,data)=>parseInt(data.price)+acc,0)
 });
+
+
+
 
 
 
