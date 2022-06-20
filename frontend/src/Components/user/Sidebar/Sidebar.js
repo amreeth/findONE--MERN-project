@@ -50,7 +50,7 @@ const Sidebar = () => {
 
         <Row className="mt-4">
           
-          {userInfo.premium ? (
+          {userInfo && userInfo.premium ? (
             <Link to="/messanger" style={{ textDecoration: "none" }}>
               <p className="side-bar-texts">Message</p>
             </Link>

@@ -21,7 +21,10 @@ import Loader from "../../Loader";
 const Card = () => {
   let userInfo = localStorage.getItem("userInfo");
   userInfo = JSON.parse(userInfo);
-  let userId = userInfo._id;
+  let userId
+  if(userInfo){
+     userId = userInfo._id;
+  }
 
   const alert = useAlert();
   const dispatch = useDispatch();
