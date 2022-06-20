@@ -17,7 +17,7 @@ const MessangerScreen = () => {
   const [arrivalMessage, setArivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-  const socket = useRef(io("ws://localhost:8900"));
+  const socket = useRef(io("ws://amreeth.online"));
   const scrollRef = useRef();
 
   let user = localStorage.getItem("userInfo");
@@ -25,7 +25,7 @@ const MessangerScreen = () => {
   let image = user.avatar.url;
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io("ws://amreeth.online");
     socket.current.on("getMessage", (data) => {
       setArivalMessage({
         sender: data.sender,

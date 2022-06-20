@@ -11,8 +11,12 @@ import cors from 'cors'
 import cloudinary from 'cloudinary'
 import bodyParser from 'body-parser'
 import path from 'path'
+import { createSocket } from './utils/SocketIo.js'
+import http from 'http'
 
 const app=express()
+const server=http.createServer(app)
+createSocket(server)
 app.use(cors()) 
 
 
@@ -78,4 +82,4 @@ app.use(errorHandler)
 
 
 const PORT=process.env.PORT||4000
-app.listen(PORT,console.log(`server running on port ${PORT}`))
+server.listen(PORT,console.log(`server running on port ${PORT}`))
