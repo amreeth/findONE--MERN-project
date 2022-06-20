@@ -33,7 +33,8 @@ import {
 import {
   registerUserDetails,
   imagesUpload,
-  mutltipleImageUpload,
+  updateMoredetails,
+  getMoreDetails
 } from "../controllers/userDetailsController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import {allQuestions} from '../controllers/questionsController.js'
@@ -62,11 +63,9 @@ router.route("/allpremium").get(allPremiumsStatus);
 router.route("/premiumpurchase").post(protect, premiumPurchase)
 router.route('/questions').get(protect,allQuestions)
 
-router
-  .route("/userpersonaldetails")
-  .post(protect, registerUserDetails)
-  .put(protect, upload.single("image"), imagesUpload);
-router.route("/multipleimages").post(protect, mutltipleImageUpload);
-router.route('/personaldetails').post()
+router.route("/personaldetails").post(protect,registerUserDetails).put(protect,updateMoredetails).get(protect,getMoreDetails)
+
+router.route('/uploadimge').post(protect, upload.single("image"), imagesUpload);
+
 
 export default router;

@@ -3,56 +3,77 @@ import "./after.css";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { FormControl } from "react-bootstrap";
 import axios from "../../utils/axios";
-import CropImage from '../../Components/Cropper/CropImage'
+import CropImage from "../../Components/Cropper/CropImage";
+import { useNavigate } from "react-router-dom";
 
 const AfterRegScreen = () => {
+
+  const navigate=useNavigate()
+
+  let userInfo = localStorage.getItem("userInfo");
+  userInfo = JSON.parse(userInfo);
+
   const [question, setQuestion] = useState([]);
   const [showCropper, setShowCropper] = useState(false);
   const [cropImage, setCropImage] = useState(false);
 
+  const [height,setHeight]=useState(null)
+  const [weight,setWeight]=useState(null)
+  const [location,setLocation]=useState(null)
+  const [job,setJob]=useState(null)
   const [image, setImage] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [images, setImages] = useState({ image1: "", image2: "", image3: "" });
   const [result, setResult] = useState([]);
-  
-  const data = [];
+
+
+
+  const questanswers = [];
+
   const handleQuestion = (ques, ans) => {
-    let exist = data.filter((item) => {
-      
+    let exist = questanswers.filter((item) => {
       if (item.question === ques) {
-        item.answer=ans
+        item.answer = ans;
         return item;
       }
-     
     });
-    if (exist.length===0) {
-      data.push({question:ques,answer:ans})
+    if (exist.length === 0) {
+      questanswers.push({ question: ques, answer: ans });
     }
     
   };
 
-
   const getAllQuestion = async () => {
-    let userInfo = localStorage.getItem("userInfo");
-    userInfo = JSON.parse(userInfo);
-
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-
     const { data } = await axios.get("users/questions", config);
     setQuestion(data);
   };
 
+
   useEffect(() => {
     getAllQuestion();
-  }, []);
+  }, [navigate]);
 
-  const userPersonal = (e) => {
+
+
+  const userPersonal =async (e) => {
     e.preventDefault();
+    console.log(questanswers);
+    const config={
+      headers:{
+        Authorization:`Bearer ${userInfo.token}`,
+      },
+    }
+    const {data}=await axios.post('users/personaldetails',{height,weight,job,location,image,image2,image3,questanswers},config)
+
+    if(data){
+      navigate('/')
+    }
   };
 
   return (
@@ -155,11 +176,16 @@ const AfterRegScreen = () => {
                       type="text"
                       className="form-control mb-3"
                       placeholder="Height"
+                      value={height}
+                      onChange={(e) => setHeight(e.target.value)}
+                      
                     />
                     <input
                       type="text"
                       className="form-control"
                       placeholder="Weight"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
                     />
                   </div>
                   <div className="col-6 p-4">
@@ -167,11 +193,15 @@ const AfterRegScreen = () => {
                       type="text"
                       className="form-control mb-3"
                       placeholder="Location"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
                     />
                     <input
                       type="text"
                       className="form-control "
                       placeholder="Job"
+                      value={job}
+                      onChange={(e) => setJob(e.target.value)}
                     />
                   </div>
                 </div>
@@ -180,129 +210,158 @@ const AfterRegScreen = () => {
               <div className="image-wrapper bg-white d-flex">
                 <div className="row p-4">
                   <div className="col-4 img-or-ion  m-1 d-flex justify-content-center">
-                   <label htmlFor="upload_image1">{image ? <img src={image} className='w-100' alt=""/> : <AddBoxIcon className="icons-question" /> }</label>
+                    <label htmlFor="upload_image1">
+                      {image ? (
+                        <img src={image} className="w-100" alt="" />
+                      ) : (
+                        <AddBoxIcon className="icons-question" />
+                      )}
+                    </label>
                     <FormControl
-              className="crop_image d-none"
-              id="upload_image1"
-              type="file"
-              name="crop_image"
-              required
-              onChange={(e) => {
-                setCropImage(e.target.files[0]);
-                setShowCropper(true);
-              }}
-              accept=".jpg, .jpeg, .png,"
-            />
+                      className="crop_image d-none"
+                      id="upload_image1"
+                      type="file"
+                      name="crop_image"
+                      required
+                      onChange={(e) => {
+                        setCropImage(e.target.files[0]);
+                        setShowCropper(true);
+                      }}
+                      accept=".jpg, .jpeg, .png,"
+                    />
                     {showCropper && (
-              <CropImage
-                src={cropImage}
-                imageCallback={(img) => {
-                  if (image === null) {
-                    setImages({ ...images, image1: img });
-                    setImage(img);
-                    setResult([...result, images]);
-                  }
-                  if (image2 === null && image !== null) {
-                    setImages({ ...images, image2: img });
-                    setImage2(img);
-                    setResult([...result, images]);
-                  }
-                  if (image3 === null && image2 !== null && image !== null) {
-                    setImages({ ...images, image3: img });
-                    setImage3(img);
-                    setResult([...result, images]);
-                  }
-                  setShowCropper(false);
-                }}
-                closeHander={() => {
-                  setShowCropper(false);
-                }}
-              />
-            )}
-                  </div>
-                  <div className="col-4 img-or-icon m-1 d-flex justify-content-center" >
-                  <label htmlFor="upload_image2">{image2 ? <img src={image2} className='w-100' alt=""/> : <AddBoxIcon className="icons-question" /> }</label>
-                    <FormControl
-              className="crop_image d-none"
-              id="upload_image2"
-              type="file"
-              name="crop_image"
-              required
-              onChange={(e) => {
-                setCropImage(e.target.files[0]);
-                setShowCropper(true);
-              }}
-              accept=".jpg, .jpeg, .png,"
-            />
-                    {showCropper && (
-              <CropImage
-                src={cropImage}
-                imageCallback={(img) => {
-                  if (image === null) {
-                    setImages({ ...images, image1: img });
-                    setImage(img);
-                    setResult([...result, images]);
-                  }
-                  if (image2 === null && image !== null) {
-                    setImages({ ...images, image2: img });
-                    setImage2(img);
-                    setResult([...result, images]);
-                  }
-                  if (image3 === null && image2 !== null && image !== null) {
-                    setImages({ ...images, image3: img });
-                    setImage3(img);
-                    setResult([...result, images]);
-                  }
-                  setShowCropper(false);
-                }}
-                closeHander={() => {
-                  setShowCropper(false);
-                }}
-              />
-            )}
-                    
+                      <CropImage
+                        src={cropImage}
+                        imageCallback={(img) => {
+                          if (image === null) {
+                            setImages({ ...images, image1: img });
+                            setImage(img);
+                            setResult([...result, images]);
+                          }
+                          if (image2 === null && image !== null) {
+                            setImages({ ...images, image2: img });
+                            setImage2(img);
+                            setResult([...result, images]);
+                          }
+                          if (
+                            image3 === null &&
+                            image2 !== null &&
+                            image !== null
+                          ) {
+                            setImages({ ...images, image3: img });
+                            setImage3(img);
+                            setResult([...result, images]);
+                          }
+                          setShowCropper(false);
+                        }}
+                        closeHander={() => {
+                          setShowCropper(false);
+                        }}
+                      />
+                    )}
                   </div>
                   <div className="col-4 img-or-icon m-1 d-flex justify-content-center">
-                  <label htmlFor="upload_image3">{image3 ? <img src={image3} className='w-100' alt=""/> : <AddBoxIcon className="icons-question" /> }</label>
+                    <label htmlFor="upload_image2">
+                      {image2 ? (
+                        <img src={image2} className="w-100" alt="" />
+                      ) : (
+                        <AddBoxIcon className="icons-question" />
+                      )}
+                    </label>
                     <FormControl
-              className="crop_image d-none"
-              id="upload_image3"
-              type="file"
-              name="crop_image3"
-              required
-              onChange={(e) => {
-                setCropImage(e.target.files[0]);
-                setShowCropper(true);
-              }}
-              accept=".jpg, .jpeg, .png,"
-            />
+                      className="crop_image d-none"
+                      id="upload_image2"
+                      type="file"
+                      name="crop_image"
+                      required
+                      onChange={(e) => {
+                        setCropImage(e.target.files[0]);
+                        setShowCropper(true);
+                      }}
+                      accept=".jpg, .jpeg, .png,"
+                    />
                     {showCropper && (
-              <CropImage
-                src={cropImage}
-                imageCallback={(img) => {
-                  if (image === null) {
-                    setImages({ ...images, image1: img });
-                    setImage(img);
-                    setResult([...result, images]);
-                  }
-                  if (image2 === null && image !== null) {
-                    setImages({ ...images, image2: img });
-                    setImage2(img);
-                    setResult([...result, images]);
-                  }
-                  if (image3 === null && image2 !== null && image !== null) {
-                    setImages({ ...images, image3: img });
-                    setImage3(img);
-                    setResult([...result, images]);
-                  }
-                  setShowCropper(false);
-                }}
-                closeHander={() => {
-                  setShowCropper(false);
-                }}
-              />
-            )}
-                    </div>
+                      <CropImage
+                        src={cropImage}
+                        imageCallback={(img) => {
+                          if (image === null) {
+                            setImages({ ...images, image1: img });
+                            setImage(img);
+                            setResult([...result, images]);
+                          }
+                          if (image2 === null && image !== null) {
+                            setImages({ ...images, image2: img });
+                            setImage2(img);
+                            setResult([...result, images]);
+                          }
+                          if (
+                            image3 === null &&
+                            image2 !== null &&
+                            image !== null
+                          ) {
+                            setImages({ ...images, image3: img });
+                            setImage3(img);
+                            setResult([...result, images]);
+                          }
+                          setShowCropper(false);
+                        }}
+                        closeHander={() => {
+                          setShowCropper(false);
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="col-4 img-or-icon m-1 d-flex justify-content-center">
+                    <label htmlFor="upload_image3">
+                      {image3 ? (
+                        <img src={image3} className="w-100" alt="" />
+                      ) : (
+                        <AddBoxIcon className="icons-question" />
+                      )}
+                    </label>
+                    <FormControl
+                      className="crop_image d-none"
+                      id="upload_image3"
+                      type="file"
+                      name="crop_image3"
+                      required
+                      onChange={(e) => {
+                        setCropImage(e.target.files[0]);
+                        setShowCropper(true);
+                      }}
+                      accept=".jpg, .jpeg, .png,"
+                    />
+                    {showCropper && (
+                      <CropImage
+                        src={cropImage}
+                        imageCallback={(img) => {
+                          if (image === null) {
+                            setImages({ ...images, image1: img });
+                            setImage(img);
+                            setResult([...result, images]);
+                          }
+                          if (image2 === null && image !== null) {
+                            setImages({ ...images, image2: img });
+                            setImage2(img);
+                            setResult([...result, images]);
+                          }
+                          if (
+                            image3 === null &&
+                            image2 !== null &&
+                            image !== null
+                          ) {
+                            setImages({ ...images, image3: img });
+                            setImage3(img);
+                            setResult([...result, images]);
+                          }
+                          setShowCropper(false);
+                        }}
+                        closeHander={() => {
+                          setShowCropper(false);
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
 

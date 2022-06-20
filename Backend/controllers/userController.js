@@ -15,8 +15,7 @@ const ObjectId = mongoose.Types.ObjectId;
 //==========user registration========//
 
 const registerUser = asyncHandler(async (req, res) => {
-  // console.log("here");
-    // console.log(req.body, "user register");
+  
     const {
       name,
       email,
@@ -73,15 +72,16 @@ const registerUser = asyncHandler(async (req, res) => {
       avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
     console.log("user created");
+    
 
-    let token = await Token.create({
-      userId: user._id,
-      token: crypto.randomBytes(32).toString("hex"),
-    });
+    // let token = await Token.create({
+    //   userId: user._id,
+    //   token: crypto.randomBytes(32).toString("hex"),
+    // });
 
-    const message = `http://localhost:3000/verify/${user.id}/${token.token}`;
+    // const message = `http://localhost:3000/verify/${user.id}/${token.token}`;
 
-    await verifyEmail(user.email, "Verify Email", message);
+    // await verifyEmail(user.email, "Verify Email", message);
 
     if (user) {
       res.status(201).json({

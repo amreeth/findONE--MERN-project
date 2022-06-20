@@ -39,6 +39,7 @@ function App() {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
           <Route path="/register" element={<Log />} />
+          <Route path='/after' element={<AfterRegScreen/>}/>
           <Route path="/before" element={<BeforeVerification />} />
           <Route path="/verify/:id/:token" element={<Verify />} />
           <Route path="/match/:id" element={<MactherScreen />} />
@@ -49,7 +50,6 @@ function App() {
           <Route path='/getpremium' element={<GetPremiumScreen/>}/>
           <Route path='/paymentsccess' element={<PaymentSuccessScreen/>}/>
           <Route path='/friends' element={<FriendsScreen/>}/>
-          <Route path='/after' element={<AfterRegScreen/>}/>
 
 
 
