@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
 
+//
+
 //====user personal details registration===//
 
 const registerUserDetails = asyncHandler(async (req, res) => {
@@ -17,6 +19,8 @@ const registerUserDetails = asyncHandler(async (req, res) => {
     let myCloud1;
     let myCloud2;
     let myCloud3;
+
+
 
 
     if (image1) {
@@ -38,12 +42,15 @@ const registerUserDetails = asyncHandler(async (req, res) => {
       });
     }
 
+    
+
     const userdetail = await UserDetails.create({
+      userId,
       height,
       weight,
       job,
       location,
-      answers,
+      answers:questanswers,
       image1: {
         public_id: myCloud1.public_id,
         url: myCloud1.secure_url,
@@ -86,7 +93,7 @@ const getMoreDetails=asyncHandler(async(req,res)=>{
 const updateMoredetails = asyncHandler(async (req, res) => {
   try {
     const userId = req.user._id;
-    const { height, weight, job, location, answers, image1, image2, image3 } =req.body;
+    const { height, weight, job, location, questanswers, image1, image2, image3 } =req.body;
 
     let myCloud1;
     let myCloud2;
@@ -107,8 +114,11 @@ const updateMoredetails = asyncHandler(async (req, res) => {
       if (location) {
         userdetails.location = location;
       }
-      if (answers) {
-        userdetails.answers = answers;
+      if (questanswers) {
+       userdetails.answers.push({
+        question:questionId,
+        answer:answer
+       })
       }
 
       if (image1) {

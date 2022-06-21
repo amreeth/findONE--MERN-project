@@ -7,42 +7,93 @@ import CropImage from "../../Components/Cropper/CropImage";
 import { useNavigate } from "react-router-dom";
 
 const AfterRegScreen = () => {
-
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   let userInfo = localStorage.getItem("userInfo");
   userInfo = JSON.parse(userInfo);
 
-  const [question, setQuestion] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [showCropper, setShowCropper] = useState(false);
   const [cropImage, setCropImage] = useState(false);
 
-  const [height,setHeight]=useState(null)
-  const [weight,setWeight]=useState(null)
-  const [location,setLocation]=useState(null)
-  const [job,setJob]=useState(null)
+  const [height, setHeight] = useState(null);
+  const [weight, setWeight] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [job, setJob] = useState(null);
   const [image, setImage] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
-  const [images, setImages] = useState({ image1: "", image2: "", image3: "" });
+  const [images, setImages] = useState({ image1: "",image2: "",image3: "" });
   const [result, setResult] = useState([]);
 
+  const [option1, setOption1] = useState(null);
+  const [option2, setOption2] = useState(null);
+  const [option3, setOption3] = useState(null);
+  const [option4, setOption4] = useState(null);
 
+  let question1;
+  let q1Option1;
+  let q1Option2;
+  let q1Option3;
+  let q1Option4;
 
-  const questanswers = [];
+  let question2;
+  let q2Option1;
+  let q2Option2;
+  let q2Option3;
+  let q2Option4;
 
-  const handleQuestion = (ques, ans) => {
-    let exist = questanswers.filter((item) => {
-      if (item.question === ques) {
-        item.answer = ans;
-        return item;
-      }
-    });
-    if (exist.length === 0) {
-      questanswers.push({ question: ques, answer: ans });
-    }
-    
-  };
+  let question3;
+  let q3Option1;
+  let q3Option2;
+  let q3Option3;
+  let q3Option4;
+
+  let question4;
+  let q4Option1;
+  let q4Option2;
+  let q4Option3;
+  let q4Option4;
+
+  if (questions.length>0) {
+    question1 = questions[0].question;
+    q1Option1 = questions[0].option1;
+    q1Option2 = questions[0].option2;
+    q1Option3 = questions[0].option3;
+    q1Option4 = questions[0].option4;
+
+    question2 = questions[1].question;
+    q2Option1 = questions[1].option1;
+    q2Option2 = questions[1].option2;
+    q2Option3 = questions[1].option3;
+    q2Option4 = questions[1].option4;
+
+    question3 = questions[2].question;
+    q3Option1 = questions[2].option1;
+    q3Option2 = questions[2].option2;
+    q3Option3 = questions[2].option3;
+    q3Option4 = questions[2].option4;
+
+    question4 = questions[3].question;
+    q4Option1 = questions[3].option1;
+    q4Option2 = questions[3].option2;
+    q4Option3 = questions[3].option3;
+    q4Option4 = questions[3].option4;
+  }
+
+  // const questanswers = [];
+  // const handleQuestion = (ques, ans) => {
+  //   let exist = questanswers.filter((item) => {
+  //     if (item.questions === ques) {
+  //       item.answer = ans;
+  //       return item;
+  //     }
+  //   });
+  //   if (exist.length === 0) {
+  //     questanswers.push({ questionId: ques, answer: ans });
+  //   }
+  //   console.log(questanswers);
+  // };
 
   const getAllQuestion = async () => {
     const config = {
@@ -51,29 +102,30 @@ const AfterRegScreen = () => {
       },
     };
     const { data } = await axios.get("users/questions", config);
-    setQuestion(data);
+    setQuestions(data);
   };
-
 
   useEffect(() => {
     getAllQuestion();
   }, [navigate]);
 
-
-
-  const userPersonal =async (e) => {
+  const userPersonal = async (e) => {
     e.preventDefault();
-    console.log(questanswers);
-    const config={
-      headers:{
-        Authorization:`Bearer ${userInfo.token}`,
-      },
-    }
-    const {data}=await axios.post('users/personaldetails',{height,weight,job,location,image,image2,image3,questanswers},config)
+    console.log("here");
+    // console.log(questanswers);
+    // console.log(image,'image111111111111111111111');
+    // console.log(image2,'image222222222222222222');
+    // console.log(image3,'image33333333333');
+    // const config={
+    //   headers:{
+    //     Authorization:`Bearer ${userInfo.token}`,
+    //   },
+    // }
+    // const {data}=await axios.post('users/personaldetails',{height,weight,job,location,image,image2,image3,questanswers},config)
 
-    if(data){
-      navigate('/')
-    }
+    // if(data){
+    //   navigate('/')
+    // }
   };
 
   return (
@@ -82,7 +134,7 @@ const AfterRegScreen = () => {
         <form onSubmit={userPersonal}>
           <div className="row">
             <div className="col-md-6 p-2 ">
-              <div className="question-wrapper bg-white  pt-2">
+              {/* <div className="question-wrapper bg-white  pt-2">
                 <p className="text-center enter-details pt-3">Share with us</p>
                 {question &&
                   question.map((item, index) => (
@@ -104,7 +156,7 @@ const AfterRegScreen = () => {
                               class="form-check-label"
                               for="flexCheckDefault"
                             >
-                              Default checkbox
+                              {item.option1}
                             </label>
                           </div>
                           <div class="form-check">
@@ -121,7 +173,7 @@ const AfterRegScreen = () => {
                               class="form-check-label"
                               for="flexCheckChecked"
                             >
-                              Checked checkbox
+                              {item.option2}
                             </label>
                           </div>
                         </div>
@@ -140,7 +192,7 @@ const AfterRegScreen = () => {
                               class="form-check-label"
                               for="flexCheckDefault"
                             >
-                              Default checkbox
+                              {item.option3}
                             </label>
                           </div>
                           <div class="form-check">
@@ -158,15 +210,258 @@ const AfterRegScreen = () => {
                               class="form-check-label"
                               for="flexCheckChecked"
                             >
-                              Checked checkbox
+                              {item.option4}
                             </label>
                           </div>
                         </div>
                       </div>
                     </div>
                   ))}
+              </div> */}
+
+              <div className="question-wrapper bg-white  pt-2">
+                <p className="text-center enter-details pt-3">Share with us</p>
+                <div className="question p-3  pb-2">
+                  <p>{questions && question1}</p>
+                  <div className="row">
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value={questions && q1Option1}
+                          name="3"
+
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          {questions && q1Option1}
+                        </label>
+                      </div>
+
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value={questions && q1Option2}
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          {questions && q1Option2}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value={questions && q1Option3}
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          {questions && q1Option3}
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value={questions && q1Option4}
+                          id="1"
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          {questions && q1Option4}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="question p-3  pb-2 ">
+                  <p>Question1</p>
+                  <div className="row">
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          option1
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          "option2"
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          "option3"
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="1"
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          "option4"
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="question p-3  pb-2">
+                  <p>Question1</p>
+                  <div className="row">
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          "option1"
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          "option2"
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          "option3"
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="1"
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          "option4"
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="question p-3  pb-2 ">
+                  <p>Question1</p>
+                  <div className="row">
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          "option1"
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          "option2"
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckDefault">
+                          "option3"
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="1"
+                          name="3"
+                          // onChange={(e) => handleQuestion()}
+                        />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          "option4"
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
             <div className="col-md-6 p-2">
               <div className="details-wrapper bg-white ">
                 <p className="text-center enter-details pt-4">Enter details</p>
@@ -178,7 +473,6 @@ const AfterRegScreen = () => {
                       placeholder="Height"
                       value={height}
                       onChange={(e) => setHeight(e.target.value)}
-                      
                     />
                     <input
                       type="text"
@@ -221,7 +515,7 @@ const AfterRegScreen = () => {
                       className="crop_image d-none"
                       id="upload_image1"
                       type="file"
-                      name="crop_image"
+                      name="crop_image1"
                       required
                       onChange={(e) => {
                         setCropImage(e.target.files[0]);
@@ -272,7 +566,7 @@ const AfterRegScreen = () => {
                       className="crop_image d-none"
                       id="upload_image2"
                       type="file"
-                      name="crop_image"
+                      name="crop_image2"
                       required
                       onChange={(e) => {
                         setCropImage(e.target.files[0]);
