@@ -69,7 +69,7 @@ const LoginScreen = () => {
           <Typography variant="h6">New user </Typography>
         </Link>
 
-        <Button type='submit' style={{fontSize:"2vmax",color:"greenyellow"}}>Login</Button>
+        <Button type='submit' style={{fontSize:"2vmax",color:"green"}}>Login</Button>
       </form>
     </div>
   );

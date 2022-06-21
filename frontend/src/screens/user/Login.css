@@ -1,6 +1,6 @@
 .login {
   height: 100vh;
-  background-image: linear-gradient(to right, #fff5bc, #cec1ff);
+  background-image: linear-gradient(to right, #f7ecb2, #cec1ff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,10 +9,10 @@
 }
 
 .loginForm {
-  background-color: white;
+  background-color: rgb(235, 230, 230);
   height: 100%;
   width: 50%;
-  border-radius: 30px;
+  border-radius: 30px;  
   box-sizing: border-box;
   padding: 2vmax;
   display: flex;
