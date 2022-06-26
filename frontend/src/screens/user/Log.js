@@ -76,7 +76,7 @@ function submitForm(data) {
 
   React.useEffect(() => {
     if (success) {
-      navigate("/before");
+      navigate("/");
     }
   }, [success]);
 

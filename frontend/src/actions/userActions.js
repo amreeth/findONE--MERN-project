@@ -165,11 +165,8 @@ export const listUsers = () => async (dispatch, getState) => {
       type: USER_LIST_REQUEST,
     });
 
-    let adminInfo = await localStorage.getItem("adminInfo");
-
+    let adminInfo =  localStorage.getItem("adminInfo");
     adminInfo = JSON.parse(adminInfo);
-
-    // console.log(adminInfo.token);
 
     const config = {
       headers: {
@@ -178,8 +175,6 @@ export const listUsers = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get("/admin/usermanagement", config);
-
-    // console.log(data, "usersss");
 
     dispatch({
       type: USER_LIST_SUCCESS,

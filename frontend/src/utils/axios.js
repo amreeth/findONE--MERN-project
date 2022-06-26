@@ -8,4 +8,5 @@ const axiosConfig = axios.create({
     baseURL: 'https://amreeth.online/api/'
 });
 
+
 export default axiosConfig

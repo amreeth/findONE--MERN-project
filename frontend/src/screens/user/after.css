@@ -1,7 +1,6 @@
 .question-wrapper{
-    height: 35rem;
+    height: 36rem;
     border-radius: 8px;
-
 }
 .question{
     background-color: rgb(66, 61, 61);
@@ -10,7 +9,7 @@
     border-radius: 8px;
 }
 .details-wrapper{
-    height: 14.7rem;
+    height: 14rem;
     border-radius: 8px;
 }
 .image-wrapper{
@@ -29,5 +28,4 @@ border-radius: 8px;
 }
 .icons-question{
     margin-top: 5rem;
-    
 }

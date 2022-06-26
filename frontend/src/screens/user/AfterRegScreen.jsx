@@ -131,6 +131,12 @@ const AfterRegScreen = () => {
   return (
     <>
       <div className="container">
+        <div>
+          <div className="d-flex">
+          <h2>Few steps to go . . .                   </h2>
+          <h2 style={{color:"green"}}>            2/2</h2>
+          </div>
+        
         <form onSubmit={userPersonal}>
           <div className="row">
             <div className="col-md-6 p-2 ">
@@ -219,9 +225,9 @@ const AfterRegScreen = () => {
                   ))}
               </div> */}
 
-              <div className="question-wrapper bg-white  pt-2">
-                <p className="text-center enter-details pt-3">Share with us</p>
-                <div className="question p-3  pb-2">
+              <div className="question-wrapper bg-white  pt-1">
+                <p className="text-center enter-details pt-1">Share with us</p>
+                <div className="question p-1  pb-2">
                   <p>{questions && question1}</p>
                   <div className="row">
                     <div className="col-6">
@@ -231,7 +237,6 @@ const AfterRegScreen = () => {
                           type="radio"
                           value={questions && q1Option1}
                           name="3"
-
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
@@ -284,31 +289,31 @@ const AfterRegScreen = () => {
                 </div>
 
                 <div className="question p-3  pb-2 ">
-                  <p>Question1</p>
+                <p>{questions && question2}</p>
                   <div className="row">
                     <div className="col-6">
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q2Option1}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
-                          option1
+                        {questions && q2Option1}
                         </label>
                       </div>
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q2Option2}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckChecked">
-                          "option2"
+                        {questions && q2Option2}
                         </label>
                       </div>
                     </div>
@@ -317,25 +322,25 @@ const AfterRegScreen = () => {
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q2Option3}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
-                          "option3"
+                        {questions && q2Option3}
                         </label>
                       </div>
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q2Option4}
                           id="1"
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckChecked">
-                          "option4"
+                        {questions && q2Option4}
                         </label>
                       </div>
                     </div>
@@ -343,31 +348,31 @@ const AfterRegScreen = () => {
                 </div>
 
                 <div className="question p-3  pb-2">
-                  <p>Question1</p>
+                <p>{questions && question3}</p>
                   <div className="row">
                     <div className="col-6">
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q3Option1}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
-                          "option1"
+                        {questions && q3Option1}
                         </label>
                       </div>
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q3Option2}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckChecked">
-                          "option2"
+                        {questions && q3Option2}
                         </label>
                       </div>
                     </div>
@@ -376,25 +381,25 @@ const AfterRegScreen = () => {
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q3Option3}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
-                          "option3"
+                        {questions && q3Option3}
                         </label>
                       </div>
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q3Option4}
                           id="1"
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckChecked">
-                          "option4"
+                        {questions && q3Option4}
                         </label>
                       </div>
                     </div>
@@ -402,31 +407,31 @@ const AfterRegScreen = () => {
                 </div>
 
                 <div className="question p-3  pb-2 ">
-                  <p>Question1</p>
+                <p>{questions && question4}</p>
                   <div className="row">
                     <div className="col-6">
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q4Option1}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
-                          "option1"
+                        {questions && q4Option1}
                         </label>
                       </div>
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value={questions && q4Option2}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckChecked">
-                          "option2"
+                        {questions && q4Option2}
                         </label>
                       </div>
                     </div>
@@ -435,25 +440,25 @@ const AfterRegScreen = () => {
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q4Option3}
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckDefault">
-                          "option3"
+                        {questions && q4Option3}
                         </label>
                       </div>
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
-                          value=""
+                          value= {questions && q4Option4}
                           id="1"
                           name="3"
                           // onChange={(e) => handleQuestion()}
                         />
                         <label class="form-check-label" for="flexCheckChecked">
-                          "option4"
+                        {questions && q4Option4}
                         </label>
                       </div>
                     </div>
@@ -669,6 +674,7 @@ const AfterRegScreen = () => {
             </div>
           </div>
         </form>
+        </div>
       </div>
     </>
   );
