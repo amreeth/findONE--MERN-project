@@ -46,7 +46,7 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
     <Container fluid>
       <Row>
         <Typography variant="h5">Online Friends</Typography>
-        {onlineFriends.length < 1 ? (
+        {onlineFriends && onlineFriends.length < 1 ? (
           <Typography style={{ color: "gray" }}>
             No friends are in online
           </Typography>

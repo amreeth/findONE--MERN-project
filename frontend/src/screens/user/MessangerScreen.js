@@ -47,8 +47,9 @@ const MessangerScreen = () => {
   useEffect(() => {
     socket.current.emit("addUser", user._id);
     socket.current.on("getUsers", (users) => {
+      users = JSON.parse(users);
       setOnlineUsers(
-        users.friends.filter((f) => users.some((u) => u.userId === f._id))
+        user.friends.filter((f) => users.some((u) => u.userId === f._id))
       );
     });
   }, [user.friends, user._id]);
@@ -169,39 +170,47 @@ const MessangerScreen = () => {
             </div>
           </div> */}
 
-<div className="chatBox col-sm-8">
-                    <div className="chatBoxWrapper">
-                        {currentChat ?
-                            <>
-                                <div className="chatBoxTop">
-                                    {messages.map(m => (
-                                        <div key={m._id} ref={scrollRef}>
-                                            < Message message={m} own={m.sender._id === user._id} />
-                                        </div>
-                                    ))
-                                    }
-                                </div>
-                                <div className="chatBoxBottom">
-                                    <textarea
-                                        className="chatMessageInput"
-                                        placeholder='write something...'
-                                        onChange={(e) => setNewMessage(e.target.value)}
-                                        value={newMessage}
-                                    >
-                                    </textarea>
-                                    <button className="chatSubmitButton" onClick={handleSubmit}>
-                                        Send
-                                    </button>
-                                </div>
-                            </>
-                            : (
-                                <>
-                                    <p className='noConversationText'>Open a conversation to start a chat.</p>
-                                </>
-                            )
-                        }
-                    </div>
-                </div>
+          <div className="chatBox col-sm-8">
+            <div className="chatBoxWrapper">
+              {currentChat ? (
+                <>
+                  <div className="chatBoxTop">
+                    {messages.map((m) => (
+                      <div key={m._id} ref={scrollRef}>
+                        <Message message={m} own={m.sender._id === user._id} />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="chatBoxBottom">
+                    <textarea
+                      className="chatMessageInput"
+                      placeholder="write something..."
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      value={newMessage}
+                      onKeyPress={(e)=>e.key==='Enter'&&handleSubmit}
+                    ></textarea>
+
+                    {newMessage.length < 1 ? (
+                      <button className="chatSubmitButtonNo">Send</button>
+                    ) : (
+                      <button
+                        className="chatSubmitButton"
+                        onClick={handleSubmit}
+                      >
+                        Send
+                      </button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="noConversationText">
+                    Open a conversation to start a chat.
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
           <div className="chatOnline">
             <div className="chatOnlineWrapper">
               <ChatOnline
