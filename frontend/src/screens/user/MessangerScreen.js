@@ -127,7 +127,7 @@ const MessangerScreen = () => {
             </div>
           </div> */}
 
-          <div className="chatBox">
+          {/* <div className="chatBox">
             <div className="chatBoxWrapper">
               {currentChat ? (
                 <>
@@ -167,7 +167,41 @@ const MessangerScreen = () => {
                 </span>
               )}
             </div>
-          </div>
+          </div> */}
+
+<div className="chatBox col-sm-8">
+                    <div className="chatBoxWrapper">
+                        {currentChat ?
+                            <>
+                                <div className="chatBoxTop">
+                                    {messages.map(m => (
+                                        <div key={m._id} ref={scrollRef}>
+                                            < Message message={m} own={m.sender._id === user._id} />
+                                        </div>
+                                    ))
+                                    }
+                                </div>
+                                <div className="chatBoxBottom">
+                                    <textarea
+                                        className="chatMessageInput"
+                                        placeholder='write something...'
+                                        onChange={(e) => setNewMessage(e.target.value)}
+                                        value={newMessage}
+                                    >
+                                    </textarea>
+                                    <button className="chatSubmitButton" onClick={handleSubmit}>
+                                        Send
+                                    </button>
+                                </div>
+                            </>
+                            : (
+                                <>
+                                    <p className='noConversationText'>Open a conversation to start a chat.</p>
+                                </>
+                            )
+                        }
+                    </div>
+                </div>
           <div className="chatOnline">
             <div className="chatOnlineWrapper">
               <ChatOnline

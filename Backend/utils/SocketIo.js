@@ -33,7 +33,8 @@ export const createSocket=(BackendServer)=>{
         //take userId and SocketId from user
         socket.on("addUser", (userId) => {
           addUser(userId, socket.id);
-          io.emit("getUsers", users);
+          // io.emit("getUsers", users);
+          io.emit("getUsers",JSON.stringify(users))
         });
       
         //send and get message
@@ -51,7 +52,8 @@ export const createSocket=(BackendServer)=>{
         socket.on("disconnect", () => {
           console.log("a user disconnected");
           removeUser(socket.id);
-          io.emit("getUsers", users);
+          // io.emit("getUsers", users);
+          io.emit("getUsers",JSON.stringify(users))
         });
       });
       
