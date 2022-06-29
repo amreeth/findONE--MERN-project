@@ -12,10 +12,14 @@ import Premium from "../models/premiumModel.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-//==========user registration========//
+
+
+
+
+//@desc user registration
+//route POST api/users/register
 
 const registerUser = asyncHandler(async (req, res) => {
-  
     const {
       name,
       email,
@@ -42,12 +46,9 @@ const registerUser = asyncHandler(async (req, res) => {
   
     const userExist = await User.findOne({ email });
     if (userExist) {
-      // console.log('user exist');
       res.status(400);
       throw new Error("User already exists");
     }
-
-    console.log("no user exist");
 
     let myCloud;
     if (image) {
@@ -71,16 +72,12 @@ const registerUser = asyncHandler(async (req, res) => {
       cpassword: cpassword,
       avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
-    console.log("user created");
     
-
     // let token = await Token.create({
     //   userId: user._id,
     //   token: crypto.randomBytes(32).toString("hex"),
     // });
-
     // const message = `http://localhost:3000/verify/${user.id}/${token.token}`;
-
     // await verifyEmail(user.email, "Verify Email", message);
 
     if (user) {
@@ -107,42 +104,42 @@ const registerUser = asyncHandler(async (req, res) => {
  
 });
 
-//===============email===============//
+
+
+
+//@desc user email verify
+//route GET api/users/verify/:id/:token
+
 
 const emailVerify = asyncHandler(async (req, res) => {
-  console.log(req.params);
-
   try {
     const user = await User.findOne({ _id: ObjectId(req.params.id) });
-
-    console.log(user);
-
     if (!user) return res.status(400).send("Invalid link");
-
     const token = await Token.findOne({
       userId: ObjectId(user._id),
       token: req.params.token,
     });
 
     if (!token) return res.status(400).send("Invalid link");
-
     await User.updateOne(
       { _id: ObjectId(user._id) },
       { $set: { verified: true } }
     );
-
     await Token.findByIdAndRemove(ObjectId(token._id));
-
     res
       .status(200)
       .json({ status: true, message: "email verified sucessfully" });
   } catch (error) {
-    console.log(error);
     res.status(400).send("An error occured");
   }
 });
 
-//===========user login======//
+
+
+
+//@desc user email verify
+//route POST api/users/login
+
 
 const authUser = asyncHandler(async (req, res) => {
  
@@ -172,18 +169,20 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-//==========forgot password=========//
+
+
+//@desc user forgot password
+//route POST api/users/forgotpassword
+
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    console.log("user not found");
     res.status(401);
     throw new Error("Enter valid email id");
   }
 
   const resetToken = user.getResetPasswordToken();
-
   await user.save({ validateBeforeSave: false });
 
   // const resetPasswordUrl = `${req.protocol}://${req.get(
@@ -201,8 +200,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
       message,
     });
 
-    console.log("email sent successfully");
-
     res.status(200).json({
       success: true,
       message: `Email sent to ${user.email} successfully`,
@@ -217,7 +214,10 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
-//========reset password==========//
+
+
+//@desc user reset password
+//route PUT api/users/password/reset/:token
 
 const resetPassword = asyncHandler(async (req, res) => {
   try {
@@ -242,9 +242,6 @@ const resetPassword = asyncHandler(async (req, res) => {
     user.resetPasswordExpire = undefined;
 
     await user.save();
-
-    console.log("password reset successfully");
-
     res.status(200).json({
       success: true,
       message: "password updated",
@@ -257,15 +254,18 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
-//============update password================//
+
+
+//@desc user update password
+//route PUT api/users/updatepassword
+//access USER
+
 
 const updatePassword = asyncHandler(async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     const user = await User.findById(req.user._id);
-
     const isMatch = await user.matchPassword(oldPassword);
-
     if (!isMatch) {
       return res.status(404).json({
         success: false,
@@ -296,7 +296,12 @@ const updatePassword = asyncHandler(async (req, res) => {
   }
 });
 
-//============ new update profile =============//
+
+
+
+//@desc user update profile
+//route PUT api/users/profile
+//access USER
 
 const updateProfile = asyncHandler(async (req, res) => {
   try {
@@ -376,7 +381,12 @@ const updateProfile = asyncHandler(async (req, res) => {
   }
 });
 
-//==========add favourites====================//
+
+
+//@desc user Add or Remove Favourites
+//route GET api/users/favadd/:id
+//access USER
+
 
 const addandRemoveFavourites = asyncHandler(async (req, res) => {
   try {
@@ -415,7 +425,12 @@ const addandRemoveFavourites = asyncHandler(async (req, res) => {
   }
 });
 
-//===============get all favorites=======================//
+
+
+
+//@desc user get all favourites
+//route GET api/users/allfavorites
+//access USER
 
 const getAllFavourites = asyncHandler(async (req, res) => {
   try {
@@ -441,7 +456,13 @@ const getAllFavourites = asyncHandler(async (req, res) => {
   }
 });
 
-//======send a request =====//
+
+
+
+//@desc user send requests to other users
+//route GET api/users/sentrequest/:id
+//access USER
+
 
 const sendRequest = asyncHandler(async (req, res) => {
   try {
@@ -492,7 +513,12 @@ const sendRequest = asyncHandler(async (req, res) => {
   }
 });
 
-//======== all sent requests============//
+
+
+//@desc user get all sent requests
+//route GET api/users/allsentrequest
+//access USER
+
 
 const allSentRequests = asyncHandler(async (req, res) => {
   try {
@@ -502,8 +528,6 @@ const allSentRequests = asyncHandler(async (req, res) => {
     for (let i = 0; i < dets.length; i++) {
       users.push(await User.findById(dets[i]));
     }
-    // console.log(users);
-
     res.status(200).json({
       success: true,
       users,
@@ -516,10 +540,14 @@ const allSentRequests = asyncHandler(async (req, res) => {
   }
 });
 
-//==============all incoming request ===============//
+
+
+//@desc user get all received requests
+//route GET api/users/allrequests
+//access USER
 
 const allReceivedRequest = asyncHandler(async (req, res) => {
-  // console.log("hoo");
+  
   try {
     const dets = req.user.incomingrequests;
     const users = [];
@@ -540,7 +568,12 @@ const allReceivedRequest = asyncHandler(async (req, res) => {
   }
 });
 
-//===================accept request=====================//
+
+
+
+//@desc user accept request
+//route GET api/users/acceptrequest/:id
+//access USER
 
 const acceptRequest = asyncHandler(async (req, res) => {
   try {
@@ -582,7 +615,11 @@ const acceptRequest = asyncHandler(async (req, res) => {
   }
 });
 
-//========================delete request==================//
+
+
+//@desc user delete request
+//route GET api/users/deleterequest/:id
+//access USER
 
 const deleteRequest = asyncHandler(async (req, res) => {
   try {
@@ -622,7 +659,11 @@ const deleteRequest = asyncHandler(async (req, res) => {
   }
 });
 
-//=============get all friends==========//
+
+
+//@desc user get all friends
+//route GET api/users/friends
+//access USER
 
 const allFriends = asyncHandler(async (req, res) => {
   try {
@@ -648,7 +689,10 @@ const allFriends = asyncHandler(async (req, res) => {
 
 
 
-//============remove friend================//
+
+//@desc user remove friend
+//route PUT api/users/friends
+//access USER
 
 const removeFriend=asyncHandler(async(req,res)=>{
   try {
@@ -676,7 +720,12 @@ const removeFriend=asyncHandler(async(req,res)=>{
   }
 })
 
-//======get recent ==============//
+
+
+
+//@desc user recent chat users
+//route GET api/users/getUsersRecent
+//access USER
 
 const getUserFriend = asyncHandler(async (req, res) => {
   const userId = req.query.userId;
@@ -691,7 +740,11 @@ const getUserFriend = asyncHandler(async (req, res) => {
   }
 });
 
-//=======all premium status===========//
+
+
+//@desc user all premium details
+//route GET api/users/allpremium
+//access USER
 
 const allPremiumsStatus = asyncHandler(async (req, res) => {
   const allPremiumLists = await Premium.find({});
@@ -703,7 +756,11 @@ const allPremiumsStatus = asyncHandler(async (req, res) => {
   }
 });
 
-//==========premium purchase=========//
+
+
+//@desc user purchase premium
+//route POST api/users/premiumpurchase
+//access USER
 
 const premiumPurchase = asyncHandler(async (req, res) => {
   try {
@@ -727,10 +784,10 @@ const premiumPurchase = asyncHandler(async (req, res) => {
       await user.save();
 
       if (premiumUser) {
-        console.log("premiumUser created");
+
         res.status(200).json(premiumUser);
       } else {
-        console.log("something went wrong");
+      
         res.status(500);
         throw new Error("Premium details not found");
       }
@@ -746,11 +803,6 @@ const premiumPurchase = asyncHandler(async (req, res) => {
 
 
 
-//===============================//
-
-const allQuestion=asyncHandler(async(req,res)=>{
-  
-})
 
 
 

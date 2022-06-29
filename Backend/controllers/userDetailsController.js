@@ -6,9 +6,10 @@ import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-//
 
-//====user personal details registration===//
+//@desc user add more details
+//route POST api/users/personaldetails
+//access USER
 
 const registerUserDetails = asyncHandler(async (req, res) => {
   try {
@@ -19,8 +20,6 @@ const registerUserDetails = asyncHandler(async (req, res) => {
     let myCloud1;
     let myCloud2;
     let myCloud3;
-
-
 
 
     if (image1) {
@@ -75,7 +74,11 @@ const registerUserDetails = asyncHandler(async (req, res) => {
   }
 });
 
-//================get personal ===============//
+
+
+//@desc user get all details
+//route GET api/users/personaldetails
+//access USER
 
 const getMoreDetails=asyncHandler(async(req,res)=>{
   try {
@@ -88,7 +91,10 @@ const getMoreDetails=asyncHandler(async(req,res)=>{
   }
 })
 
-//================update details==================//
+
+//@desc user update details
+//route PUT api/users/personaldetails
+//access USER
 
 const updateMoredetails = asyncHandler(async (req, res) => {
   try {
@@ -169,97 +175,19 @@ const updateMoredetails = asyncHandler(async (req, res) => {
   }
 });
 
-//=======user add photos====//
 
-// const mutltipleImageUpload = asyncHandler(async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id);
 
-//     if (!user) {
-//       return res.status(500).json({
-//         message: "user not found",
-//       });
-//     }
+//@desc user upload image
+//route GET api/users/uploadimge
+//access USER
 
-//     let images = [];
-//     if (req.body.image) {
-//       images.push(req.body.image);
-//     }
-//     if (req.body.image2) {
-//       images.push(req.body.image2);
-//     }
-//     if (req.body.image3) {
-//       images.push(req.body.image3);
-//     }
-//     // console.log(images, "imagesss");
-//     let imagesLinks = [];
-
-//     const userDetail = await UserDetails.findOne({
-//       userId: ObjectId(user._id),
-//     });
-
-//     if (userDetail) {
-//       for (let i = 0; i < images.length; i++) {
-//         const result = await cloudinary.v2.uploader.upload(images[i], {
-//           folder: "multipleimage",
-//         });
-//         imagesLinks.push({
-//           public_id: result.public_id,
-//           url: result.secure_url,
-//         });
-//       }
-//       // console.log(imagesLinks, "images linksss");
-//       userDetail.images = imagesLinks;
-//       await userDetail.save();
-
-//       return res.status(200).json({
-//         userDetail,
-//         message: "images updated",
-//       });
-//     } else {
-//       // console.log("else");
-//       for (let i = 0; i < images.length; i++) {
-//         const result = await cloudinary.v2.uploader.upload(images[i], {
-//           folder: "multipleimage",
-//         });
-//         imagesLinks.push({
-//           public_id: result.public_id,
-//           url: result.secure_url,
-//         });
-//       }
-
-//       const userImages = await UserDetails.create({
-//         userId: user._id,
-//         images: imagesLinks,
-//       });
-//       console.log("new user created");
-
-//       res.status(200).json({
-//         userImages,
-//         message: "new images uploaded",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       error,
-//     });
-//   }
-// });
-
-//===============AWS ===================================//
 
 const imagesUpload = asyncHandler(async (req, res) => {
   const file = req.file;
-
   const description = req.description;
-
   const result = await uploadFile(file);
-  console.log(result);
 
   req.file = { path: data.Location };
-
-  console.log(result, "resultttttttt");
-
   if (result) {
     res.status(200).json({ success: "success" });
   } else {

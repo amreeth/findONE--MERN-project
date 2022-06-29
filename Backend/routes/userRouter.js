@@ -64,7 +64,6 @@ router.route("/premiumpurchase").post(protect, premiumPurchase)
 router.route('/questions').get(protect,allQuestions)
 
 router.route("/personaldetails").post(protect,registerUserDetails).put(protect,updateMoredetails).get(protect,getMoreDetails)
-
 router.route('/uploadimge').post(protect, upload.single("image"), imagesUpload);
 
 

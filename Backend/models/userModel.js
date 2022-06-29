@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import Joi from "joi";
+
 
 const userSchema = mongoose.Schema(
   {
@@ -104,26 +104,19 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
+
 userSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
-  
   this.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
   return resetToken;
 };
 
 const User = mongoose.model("User", userSchema);
 
-// const validate = (user) => {
-//   const schema = Joi.object({
-//     name: Joi.string().min(3).max(255).required(),
-//     email: Joi.string().email().required(),
-//   });
-//   return schema.validate(user);
-// };
+
 
 export default User;

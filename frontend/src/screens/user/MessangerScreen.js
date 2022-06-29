@@ -187,9 +187,9 @@ const MessangerScreen = () => {
                       placeholder="write something..."
                       onChange={(e) => setNewMessage(e.target.value)}
                       value={newMessage}
-                      onKeyPress={(e)=>e.key==='Enter'&&handleSubmit}
+                      onKeyPress={(e)=>e.key==='Enter'&&handleSubmit(e)}
                     ></textarea>
-
+  
                     {newMessage.length < 1 ? (
                       <button className="chatSubmitButtonNo">Send</button>
                     ) : (

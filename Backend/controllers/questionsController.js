@@ -3,12 +3,12 @@ import Questions from "../models/questionsModel.js";
 
 
 
-//=========add question =======//
+//@desc Admin add question
+//@route POST /api/admin/question
+//@access Admin
 
 const addQuestion=asyncHandler(async(req,res)=>{
-
     const {question,option1,option2,option3,option4}=req.body;
-
     const questions=await Questions.create({
         question:question,
         option1:option1,
@@ -28,11 +28,13 @@ const addQuestion=asyncHandler(async(req,res)=>{
 })
 
 
-//========all question ========//
+
+//@desc Admin get questions
+//@route GET /api/admin/question
+//@access Admin
 
 const allQuestions=asyncHandler(async(req,res)=>{
     const questions=await Questions.find({})
-
     if(questions){
         res.status(200).json(questions)
     }else{
@@ -42,11 +44,14 @@ const allQuestions=asyncHandler(async(req,res)=>{
 })
 
 
-//=========delete question ========//
+
+
+//@desc Admin delete question
+//@route DELETE /api/admin/question
+//@access Admin
 
 const deleteQuestion=asyncHandler(async(req,res)=>{
     const question=await Questions.findById(req.params.id)
-
     if(question){
        await question.remove()
         res.status(201).json({
@@ -60,15 +65,13 @@ const deleteQuestion=asyncHandler(async(req,res)=>{
 
 
 
-//================edit questioin====================//
-
+//@desc Admin add question
+//@route PUT /api/admin/question
+//@access Admin
 
 const editQuestion=asyncHandler(async(req,res)=>{
-   
     const Editquestion=await Questions.findById(req.params.id)
-
     const {question,option1,option2,option3,option4}=req.body;
-
     if(Editquestion){
         Editquestion.question=question;
         Editquestion.option1=option1;
@@ -79,7 +82,6 @@ const editQuestion=asyncHandler(async(req,res)=>{
         res.status(400)
         throw new Error('question not found')
     }
-
     Editquestion.save()
     res.status(200).json({
         message:"Question Edited",

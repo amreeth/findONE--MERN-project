@@ -5,6 +5,13 @@ import User from "../models/userModel.js";
 import Premium from "../models/premiumModel.js";
 import PremiumUsers from "../models/premiumUsersModel.js";
 
+
+
+
+
+//@desc admin register
+//@route POST /api/admin/register
+
 // const registerAdmin = asyncHandler(async (req, res) => {
 //     const { name, email, password } = req.body
 //     const adminExists = await Admin.findOne({ email })
@@ -28,10 +35,13 @@ import PremiumUsers from "../models/premiumUsersModel.js";
 //     }
 // })
 
-//=========admin login============//
+
+
+
+//@desc admin login
+//@route POST /api/admin/login
 
 const authAdmin = asyncHandler(async (req, res) => {
-  // res.send('hiii')
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
   if (admin && (await admin.matchPassword(password))) {
@@ -45,7 +55,12 @@ const authAdmin = asyncHandler(async (req, res) => {
   }
 });
 
-//=======all users===========//
+
+
+
+//@desc Admin get All users 
+//@route GET /api/admin/usermanagement
+//@access Admin
 
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
@@ -58,12 +73,14 @@ const getUsers = asyncHandler(async (req, res) => {
   }
 });
 
-//=======all premium status===========//
+
+
+//@desc Admin get All Premiums details
+//@route GET /api/admin/allPremiumStatus
+//@access Admin
 
 const allPremiumStatus = asyncHandler(async (req, res) => {
   const allPremiumLists = await Premium.find({});
-
-  //   console.log(allPremiumLists,'sss');
 
   if (allPremiumLists) {
     res.status(200).json(allPremiumLists);
@@ -73,7 +90,11 @@ const allPremiumStatus = asyncHandler(async (req, res) => {
   }
 });
 
-//===========add premium ==================//
+
+
+//@desc Admin add Premium  
+//@route POST /api/admin/addpremium
+//@access Admin
 
 const addPremium = asyncHandler(async (req, res) => {
   const { name, category, price, days } = req.body;
@@ -83,7 +104,6 @@ const addPremium = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("This premium already exist");
   } else {
-    // console.log("elsee");
     const premium = await Premium.create({
       name: name,
       category: category,
@@ -101,7 +121,11 @@ const addPremium = asyncHandler(async (req, res) => {
   }
 });
 
-//===========get all premium users======//
+
+
+//@desc Admin get Premium users  
+//@route GET /api/admin/allpremiumusers
+//@access Admin
 
 const getAllPremiumUsers = asyncHandler(async (req, res) => {
   const allPremiumUsers = await PremiumUsers.find({});
@@ -112,6 +136,12 @@ const getAllPremiumUsers = asyncHandler(async (req, res) => {
     throw new Error("Premium users not found");
   }
 });
+
+
+
+//@desc Admin get total profit
+//@route GET /api/admin/profit
+//@access Admin
 
 const allProfit = asyncHandler(async (req, res) => {
   try {
@@ -131,12 +161,13 @@ const allProfit = asyncHandler(async (req, res) => {
 
 
 
-
+//@desc Admin get total users 
+//@route GET /api/admin/totalusers
+//@access Admin
 
 const totalUser=asyncHandler(async(req,res)=>{
   try {
     const users=await User.find().count()
-    // console.log(users);
     if(users){
       res.status(200).json(users)
     }

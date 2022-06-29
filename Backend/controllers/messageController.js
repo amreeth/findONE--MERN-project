@@ -4,8 +4,9 @@ import asyncHandler from 'express-async-handler'
 
 
 
-//=======send new message ========//
-
+//@desc user sent new message
+//@route POST /api/message
+//@access USER
 
 const newMessage=asyncHandler(async(req,res)=>{
     const newmessages=new Message(req.body)
@@ -30,7 +31,10 @@ const newMessage=asyncHandler(async(req,res)=>{
 
 
 
-//============get messages=================//
+
+//@desc user get all messages
+//@route GET /api/message/:conversationId
+//@access USER
 
 const getMessages=asyncHandler(async(req,res)=>{
     try {

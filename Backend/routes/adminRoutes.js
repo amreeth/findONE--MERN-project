@@ -15,8 +15,6 @@ import {
   deleteQuestion,
   editQuestion,
 } from "../controllers/questionsController.js";
-
-
 const router = express.Router();
 
 

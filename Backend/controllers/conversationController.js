@@ -1,24 +1,29 @@
 import Conversation from "../models/conversationModel.js";
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
 
-//============new conversation==========//
+
+
+//@desc user new conversation
+//@route POST /api/conversation
+//@access USER
 
 const newConversation = asyncHandler(async (req, res) => {
   const newconversations = new Conversation({
     memebers: [req.body.senderId, req.body.receiverId],
   });
-
   try {
     const savedConversation = await newconversations.save();
-
     res.status(200).json(savedConversation);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-//=======get user conversation===========//
+
+
+//@desc user get all conversation
+//@route GET /api/conversation/:userId
+//@access USER
 
 const getUserConversation = asyncHandler(async (req, res) => {
   try {
@@ -31,21 +36,22 @@ const getUserConversation = asyncHandler(async (req, res) => {
   }
 });
 
-//==========get conversation includes two user id======//
+
+
+
+//@desc user get conversation between other peson
+//@route GET /api/conversation/find/:firstuser/:seconduser
+//@access USER
 
 const getConversationTwoUser = asyncHandler(async (req, res) => {
   try {
-    // console.log(req.params.firstuser);
-    // console.log(req.params.seconduser);
     const conversation = await Conversation.findOne({
       $and:[{members:{$in:[req.params.firstuser]}},{members:{$in:[req.params.seconduser]}}] 
     });
-    // console.log(conversation,'conversationssssss');
+  
     if (conversation) {
       res.status(200).json(conversation);
     } else {
-
-      // console.log('new conversation');
       const newConversation = new Conversation({
         members: [req.params.firstuser, req.params.seconduser],
       });
